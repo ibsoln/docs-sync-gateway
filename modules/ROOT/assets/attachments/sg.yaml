@@ -352,10 +352,12 @@ properties:
               If the revision tree gets into this state then the only option to resolve the conflict is to pick a winning branch and tombstone all the non-winning conflicting branches. Tuning the `revs_limit` to a lower value increases the likelyhood of this scenario happening.
 
               See also:
-              - Couchbase Lite [pruning](../../couchbase-lite/native-api/revision/index.html#pruning).
-              - Sync Gateway purge endpoint [/{db}/_purge](references/sync-gateway/admin-rest-api/index.html#!/document/post_db_purge).
-              - Sync Gateway [document TTLs](references/sync-gateway/admin-rest-api/index.html#!/document/put_db_doc).
-            default: 1000
+              - Sync Gateway purge endpoint [/{db}/_purge](admin-rest-api.html#/document/post__db___purge).
+              - Sync Gateway purge endpoint [/{db}/_purge](references/sync-gateway/admin-rest-api/index.html#!/document/post_db_purge).	              - Sync Gateway [document TTLs](admin-rest-api.html#document/put__db___doc_).
+              - Sync Gateway [document TTLs](references/sync-gateway/admin-rest-api/index.html#!/document/put_db_doc).	              - [Allow-Conflicts](config-properties.html#databases-foo_db-allow_conflicts).
+
+              default : | 100 if `allow-conflicts = true` | 1000 if `allow-conflicts = false`
+              minimum : | 50 if `allow-conflicts = true` | 1 if `allow-conflicts = false`
           roles:
             type: object
             description: Initial roles.
