@@ -1,6 +1,30 @@
 = Access Control Overview
 include::partial$_attributesLocal.adoc[]
 
+
 [abstract]
 Introduces SGW access control, providing an overview of its key concepts and features
 
+== Controlling user access to Sync Gateway
+
+include::partial$_featureCatalog.adoc[tag=access-control-summ]
+
+=== User accounts
+The account comprises a set of credentials for the user, including a user name and password combination.
+
+=== User roles
+A user role is a collection of sync gateway channels.
+It provides a conventient means to manage multiple channels.
+Users assigned a role inherit access to all the role's channels.
+
+=== Sync Gateway channels
+Channels provide a data routing mechanism that makes it easy to securely share database access with multiple users.
+They are the link between _user_ and _document_.
+Each user can access one or more channels.
+Each document belongs to one or more channels.
+
+== Related Information
+.Learn More
+--
+include::partial$_featureCatalog.adoc[tag=access-control-tutorials]
+--

@@ -33,8 +33,7 @@
 * xref:logging.adoc[Logging]
 * xref:shared-bucket-access.adoc[Mobile-Server Data Sync]
 * xref:resolving-conflicts.adoc[Resolving Conflicts]
-//* xref:concept-access-control-ovw.adoc[Access Control Overview]
-* Access Control
+* xref:concept-access-control-ovw.adoc[Access Control Overview]
 ** xref:users-and-roles.adoc[Users and Roles]
 ** xref:authentication.adoc[Authentication]
 ** xref:sync-gateway-channels.adoc[Sync Gateway Channels]

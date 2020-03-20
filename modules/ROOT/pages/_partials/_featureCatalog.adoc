@@ -1,0 +1,22 @@
+ifndef::url-blog[]
+:url-blog: https://blog.couchbase.com/
+endif::url-blog[]
+
+// tag::access-control[]
+
+// tag::access-control-name[]
+Access Control in Sync Gateway
+// end::access-control-name[]
+
+// tag::access-control-summ[]
+User access to Sync Gateway and its connected databases is controlled by xref:{version}@:sync-gateway:user-and-roles.adoc#users[_User Accounts_], xref:{version}@:sync-gateway:user-and-roles.adoc#roles[_User Roles_] and xref:{version}@:sync-gateway:user-and-roles.adoc#users[_Sync Gateway Channels_].
+In this context a _user_ may be a person or an application
+// end::access-control-summ[]
+
+// tag::access-control-tutorials[]
+
+* {url-blog}/using-channels-in-sync-gateway/[Using channels in Sync Gateway]
+* {url-blog}/augment-your-sync-function-with-roles-in-couchbase-sync-gateway/[Augment your Sync Function with Roles]
+// end::access-control-tutorials[]
+
+// end::access-control[]
