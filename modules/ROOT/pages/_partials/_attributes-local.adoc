@@ -27,15 +27,17 @@
 //:releaseStatus: beta wireframe
 
 // Couchbase Components
-:component-sgw: sync-gateway
-:component-cbl: couchbase-lite
-:component-svr: server
 :component-cao: operator
+:component-cbl: couchbase-lite
+:component-sgw: sync-gateway
+:component-svr: server
+:component-tut: tutorials
 
-:component-title-sgw: Sync Gateway
-:component-title-cbl: Couchbase Lite
-:component-title-svr: Couchbase Server
 :component-title-cao: Couchbase Autonomous Operator
+:component-title-cbl: Couchbase Lite
+:component-title-sgw: Sync Gateway
+:component-title-svr: Couchbase Server
+:component-title-tut: Couchbase Tutorials
 
 
 // SGW Standard text
@@ -55,6 +57,7 @@
 :xref-pfx-cbl: xref:{version}@{component-cbl}:
 :xref-pfx-svr: xref:{component-svr}:
 :xref-pfx-cao: xref:{component-cao}:
+:xref-pfx-tut: xref:{component-tut}:
 
 
 // END
