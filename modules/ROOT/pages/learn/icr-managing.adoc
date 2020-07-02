@@ -1,9 +1,14 @@
 = Managing Replications
 :page-layout: article
-:page-status: {releaseStatus} -- {releaseComments}
-:page-role: panes
-:page-content: conceptual
+:page-status: {release-status-sgw} -- {release-comments-sgw}
+:page-edition: Under Develoment
+:page-role:
+
+include::shared-mobile::partial$_attributes-shared.adoc[]
 include::partial$_attributes-local.adoc[]
+:xref-pfx-sgw: {xref-pfx-sgw}:
+include::partial$_page-index.adoc[]
+include::partial$_glossary-links.adoc[]
 
 ifeval::["{releaseStatus}" == "gamma"]
 [.pane__frame--orange]
@@ -23,37 +28,47 @@ endif::[]
 Cover inter-cluster replication mamagement
 
 == Overview
+
+Management and administration of Sync Gateway clusters may be automated (a script, K8s or an application server) or manually handled.
+
+[.pane__frame--orange]
+.Author's Notes
+--
+Include and expand on the following points here:
+
+* Remote config
+* Persistent replication
+** Initiate
+** Update
+** Reset
+** Rollback (new-undocumented?)
+* Use of Rest API (use cross-references to api refs)
+** _replication
+** _replicationStatus
+
+see https://docs.google.com/document/d/13E6JOq8u_AaUd_t8FZEPCAuq7jfkjryecjBQBHE3pG8/edit?ts=5e77c903#heading=h.houeyk3993r7
+--
+
+
 Sunt id ut anim aute. Deserunt consequat est excepteur laborum minim ad elit ut mollit. Ex sit duis laborum anim id magna.
 
 Pariatur fugiat proident officia exercitation exercitation sunt ipsum. Cillum amet ipsum sit amet non duis laboris aliquip. Magna deserunt quis laborum nulla. Et excepteur Lorem quis aliquip quis laborum aliqua deserunt tempor. Sunt sit esse qui amet cillum mollit nostrud ullamco eu cillum ad Lorem et id.
 
 
+[.pane__frames.cols-3]
 == Related Content
 
-[.pane__frames]
+.How-to ...
 
-* *How-to*
-+
---
-include how-to links as relevant,
+* include how-to links as relevant,
+* include how-to links as relevant,
 
-include how-to links as relevant,
---
+.Learn more ...
 
-* *Learn more*
-+
---
-include any related concept links
+include::partial$_related-content.adoc[tags=icr]
 
-include tutorial links as relevant
+.Dive Deeper ...
 
-include blog links as relevant
---
-
-* *Reference material*
-+
---
-include any reference docs
-
-(eg config file or api)
---
+* Reference content
+** {xref-sgw-pg-config-properties}
+include::partial$_related-content.adoc[tags=community]
