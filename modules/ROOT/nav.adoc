@@ -102,6 +102,7 @@ include::shared-mobile::partial$nav-shared.adoc[]
 .Product Notes
 // Typical these topics provide information on product release, support, licensing and compatibility issues
 * {xref-sgw-pg-release-notes}
+* {xref-sgw-pg-config-change-log}
 * {xref-sgw-pg-release-notes-archive}
 * {xref-sgw-pg-supported-os}
 * {xref-sgw-pg-compatibility}
