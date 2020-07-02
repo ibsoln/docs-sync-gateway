@@ -34,11 +34,6 @@ Information sources include:
 endif::[]
 
 
-[abstract]
---
-Ut velit aliqua incididunt do adipisicing.
---
-
 Whether you're developing a web application getting data from the Sync Gateway API or integrating it with another system you will almost certainly need an HTTP library to consume the Public and Admin Sync Gateway REST APIs.
 The documentation for the Sync Gateway REST APIs is using Swagger which is a great toolkit for writing REST API documentation, and also to generate HTTP libraries.
 This guide will walk you through how to start using those libraries to display documents stored in Sync Gateway on a web page
