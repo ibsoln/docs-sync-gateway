@@ -70,6 +70,33 @@ NOTE: Section not yet updated, may become an include from pn-supported-os.adoc
 
 === Deprecation Notices
 
+// tag::depnotices-full[]
+
+// tag::depnote-sg1-full[]
+// tag::depnote-sg1[]
+SG-Replicate 1 is deprecated in Sync Gateway versions starting with version 2.8.
+Please refer to compatibility and upgrade section for details.
+
+*Note* that the functionality of SG-Replicate 1.0 remains unchanged. Specifically, replications are be scheduled on the node on which they are created.
+// end::depnote-sg1[]
+
+// tag::depnote-sg1-repl-cfg-method[]
+The pre-Hydrogen (SG1) replication configuration method is deprecated at SGW version 2.8.
+In SG2, replication  configuration is defined in the `database` section.
+Refer to upgrade section for specifics on how existing replications will be mapped to new model starting Hydrogen.
+// end::depnote-sg1-repl-cfg-method[]
+
+// tag::depnote-sg1-rest-endpoints[]
+These SG1 replication REST endpoints are deprecated:
+
+* _active_tasks_ -- which is superseded by new monitoring endpoint
+* __replicate_ which is  superseded by new replication endpoint
+
+// end::depnote-sg1-rest-endpoints[]
+
+// end::depnote-sg1-full[]
+
+// tag::depnote-full[]
 .points to cover, include:
 * https://issues.couchbase.com/browse/DOC-6461 Deprecation notices
 
