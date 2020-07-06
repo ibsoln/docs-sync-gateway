@@ -1,20 +1,18 @@
-= Conflict Resolution
+= Conflict Resolution in Inter-cluster Replication
 // = Inter-Cluster Replication
 :page-layout: article
 :page-status: {release-status-sgw} -- {release-comments-sgw}
 :page-edition: Under Development
 :page-role:
-:description: Inter-cluster replication (Sync Gateway to Sync Gateway) using SG-Replicate 2.0 protocol
+:description: This content covers conflict resolution and inter-cluster replication (replication between Sync Gateway clusters using SG-Replicate 2.0)
+:keywords:
 
 include::partial$_std-hdr-sgw.adoc[]
 
 :topic-group: Inter-cluster Replication
 :param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin}
-:param-abstract: This content provides an overview of Inter-cluster replication, which is replication between Sync Gateway clusters using SG-Replicate 2.0.
+:param-abstract: Inter-cluster replication conflict resolution policies and behaviors.
 include::partial$block-abstract.adoc[]
-Cover conflict resolution in respect of inter-cluster replication.
-include::partial_attributes-local.adoc[]
-Document relevant aspects of _replication conflict resolution.
 
 ifeval::["{releaseStatus}" == "gamma"]
 [.pane__frame--orange]
@@ -27,48 +25,74 @@ Information sources include:
 --
 endif::[]
 
+Useful resources: https://blog.couchbase.com/document-conflicts-couchbase-mobile/[blog-- Document Conflicts and Automatic Conflict Resolution] | https://blog.couchbase.com/conflict-resolution-couchbase-mobile/[blog-- Demystifying Conflict Resolution] | https://blog.couchbase.com/tag/conflict-resolution/[Blog category -- Conflict Resolution] |{xref-sgw-pg-resolving-conflicts}
+
 == Overview
 // tag::overview[]
-Replication between Sync Gateway databases doesn't support automatic conflict resolution even when the no-conflicts mode is enabled (that is where xref:config-properties.adoc#databases-foo_db-allow_conflicts["allow_conflicts": false]).
+SG-Replicate 2.0 replication supports automatic conflict resolution to resolve conflicting document changes (revisions).
+Out-of-the-box, the conflict resolution policy echoes that applied in replications between Couchbase Lite and Sync Gateway.
 
-When running two Sync Gateway clusters with the no-conflicts mode enabled, cross-cluster document conflicts will result in that document no longer being replicated. To avoid this, the application must ensure that concurrent cross-cluster updates are not made to a given document.
+//  even when the no-conflicts mode is enabled (that is where xref:config-properties.adoc#databases-foo_db-allow_conflicts["allow_conflicts": false]).
 
-Deployments  must implement a custom conflict resolver in an external app as specified in {xref-sgw-pg-resolving-conflicts}.
-// end::overview[]
+// When running two Sync Gateway clusters with the no-conflicts mode enabled, cross-cluster document conflicts will result in that document no longer being replicated. To avoid this, the application must ensure that concurrent cross-cluster updates are not made to a given document.
+
+// Deployments  must implement a custom conflict resolver in an external app as specified in {xref-sgw-pg-resolving-conflicts}.
+// // end::overview[]
 
 
+NOTE: {community} and SG-Replicate 1.0 replications do not support conflict resolution. You should set `allow_conflict=true` on both the `source` and `target`.
 
-As was the case prior to Sync Gateway 2.8, {community} and SG-Replicate 1.0 replications do not support conflict resolution. You should set `allow_conflict=true` on both the `source` and `target`.
+Conflict resolutions applies only in {enterprise} licensed deployments.
 
-Apples to {enterprise} only
-
-SG-Replicate 2.0 supports automatic conflict resolution to resolve conflicting document revisions. The automatic conflict resolution policy is the equivalent as that supported in Couchbase Lite 2.x between Couchbase Lite and Sync Gateway.
-
-Pull::
-For _Pull_ replications the active Sync Gateway will detect and resolve conflicts.
-+
-The active Sync gateway resolves conflicts based on the configured conflict resolver ({xref-sgw-pg-config-properties-db-rep-resolver}).
-+
-This is equivalent to how conflicts are handled when Couchbase Lite clients pull down documents to Sync Gateway.
-+
-Resolved conflicts are transferred from active to passive Sync Gateways only where a replication is setup between them.
-
-Push::
-For _Push_ replications, the passive Sync Gateway will detect and reject conflicts being pushed to it.
-+
-When the passive Sync Gateway detects a conflict it does not automatically resolve it.
-Instead it simply rejects the document and returns a `409 Conflict` response to the active Sync Gateway.
-+
-This approach is the same as that adopted when Couchbase Lite clients push up documents to Sync Gateway
-
-Out-of-the-box resolution policies::
+== Resolver Policies
 SG-Replicate 2.0 supports out-of-the-box (predefined ) conflict resolver policies.
 The following policies are available as Javascript functions, which can be used when configuring a replication:
+
+* `UseDefault` -- This uses the automatic resolution policy (last-write-wins) as defined  above)
+* `LocalWins` Local Wins
+* `RemoteWins` Remote Wins
+
+== Conflict Resolution Approaches
+
+=== Automatic Conflict Resolution
+SG-Replicate 2.0 supports automatic conflict resolution to resolve conflicting document revisions.
+
+The automatic conflict resolution policy is the same as that adopted in Couchbase Lite 2.x between Couchbase Lite and Sync Gateway.
+The basic rules being:
+
+include::couchbase-lite:ROOT:partial$handling-conflicts.adoc[tags=auto-conflict-resolution]
+
+=== Custom Conflict Resolution
+
+Custom conflict resolution is handled by conflict resolvers (see: <<resolver-policies>>), Javascript functions embedded in the configuration.
+
+Pull Replications::
 +
-* UseDefault (This refers to the predefined resolution policies as defined in requirements above)
-* Local Wins
-* Remote Wins
+--
+For _Pull_ replications the _active_ Sync Gateway is responsible for detecting and resolving conflicts based on the configured conflict resolver function ({xref-sgw-pg-config-properties-db-rep-resolver}).
+
+This is also how conflicts are handled when Couchbase Lite clients pull down documents to Sync Gateway.
+
+There are two ways to handle conflicts in your custom_conflict_resolver, you can either:
+
+* Choose a _winning_ revision from among the conflicting revisions (see simple-conflict-resolver), or
+* Merge two or more conflicting revision to create a new _winning_ revision; losing revisions are tomb-stoned.
+
+
+*Note:* Resolved conflicts are only transferred from active to passive Sync Gateways if a replication is setup between them.
+
+--
+
+Push Replications::
+For _Push_ replications, the _passive_ Sync Gateway automatically detects and rejects conflicting changes being pushed to it.
 +
+Note that conflicts are not resolved.
+The revision is rejected and the document returned -- with a `409 Conflict` -- response to the active Sync Gateway.
++
+This approach is the same as that adopted when Couchbase Lite clients push documents to Sync Gateway.
+
+
+[.simple-conflict-resolver]
 .Simple conflict resolver
 =====
 [source, json]
