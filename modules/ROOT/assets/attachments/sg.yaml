@@ -637,6 +637,13 @@ properties:
               document.cookie = cookie1String;
               ```
             default: 'SyncGatewaySession'
+
+          sgreplicate_enabled:
+          type: boolean
+          default: true -- replication is enabled on this database
+          description:
+            If set to false, this Sync Gateway node will not participate in sg-replicate distribution.
+
           sync:
             type: string
             description: |
@@ -724,6 +731,11 @@ properties:
               To configure SG-Replicate 1.0 replications -- see [SG-Replicate 1.0 Replications](config-properties.html#replications).
 
               For more on upgrading from SG-Replicate 1.0 -- see [Moving to SG-Replicate 2.](./../upgrade.html#moving-to-sg-replicate-2-0).
+
+              The following REST API only parameters are omitted from this configuration schema -- refer to [Admin Rest API](./refer/rest-api-admin.adoc) for details:
+              - adhoc = true for transient replications
+              - cancel = true to cancel a replication
+
 
             items:
               type: object
@@ -822,13 +834,13 @@ properties:
 
                     OPTIONAL for stops and removes (even if defined during creation)
 
-                maximum_backoff_time:
+                max_backoff_time:
                   type: integer
                   default: 5 - five minutes
                   description: |2
-                    The `maximum_backoff_time` configuration property specifies the time-period (in minutes) during which Sync Gateway will attempt to reconnect lost or unreachable `remote` targets.
+                    The `max_backoff_time` configuration property specifies the time-period (in minutes) during which Sync Gateway will attempt to reconnect lost or unreachable `remote` targets.
 
-                    On disconnection Sync Gateway will do an exponential backoff up to the specified value, after which it will attempt to reconnect indefinitely every `maximum_backoff_time` minutes.
+                    On disconnection Sync Gateway will do an exponential backoff up to the specified value, after which it will attempt to reconnect indefinitely every `max_backoff_time` minutes.
 
                     If a zero value is specified then Sync Gateway will do an exponential backoff up to an interval of five minutes before stopping the replication.
 
@@ -836,7 +848,7 @@ properties:
                 perf_tuning_params:
                   type: array
                   description: |2
-                    The perf_tuning_params are yet to be defined (subject to performance testing)
+                    The `perf_tuning_params` are not available in this release.
 
                   items:
                     type: string
