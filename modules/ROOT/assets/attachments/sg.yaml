@@ -637,6 +637,13 @@ properties:
               document.cookie = cookie1String;
               ```
             default: 'SyncGatewaySession'
+
+          sgreplicate_enabled:
+            type: boolean
+            default: true -- replication is enabled on this database
+            description:
+              If set to false, this Sync Gateway node will not participate in sg-replicate distribution.
+
           sync:
             type: string
             description: |
@@ -707,11 +714,11 @@ properties:
 
               The *replications* array will contain an entry for each replication, allowing multiple replications to be defined for any given database.
 
-              Your replications can be one of two available types see [replication types](./../learn/icr-replication-types.html) --
+              Your replications can be one of two available types -- see [replication types](./../learn/icr-replication-types.html)
 
                 - Persistent -- the replication survives node restarts
 
-                  It is recommended you configure persistent replications for production environments using this configuration file, although they can also be launched dynamically using the Rest API *_replication* endpoint (see -- [Rest API](./../refer/rest-api-admin.html))
+                  It is recommended you configure persistent replications for production environments using the configuration file, although they can also be launched dynamically using the Rest API `_replication` endpoint (see -- [Admin Rest API](./../refer/rest-api-admin.html))
 
                 - Transient (`adhoc=true`) -- the replication runs once when created
 
@@ -719,41 +726,46 @@ properties:
                   These replications are not guaranteed to run on the initiating node and will instead be distributed across available nodes.
 
 
-              *NOTE*: Replications are defined in the context of a (local) database, with the replication pulling-to or pushing-from this database. This change means that you cannot to set-up replication between two remote databases, as -- by definition -- at least one database **must* be local.
+              *NOTE*: Replications are defined in the context of a local database, with the replication pulling-to or pushing-from this database. This change means that you cannot to set-up replication between two remote databases, as -- by definition -- at least one database **must** be local.
 
               To configure SG-Replicate 1.0 replications -- see [SG-Replicate 1.0 Replications](config-properties.html#replications).
 
               For more on upgrading from SG-Replicate 1.0 -- see [Moving to SG-Replicate 2.](./../upgrade.html#moving-to-sg-replicate-2-0).
 
+              The following REST API only parameters are omitted from this configuration schema -- refer to [Admin Rest API](./refer/rest-api-admin.adoc) for details:
+              - adhoc = true for transient replications
+              - cancel = true to cancel a replication
+
             items:
+              name: replication-num-1
               type: object
-              description: |
-                Each *replications* array element defines one replication.
+              description: |2
+                This object represents an array element within the *replications array* (for example: *replication-num-1*).
+
+                Each *replications array* element comprises all or a subset of the properties defined below and defines one replication.
+
                 A database may be associated with more than one replication.
               properties:
 
                 conflict_resolution_type:
                   type: string
-                  default: DEFAULT
+                  default: default -- the default automatic conflict resolution policy is applied
                   description: |2
                     The **`conflict_resolution_type`** configuration property defines the conflict resolution policy that Sync Gateway applies when resolving conflicting revisions.
 
                     The valid options are:
-                      - *default*
-                      - *local_wins*
-                      - *remote_wins*
-                      - *custom*
+                      - `default`
+                      - `localWins`
+                      - `remoteWins`
+                      - `custom`
 
-                    Selecting *default* applies the following conflict resolution policy:
-                      - Deletes always win
-                      - Longest Rev wins (most writes win)
-                      - ASCII comparison of document body digest
+                    Selecting `default` applies the following conflict resolution policy:
+                      - Deletes always win (the delete with longest revision history wins if both revisions are deletes)
+                      - The revision with the longest revision history wins (so, the one with most changes and consequently the highest revision Id)
 
-                    Selecting *custom* implies that a [custom-conflict-resolver](./../refer/config-properties.html#databases-this_db-replications-custom-conflict-resolver) function will be provided to resolve conflicting revisions.
+                    Selecting `custom` specifies that you want to handle resolution with your own [custom-conflict-resolver](./../refer/config-properties.html#databases-this_db-replications-custom-conflict-resolver). You **must** provide this Javascript function by specifying a [custom-conflict-resolver](./../refer/config-properties.html#databases-this_db-replications-custom-conflict-resolver).
 
-                    *NOTE 1* -- if you set this to *custom*, you **must** also specify a [custom-conflict-resolver](./../refer/config-properties.html#databases-this_db-replications-custom-conflict-resolver).
-
-                    *NOTE 2* -- replications created prior to version 2.8 will default to DEFAULT
+                    **NOTE** -- replications created prior to version 2.8 will default to `default`.
 
                 continuous:
                   type: boolean
@@ -767,19 +779,19 @@ properties:
                   type: string
                   default: No custom conflict resolution is applied
                   description: |2
-                    The optional `custom_conflict_resolver` property specifies the Javascript function that will be used to resolve conflicts if [conflict_resolution_type](./../refer/config-properties.html#databases-this_db-replications-conflict_resolution_type)=CUSTOM
+                    The optional `custom_conflict_resolver` property specifies the Javascript function that will be used to resolve conflicts, if the custom conflict resolution type is specified in the [conflict_resolution_type](./../refer/config-properties.html#databases-this_db-replications-conflict_resolution_type).
 
-                    The property is *mandatory* when `conflict_resolution_type=CUSTOM`. Provide the function as a string within backticks; as described for the [sync](./../refer/config-properties.html#databases-this_db-sync) function.
+                    The property is *mandatory* when `conflict_resolution_type=custom` and will be ignored in all other cases.
 
-                    This property is *ignored* if `conflict-resolution-type=DEFAULT`
+                    Provide the function as a string within backticks; as described for the [sync](./../refer/config-properties.html#databases-this_db-sync) function.
 
-                    **CAUTION**: Using complex `custom_conflict_resolver` functions can noticeably degrade performance. Use a default (or built-in) resolver whenever possible.
+                    **CAUTION**: Using complex `custom_conflict_resolver` functions can noticeably degrade performance. Use a built-in resolver whenever possible.
 
                 direction:
                   type: string
                   default: None - this must be specified
                   description: |2
-                    The mandatory **`direction** configuration property's valid values specify whether the replication is *push*, *pull* or *push_and_pull*.
+                    The mandatory **direction** configuration property's valid values specify whether the replication is *push*, *pull* or *push_and_pull*.
 
                     The property value is referenced by the [remote](config-properties.html#database-this_db-replications-remote) property.
 
@@ -1175,8 +1187,10 @@ properties:
   profileInterface:
     description: (**Deprecated**) TCP network address (IP address and the port) that the Go profile API listens on. You can obtain go profiling information from the interface. You can omit the IP address.
     type: string
+
   replications:
-    description: |
+    type: array
+    description: |2
       (**Deprecated**) This SG-Replicate 1.0 method of configuring replication is deprecated at version 2.8.
 
       For replication using the SG-Replicate 2.0 protocol configure the replication properties under _database.replication_ instead -- see [SG-Replicate 2.0 Replications](config-properties.html#databases-this_db-replications).
@@ -1189,7 +1203,7 @@ properties:
       - do not support built-in conflict resolution -- see [Resolving Conflicts](resolving-conflicts.html)
       - do not support custom conflict resolution -- see [Resolving Conflicts](resolving-conflicts.html)
       - use `source` and `target` to derive replication direction
-      -
+
     items:
       type: object
       properties:
@@ -1235,9 +1249,13 @@ properties:
           type: array
           description: |
             (**Deprecated**)
-            A set of key/value pairs to use in the querystring of the replication. For example, the channels field can be used to pull from a set of channels (in this particular case, the filter key must be set for the channels field to work as expected).
+            A set of key/value pairs to use in the query string of the replication. For example, the channels field can be used to pull from a set of channels (in this particular case, the filter key must be set for the channels field to work as expected).
           items:
+            # type: object
+            # properties:
+            #   param-string-1:
             type: string
+            description: query parameter string
   replicator_compression:
     description: |
       This sets the 'deflate' compression level to use when compressing messages sent via the WebSocket protocol, where 0 means no compression, 1 means fastest (least) compression, and 9 means slowest (most) compression.
