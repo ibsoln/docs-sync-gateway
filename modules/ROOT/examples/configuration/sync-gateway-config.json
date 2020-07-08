@@ -110,3 +110,189 @@
 }
 //
 // end::sync-function-config[]
+
+
+// tag::icr-simple-conflict-resolver[]
+
+[source, json]
+----
+"replication": [
+  {
+  "replication_id": "replication1",
+  // other config as required
+  "conflict_resolution_type": "custom",
+  "custom_conflict_resolver": `
+    function(local, remote) {
+      if (doc.type == "a-doctype-1") {
+          // Invoke the built in resolver logic for remoteWins
+          Return remoteWinsPolicy(local, remote);
+        }
+        else {
+          // Invoke the built in default resolver logic
+          defaultPolicy(local, remote);
+        }
+    }
+    `
+// other config as required
+  }
+]
+----
+// end::icr-simple-conflict-resolver[]
+
+// tag::icr-simple-own-winner-conflict-resolver[]
+
+[source, json]
+----
+"replication": [
+  {
+  "replication_id": "replication1",
+  // other config as required
+  "conflict_resolution_type": "custom",
+  "custom_conflict_resolver": `
+    function(local, remote) {
+      // Custom conflict resolution policy based on priority
+      if (local.body.priority > remote.body.priority) {
+        return {
+          body: local.body,
+          meta: local.meta
+        };
+      } else if (local.body.priority < remote.body.priority) {
+        return {
+          body: remote.body,
+          meta: remote.meta
+        };
+      }
+      // Apply default policy if it doesn't satisfy custom policy
+      return defaultPolicy(local, remote);
+    }
+    `
+// other config as required
+  }
+]
+----
+// end::icr-simple-own-winner-conflict-resolver[]
+
+// tag::icr-simple-merge-conflict-resolver[]
+
+[source, json]
+----
+"replication": [
+  {
+  "replication_id": "replication1",
+  // other config as required
+  "conflict_resolution_type": "custom",
+  "custom_conflict_resolver": `
+    function(local, remote) {
+      if (doc.type == "a-doctype-1") {
+          // Invoke the built in resolver logic for remoteWins
+          Return RemoteWins(doc,oldDoc);
+        }
+        else {
+          // Invoke the built in default resolver logic
+          Return UseDefault(doc,oldDoc);
+        }
+    }
+    `
+// other config as required
+  }
+]
+----
+// end::icr-simple-merge-conflict-resolver[]
+
+// tag::icr-sample-sync-gateway-config[]
+[source, json]
+----
+{
+  "logging": {
+    "console": {
+      "log_keys": ["*"]
+    }
+  },
+  "databases": {
+    "db1": {
+      "server": "couchbase://localhost",
+      "username": "username",
+      "password": "password",
+      "bucket": "default",
+      "allow_conflicts": false,
+      "revs_limit": 20,
+      "sgreplicate_enabled": true,
+      "replications": [
+        { // first replication - uses custom resolver
+          "replication_id": "this-repl-1",
+          "direction": "push-and-pull",
+          "remote": "http://otherhost.com:8092/db1",
+          "continuous": true,
+          "conflict_resolution_type": "custom",
+          "custom_conflict_resolver": `
+              function (local, remote) {
+                // Custom conflict resolution policy
+                if (local.body.priority > remote.body.priority) {
+                  return {
+                    body: local.body,
+                    meta: local.meta
+                  };
+                } else if (local.body.priority < remote.body.priority) {
+                  return {
+                    body: remote.body,
+                    meta: remote.meta
+                  };
+                }
+              // Apply default policy if it doesn't satisfy custom policy
+              return defaultPolicy(local, remote);
+              }
+              `
+        }
+    },
+    "db2": {
+      "server": "couchbase://localhost",
+      "username": "username",
+      "password": "password",
+      "bucket": "default1",
+      "allow_conflicts": false,
+      "revs_limit": 20
+      "users": {
+        "GUEST": {
+          "disabled": false,
+          "admin_channels": ["*"]
+        }
+      },
+      "sgreplicate_enabled": true,
+      "replications": [
+        { // Second replication uses default auto resolution policy
+          "replication_id": "this-repl-2",
+          "direction": "pull",
+          "remote": "http://otherhost.com:4985/db2",
+          "continuous": true,
+          "conflict_resolution_type": "default",
+        }
+        { // Third replication -- uses localWins policy
+          "replication_id": "this-repl-3",
+          "direction": "push",
+          "remote": "http://otherhost.com:4985/db2",
+          "continuous": true,
+          "conflict_resolution_type": "localWins",
+        }
+      ]
+
+    },
+  },
+  // SG-Replicate 1.0 Replications
+  "replications": [
+    {
+      "replication_id": "push-to-other-continuous",
+      "source": "http://localhost:4985/db",
+      "target": "http://otherhost.com:4985/db",
+      "continuous": true
+    },
+    {
+      "replication_id": "pull-from-other-continuous",
+      "source": "http://otherhost.com:4985/db",
+      "target": "http://localhost:4985/db",
+      "continuous": true
+    }
+  ]
+}
+
+----
+// end::icr-sample-sync-gateway-config[]
