@@ -319,7 +319,7 @@ properties:
           enable_shared_bucket_access:
             type: boolean
             description: |
-              Introduced in Sync Gateway 1.5, this property specifies whether to enable Mobile-Server Data Sync (a.k.a _mobile convergence_). You can learn more about this functionality [here](https://docs.couchbase.com/sync-gateway/current/shared-bucket-access.html)
+              Introduced in Sync Gateway 1.5, this property specifies whether to enable Mobile-Server Data Sync (a.k.a _mobile convergence_). You can learn more about this functionality in [Syncing Mobile and Server](./../shared-bucket-access.html)
 
               This property works in conjunction with the [import_docs](#databases-foo_db-import_docs) property.
 
@@ -339,8 +339,8 @@ properties:
 
               Ways to tune the Metadata Purge Interval on Couchbase Server:
 
-              - Bucket settings [on UI](https://developer.couchbase.com/documentation/server/current/settings/configure-compact-settings.html)
-              - Bucket endpoint [on the REST API](https://developer.couchbase.com/documentation/server/current/rest-api/rest-bucket-create.html)
+              - Bucket settings [on UI](https://docs.couchbase.com/server/current/manage/manage-settings/configure-compact-settings.html)
+              - Bucket endpoint [on the REST API](https://docs.couchbase.com/server/current/rest-api/rest-bucket-create.html)
 
               #### Implementation notes for XATTRs:
 
@@ -365,7 +365,7 @@ properties:
             description: Webhooks in Sync Gateway are designed to minimize performance impacts on Sync Gateway's regular processing. Sync Gateway manages the number of processes that are spawned for webhook event handling, so that slow response times from the HTTP POST operations don't consume available CPU resources on Sync Gateway nodes. When a `webhook` event handler is defined, after Sync Gateway has updated a document, Sync Gateway adds a `document_changed` event to an asynchronous event-processing queue (the event queue). New processes are then spawned to apply the `filter` function to the documents and to perform the HTTP POST operations. When an event is not added to the event queue, but is instead discarded, a warning message is written to the the Sync Gateway log. You can configure Sync Gateway to log information about event handling, by including either the log key `Event` or `Events+` in the `Log` property in your Sync Gateway configuration file. `Events+` is more verbose.
             properties:
               document_changed:
-                description: The configuraton for the action to perform when a document change is detected.
+                description: The configuration for the action to perform when a document change is detected.
                 type: array
                 items:
                   type: object
@@ -593,7 +593,7 @@ properties:
 
               On startup, Sync Gateway will try each hostname that is provided until it is able to connect successfully.
 
-              If the connection to Couchbase Server is lost during normal operations, Sync Gateway will automatically re-connect to another node in the cluster. During that re-connection period, the Sync Gateway will appear [offline](database-offline.html) and documents will not be replicated to mobile clients.
+              If the connection to Couchbase Server is lost during normal operations, Sync Gateway will automatically re-connect to another node in the cluster. During that re-connection period, the Sync Gateway will appear offline -- see [Taking Databases Offline](./../database-offline.html) -- and documents will not be replicated to mobile clients.
 
               The default value is an in-memory bucket called **walrus** that is only used during development and prototyping.
               Note that the **walrus** mode is being deprecated in Sync Gateway 2.5 and will be removed in a future release.
@@ -647,7 +647,7 @@ properties:
           sync:
             type: string
             description: |
-              The sync function is a JavaScript function whose source code is stored in the Sync Gateway's database configuration file. Every time a new document, revision or deletion is added to a database, the sync function is called and given a chance to examine the document (see the [Sync Function API guide](sync-function.html)).
+              The sync function is a JavaScript function whose source code is stored in the Sync Gateway's database configuration file. Every time a new document, revision or deletion is added to a database, the sync function is called and given a chance to examine the document (see the [Sync Function API guide](./../advance/adv-sgw-cfg-sync-function.html)).
 
               If a document is in conflict there will be multiple current revisions. The default, the "winning" one is the one whose channel assignments and access grants take effect.
 
@@ -1193,15 +1193,14 @@ properties:
     description: |2
       (**Deprecated**) This SG-Replicate 1.0 method of configuring replication is deprecated at version 2.8.
 
-      For replication using the SG-Replicate 2.0 protocol configure the replication properties under _database.replication_ instead -- see [SG-Replicate 2.0 Replications](config-properties.html#databases-this_db-replications).
+      For replication using the SG-Replicate 2.0 protocol configure the replication properties under _database.replications_ instead -- see [SG-Replicate 2.0 Replications](./../refer/config-properties.html#databases-this_db-replications).
 
       This change means that it is no longer possible to set-up replication between two remote database. By definition, at least one database **must* be local.
 
       SG-Replicate 1.0 replications :
 
       - default to a 'Running' state
-      - do not support built-in conflict resolution -- see [Resolving Conflicts](resolving-conflicts.html)
-      - do not support custom conflict resolution -- see [Resolving Conflicts](resolving-conflicts.html)
+      - do not support built-in, or custom, conflict resolution -- see [Resolving Conflicts](./../resolving-conflicts.html) and [SG-Replicate 2.0 Conflict Resolution](./../learn/icr-conflict-resolution.html)
       - use `source` and `target` to derive replication direction
 
     items:
@@ -1256,6 +1255,7 @@ properties:
             #   param-string-1:
             type: string
             description: query parameter string
+
   replicator_compression:
     description: |
       This sets the 'deflate' compression level to use when compressing messages sent via the WebSocket protocol, where 0 means no compression, 1 means fastest (least) compression, and 9 means slowest (most) compression.
