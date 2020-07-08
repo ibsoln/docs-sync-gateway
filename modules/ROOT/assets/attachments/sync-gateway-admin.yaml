@@ -243,8 +243,8 @@ parameters:
 
             Valid options are:
               - *default*
-              - *local_wins*
-              - *remote_wins*
+              - *localWins*
+              - *remoteWins*
               - *custom*
 
             Selecting *default* applies the following conflict resolution policy:
@@ -3239,8 +3239,8 @@ definitions:
 
           Valid options are:
             - *default*
-            - *local_wins*
-            - *remote_wins*
+            - *localWins*
+            - *remoteWins*
             - *custom*
 
           *Note 1* -- if this option is set to *custom* then a *custom-conflict-resolver* must also be defined
