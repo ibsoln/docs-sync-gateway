@@ -2,4 +2,5 @@
 :param-how: how-icr
 :param-concept: concept-icr
 :param-reference: reference-icr
+:param-community: community-icr
 include::partial$_block-related-content.adoc[]

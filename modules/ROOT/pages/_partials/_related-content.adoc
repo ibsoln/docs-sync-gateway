@@ -1,18 +1,21 @@
 // inclusion
 // tag::community-std[]
 //* Community
-** {xref-url-cb-forum-mobile}
-** {xref-url-cb-blog}
-** https://docs.couchbase.com/tutorials/index.html[Tutorials]
+* {xref-url-cb-forum-mobile}  *|*  {xref-url-cb-blog}   *|*  https://docs.couchbase.com/tutorials/index.html[Tutorials]
 // end::community-std[]
 
+// tag::community-icr[]
+//* Community
+* {xref-url-cb-forum-mobile}  *|*  {xref-url-cb-blog}   *|*  https://docs.couchbase.com/tutorials/index.html[Tutorials]
+* Conflict Related Blogs: {url-blog-doc-conflicts-auto-resolutions}   *|*  {url-blog-doc-conflicts-demystifying}  *|*  {url-blog-cat-conflicts}
+// end::community-icr[]
+
 // tag::how-std[]
-* standard how to section
-** dummy one
+* Standard how to section
 // end::how-std[]
 
 // tag::how-icr[]
-{empty}
+* {empty}
 // end::how-icr[]
 
 // tag::how-deploy[]
@@ -22,8 +25,7 @@
 // end::how-deploy[]
 
 // tag::reference-std[]
-* standard reference section
-** dummy one
+* {empty}
 // end::reference-std[]
 
 // tag::reference-icr[]
@@ -47,6 +49,13 @@
 // tag::tutorial-std[]
 https://docs.couchbase.com/tutorials/index.html[Tutorial]
 // end::tutorial-std[]
+
+// tag::blog-conflicts[]
+Blog Entries
+* {url-blog-doc-conflicts-auto-resolutions}
+* {url-blog-doc-conflicts-demystifying}
+* {url-blog-cat-conflicts}
+// end::blog-conflicts[]
 
 // tag::concept-std[]
 * standard concept section

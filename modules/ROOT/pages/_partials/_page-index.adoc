@@ -91,7 +91,7 @@ endif::xref-pfx-sgw[]
 :xref-sgw-pg-config-properties: {xref-pfx-sgw}{sgw-pg-config-properties}[Configuration Schema]
 :xref-sgw-pg-config-properties-db: {xref-pfx-sgw}{sgw-pg-config-properties}#databases
 :xref-sgw-pg-config-properties-databases: {xref-sgw-pg-config-properties-db}[databases]
-:xref-sgw-pg-config-properties-db-rep: {xref-sgw-pg-config-properties-db}-foo_db-replications
+:xref-sgw-pg-config-properties-db-rep: {xref-sgw-pg-config-properties-db}-this_db-replications
 :xref-sgw-pg-config-properties-db-replications: {xref-sgw-pg-config-properties-db-rep}[replications]
 :xref-sgw-pg-config-properties-db-rep-id: {xref-sgw-pg-config-properties-db-rep}-replication_id
 :xref-sgw-pg-config-properties-db-rep-remote: {xref-sgw-pg-config-properties-db-rep}-remote[remote]
