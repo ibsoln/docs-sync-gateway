@@ -1,8 +1,7 @@
 = Conflict Resolution in Inter-cluster Replication
-// = Inter-Cluster Replication
 :page-layout: article
 :page-status: {release-status-sgw} -- {release-comments-sgw}
-:page-edition: Under Development
+:page-edition: Enterprise
 :page-role:
 :description: This content covers conflict resolution and inter-cluster replication (replication between Sync Gateway clusters using SG-Replicate 2.0)
 :keywords:
@@ -25,96 +24,275 @@ Information sources include:
 --
 endif::[]
 
-Useful resources: https://blog.couchbase.com/document-conflicts-couchbase-mobile/[blog-- Document Conflicts and Automatic Conflict Resolution] | https://blog.couchbase.com/conflict-resolution-couchbase-mobile/[blog-- Demystifying Conflict Resolution] | https://blog.couchbase.com/tag/conflict-resolution/[Blog category -- Conflict Resolution] |{xref-sgw-pg-resolving-conflicts}
+// Useful resources: https://blog.couchbase.com/document-conflicts-couchbase-mobile/[blog-- Document Conflicts and Automatic Conflict Resolution] | https://blog.couchbase.com/conflict-resolution-couchbase-mobile/[blog-- Demystifying Conflict Resolution] | https://blog.couchbase.com/tag/conflict-resolution/[Blog category -- Conflict Resolution] |{xref-sgw-pg-resolving-conflicts}
 
 == Overview
 // tag::overview[]
 SG-Replicate 2.0 replication supports automatic conflict resolution to resolve conflicting document changes (revisions).
-Out-of-the-box, the conflict resolution policy echoes that applied in replications between Couchbase Lite and Sync Gateway.
+It delivers this using a flexible policy-driven mechanism, which automatically detects and resolves document conflicts under replication.
+
+As soon as the _active_ Sync Gateway database detects a conflict in a replicated document revision, it applies a specified <<resolver-policies, resolver policy>>. This policy assesses the conflicting revisions and either determines the winning revision or returns an error if it fails while doing so.
+
+Four <<resolver-policies, conflict resolver policies>> are available out-of-the-box. Three can be easily applied to Sync Gateway replications to give automatic resolution. the fourth is a _custom_ policy, which provides additional flexibility allowing users to provide their own resolution logic.
+
+Automatic conflict resolution applies only in {enterprise} licensed deployments.
+// end::overview[]
+
+== Automatic Conflict Resolution
+
+When an active Sync Gateway database detects a conflict in replicated document revisions, it calls and applies its configured <<resolver-policies, resolver policy>> to determine a _winning_ revision.
+It will return an error if this process fails.
+
+When a passive Sync Gateway database detects a conflict it responds to the active with a `409` response and rejects the revision. The active Sync Gateway will then apply its specified conflict resolver policy.
 
 //  even when the no-conflicts mode is enabled (that is where xref:config-properties.adoc#databases-foo_db-allow_conflicts["allow_conflicts": false]).
 
 // When running two Sync Gateway clusters with the no-conflicts mode enabled, cross-cluster document conflicts will result in that document no longer being replicated. To avoid this, the application must ensure that concurrent cross-cluster updates are not made to a given document.
 
 // Deployments  must implement a custom conflict resolver in an external app as specified in {xref-sgw-pg-resolving-conflicts}.
-// // end::overview[]
 
-
-NOTE: {community} and SG-Replicate 1.0 replications do not support conflict resolution. You should set `allow_conflict=true` on both the `source` and `target`.
-
-Conflict resolutions applies only in {enterprise} licensed deployments.
+NOTE: SG-Replicate 1.0 replications do not support conflict resolution. You should set `allow_conflict=true` on both the `source` and `target`.
 
 == Resolver Policies
-SG-Replicate 2.0 supports out-of-the-box (predefined ) conflict resolver policies.
-The following policies are available as Javascript functions, which can be used when configuring a replication:
+SG-Replicate 2.0 supports four out-of-the-box (predefined) conflict resolver policies. Three policies offer automatic conflict resolution as described in <<#predefined-resolver-policies>>, the fourth policy is described in <<custom-conflict-resolution>>.
 
-* `UseDefault` -- This uses the automatic resolution policy (last-write-wins) as defined  above)
-* `LocalWins` Local Wins
-* `RemoteWins` Remote Wins
+[#predefined-resolver-policies]
+.Predefined resolver policies
+The following automatic conflict resolution policies are available when configuring a replication:
 
-== Conflict Resolution Approaches
+Default::
+The default automatic resolution policy always returns a winner determined by the following rules:
+// * Deletes always win.
+* If one revision is a delete (tombstone), that is the winner.
+* If both revisions are deletes then the delete with the longest revision history (most revisions) wins. In short the delete with the highest revision Id wins.
+* If neither revision is a delete then the revision with the longest revision history (most revisions) wins.
+* Configured using: `"conflict_resolution_type": "useDefault"`.
 
-=== Automatic Conflict Resolution
-SG-Replicate 2.0 supports automatic conflict resolution to resolve conflicting document revisions.
+Local Wins::
+* Always considers the local change the winner.
+* Configured using: `"conflict_resolution_type": "localWins"`
 
-The automatic conflict resolution policy is the same as that adopted in Couchbase Lite 2.x between Couchbase Lite and Sync Gateway.
-The basic rules being:
+Remote Wins::
+Always considers the remote change the winner.
+* Configured using: `"conflict_resolution_type": "remoteWins"`
 
-include::couchbase-lite:ROOT:partial$handling-conflicts.adoc[tags=auto-conflict-resolution]
+These predefined policies are also available as Javascript functions that you can call from within a _custom_conflict_resolver_ function -- see <<custom-conflict-resolution>>
 
-=== Custom Conflict Resolution
-
-Custom conflict resolution is handled by conflict resolvers (see: <<resolver-policies>>), Javascript functions embedded in the configuration.
+== How Resolution Works
 
 Pull Replications::
 +
---
-For _Pull_ replications the _active_ Sync Gateway is responsible for detecting and resolving conflicts based on the configured conflict resolver function ({xref-sgw-pg-config-properties-db-rep-resolver}).
-
+For _Pull_ replications the _active_ Sync Gateway is responsible for detecting and resolving conflicts based on the configured _conflict_resolution_type_  and _custom_conflict_resolver_ function (see configuration items: {xref-sgw-pg-config-properties-db-rep-conflict} | {xref-sgw-pg-config-properties-db-rep-resolver}).
++
 This is also how conflicts are handled when Couchbase Lite clients pull down documents to Sync Gateway.
-
-There are two ways to handle conflicts in your custom_conflict_resolver, you can either:
-
-* Choose a _winning_ revision from among the conflicting revisions (see simple-conflict-resolver), or
-* Merge two or more conflicting revision to create a new _winning_ revision; losing revisions are tomb-stoned.
-
-
++
 *Note:* Resolved conflicts are only transferred from active to passive Sync Gateways if a replication is setup between them.
 
---
-
 Push Replications::
++
+--
+Passive Sync Gateway::
 For _Push_ replications, the _passive_ Sync Gateway automatically detects and rejects conflicting changes being pushed to it.
 +
 Note that conflicts are not resolved.
 The revision is rejected and the document returned -- with a `409 Conflict` -- response to the active Sync Gateway.
+
+Active Sync Gateway::
+It is  the responsibility of the active sync Gateway to address rejected revisions in accordance with its specified _conflict_resolution_type_.
 +
 This approach is the same as that adopted when Couchbase Lite clients push documents to Sync Gateway.
+--
 
+== Configuring a Policy to Use
+To invoke automatic conflict resolution, simply specify the required policy in the replication definition.
+The specified conflict resolver policy will be applied by the active Sync Gateway whenever a conflict is detected during replication.
 
-[.simple-conflict-resolver]
-.Simple conflict resolver
+.Using automatic conflict resolution
 =====
+[{tabs}]
+====
+
+default::
++
+--
 [source, json]
 ----
-"replication": [
-  {
-  "replication_id": "replication1",
-  // other config as required
-  "conflict_resolver": `
-    function(local, remote) {
-      if (doc.type == "a-doctype-1") {
-          Return RemoteWins(doc,oldDoc);
+"databases:"
+  // other config as necessary
+  "this_db:"
+    // other config as necessary
+    "sgreplicate_enabled": "true",
+    "replications": [
+        {
+          "replication_id": "replication1",
+          "direction": "push_and_pull",
+          "continuous": true,
+          "filter": "sync_gateway/bychannel",
+          "query_params": [
+              "channel1",
+              "channel2"
+          ],
+          "conflict_resolution_type": "default",
+          // other config as necessary
         }
-        else {
-        Return UseDefault(doc,oldDoc);
-        }
-    }
-    `
-// other config as required
-  }
-]
+    ]
+// other config as necessary
 ----
+--
+
+localWins::
++
+--
+[source, json]
+----
+"databases:"
+  // other config as necessary
+  "this_db:"
+    // other config as necessary
+    "sgreplicate_enabled": "true",
+    "replications": [
+        {
+          "replication_id": "replication1",
+          "direction": "push_and_pull",
+          "continuous": true,
+          "filter": "sync_gateway/bychannel",
+          "query_params": [
+              "channel1",
+              "channel2"
+          ],
+          "conflict_resolution_type": "localWins",
+          // other config as necessary
+        }
+    ]
+// other config as necessary
+----
+--
+
+remoteWins::
++
+--
+[source, json]
+----
+"databases:"
+  // other config as necessary
+  "this_db:"
+    // other config as necessary
+    "sgreplicate_enabled": "true",
+    "replications": [
+        {
+          "replication_id": "replication1",
+          "direction": "push_and_pull",
+          "continuous": true,
+          "filter": "sync_gateway/bychannel",
+          "query_params": [
+              "channel1",
+              "channel2"
+          ],
+          "conflict_resolution_type": "remoteWins",
+          // other config as necessary
+        }
+    ]
+// other config as necessary
+----
+
+--
+
+
+====
+=====
+// SG-Replicate 2.0 supports automatic conflict resolution to resolve conflicting document revisions.
+
+// The automatic conflict resolution policy is the same as that adopted in Couchbase Lite 2.x between Couchbase Lite and Sync Gateway.
+// The basic rules being:
+
+// include::couchbase-lite:ROOT:partial$handling-conflicts.adoc[tags=auto-conflict-resolution]
+
+== Custom Conflict Resolution
+
+Custom conflict resolution is handled by the _active_ Sync Gateway using a user-provided _custom conflict resolver_. This Javascript function is embedded in the replication configuration.
+
+There are two ways to handle conflicts in your custom_conflict_resolver, you can either:
+
+* Choose a _winning_ revision from among the conflicting revisions (see <<simple-conflict-resolvers>>), or
+* Merge conflicting revision to create a new _winning_ revision; losing revisions are tomb-stoned.
++
+However, user are cautioned against using complex resolver logic as it can have a significant impact on performance.
+
+The _passive_ Sync Gateway will automatically detect and reject conflicting revisions being pushed to it.
+These conflicts are not resolved by the passive Sync Gateway. Instead the revision is rejected and the document returned to the _active_ Sync Gateway in a with a `409 Conflict` response.
+
+This approach is the same as that adopted when Couchbase Lite clients push documents to Sync Gateway.
+
+You can invoke the non-custom built-in resolver policies from within your resolver function. This is useful when you want to apply greater selectivity to the automatic conflict resolution process. For example, you want to apply the `remoteWins` policy only for a specific type of document - see <<use-policies, Use Policies>> tab in <<simple-conflict-resolvers>>.
+
+== Conflict Resolver Structure
+
+[source, javascript]
+----
+//
+function (local, remote) { // <.>
+	// TODO: Determine winner using built-in or custom policy
+	return { // <.>
+		body: winner.body,
+		meta: winner.meta
+	}; // Return winning revision
+}
+----
+
+<.> *Parameters*
++
+--
+local::
+This _local_ object encapsulates the body and metadata of the local conflicting document revision being replicated. Its content matches the JSON stored at the local Sync Gateway.
++
+remote::
+The _remote_ object, encapsulates the body and metadata of the remote conflicting document revision being replicated. Its content matches the JSON stored at the remote Sync Gateway.
+--
+
+<.> *Return object*
++
+--
+body::
+Set the _body_ object of the winning document revision to contain the _body_ content of the JSON body of either the local, or remote, document revisions.
++
+meta::
+This is the Metadata of the winning document revision. Set it to the content of the JSON body of either the local, or remote, document metadata.
+--
+
+== Sample Conflict Resolvers
+
+[#simple-conflict-resolvers]
+.Simple conflict resolvers
+=====
+[{tabs}]
+====
+[#use-policies]
+Use Policies::
++
+--
+This example uses the built-in resolver functions to resolve the conflict based-on the document type.
+
+So, documents of type `a-doc-type-1` are always resolved in favor of the remote revision. All other document types are resolved in accordance with the default resolver policy.
+
+include::example$configuration/sync-gateway-config.json[tags=icr-simple-conflict-resolver]
+--
+
+Nominate a Winner::
++
+--
+This example bases the conflict resolution on the the document type. Documents of type `a-doc-type-1` are always resolved in favor of the remote revision. All other document types are resolved in accordance with the default resolver policy.
+
+include::example$sync-gateway-config.json[tags=icr-simple-own-winner-conflict-resolver]
+--
+
+Merge a Winner::
++
+--
+This example bases the conflict resolution on the the document type. Documents of type `a-doc-type-1` are always resolved in favor of the remote revision. All other document types are resolved in accordance with the default resolver policy.
+
+include::example$sync-gateway-config.json[tags=icr-simple-merge-conflict-resolver]
+--
+
 =====
 
 
