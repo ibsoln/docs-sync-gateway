@@ -306,13 +306,13 @@ parameters:
 
             OPTIONAL for stops and removes (even if defined during creation)
 
-        maximum_backoff_time:
+        max_backoff_time:
           type: integer
           default: 5
           description: |2
-            The **maximum_backoff_time** configuration property specifies the time-period (in minutes) during which Sync Gateway will attempt to reconnect lost or unreachable *remote* targets.
+            The **max_backoff_time** configuration property specifies the time-period (in minutes) during which Sync Gateway will attempt to reconnect lost or unreachable *remote* targets.
 
-            On disconnection, Sync Gateway will do an exponential backoff up to the specified value, after which it will attempt to reconnect indefinitely every *maximum_backoff_time* minutes.
+            On disconnection, Sync Gateway will do an exponential backoff up to the specified value, after which it will attempt to reconnect indefinitely every *max_backoff_time* minutes.
 
             If a zero value is specified, then Sync Gateway will do an exponential backoff up to an interval of five minutes before stopping the replication.
 
@@ -321,7 +321,7 @@ parameters:
         perf_tuning_params:
           type: array
           description: |2
-            The perf_tuning_params are yet to be defined (subject to performance testing)
+            The perf_tuning_params are not available in this release.
 
             NOTE -- This property replaces the 'changes_feed_limit' at version 2.8
           items:
@@ -3288,13 +3288,13 @@ definitions:
 
           OPTIONAL for stops and removes (even if defined during creation)
 
-      maximum_backoff_time:
+      max_backoff_time:
         type: integer
         default: 5
         description: |2
-          The **maximum_backoff_time** configuration property indicates the time-period (in minutes) during which Sync Gateway will attempt to reconnect lost or unreachable *remote* targets.
+          The **max_backoff_time** configuration property indicates the time-period (in minutes) during which Sync Gateway will attempt to reconnect lost or unreachable *remote* targets.
 
-          On disconnection, Sync Gateway will do an exponential backoff up to the specified value, after which it will attempt to reconnect indefinitely every *maximum_backoff_time* minutes.
+          On disconnection, Sync Gateway will do an exponential backoff up to the specified value, after which it will attempt to reconnect indefinitely every *max_backoff_time* minutes.
 
           If the value is zero, Sync Gateway will do an exponential backoff up to an interval of five minutes before stopping the replication.
 
