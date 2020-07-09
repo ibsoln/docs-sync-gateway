@@ -280,17 +280,16 @@ include::example$configuration/sync-gateway-config.json[tags=icr-simple-conflict
 Nominate a Winner::
 +
 --
-This example bases the conflict resolution on the the document type. Documents of type `a-doc-type-1` are always resolved in favor of the remote revision. All other document types are resolved in accordance with the default resolver policy.
+This example selects a winner based on relative priorities and builds a return response of its own rather than using either the localWins or remoteWins policy, although it does rely on the default resolver policy as a backstop.
 
-include::example$sync-gateway-config.json[tags=icr-simple-own-winner-conflict-resolver]
+include::example$configuration/sync-gateway-config.json[tags=icr-simple-own-winner-conflict-resolver]
 --
-
 Merge a Winner::
 +
 --
 This example bases the conflict resolution on the the document type. Documents of type `a-doc-type-1` are always resolved in favor of the remote revision. All other document types are resolved in accordance with the default resolver policy.
 
-include::example$sync-gateway-config.json[tags=icr-simple-merge-conflict-resolver]
+include::example$configuration/sync-gateway-config.json[tags=icr-simple-merge-conflict-resolver]
 --
 
 =====
