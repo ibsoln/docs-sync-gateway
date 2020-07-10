@@ -3,9 +3,9 @@
 :page-edition: Under development
 :page-layout: article
 :page-content-type: reference
-:page-role: panes -toc
-:page-aliases: reelase-notes
-:description: Sync Gateway Installation Document
+:page-role:
+:page-aliases: release-notes
+:description: Sync Gateway Product Release and Support Documentation
 :keywords: edge nosql api synchronization replication
 // End of Page Definition Statements
 
