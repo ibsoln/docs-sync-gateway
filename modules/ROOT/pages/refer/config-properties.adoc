@@ -1,28 +1,31 @@
 = Configuration File
-= Page title
 :page-layout: article
-:page-role: panes
-:page-status: {releaseStatus} -- {releaseComments}
+:page-status: {release-status-sgw} -- {release-comments-sgw}
 :page-content: reference
+:description: This content describes Sync Gateway's configuration schema providing parameter explanations and examples of use
+:param-abstract: This content describes Sync Gateway's configuration schema providing parameter explanations and examples of use
+:keywords:
 
 include::partial$_std-hdr-sgw.adoc[]
 
-ifndef::releaseStatus[:releaseStatus!:]
-ifeval::["{releaseStatus}" == "gamma"]
-[.pane__frame--orange]
-.Author's Notes
---
-Incorporate configuration changes in sg.yaml
+:topic-group: Sync Gateway Configuration
+:param-related: {xref-sgw-pg-gs-sgw-config} | {xref-sgw-pg-rest-api-admin} | {xref-sgw-pg-rest-api} | {xref-sgw-pg-adv-rest-api-client}
+include::partial$block-abstract.adoc[]
 
-https://issues.couchbase.com/browse/DOC-6464
-https://docs.google.com/document/d/13E6JOq8u_AaUd_t8FZEPCAuq7jfkjryecjBQBHE3pG8/edit?ts=5e77c903#heading=h.k07058a23ez5#
+// ifndef::releaseStatus[:releaseStatus!:]
+// ifeval::["{releaseStatus}" == "gamma"]
+// [.pane__frame--orange]
+// .Author's Notes
+// --
+// Incorporate configuration changes in sg.yaml
 
-Move replicator settings under `Database' and deprecate 'preH2' settings
---
-endif::[]
+// https://issues.couchbase.com/browse/DOC-6464
+// https://docs.google.com/document/d/13E6JOq8u_AaUd_t8FZEPCAuq7jfkjryecjBQBHE3pG8/edit?ts=5e77c903#heading=h.k07058a23ez5#
 
-[abstract]
-Sync Gateway's configuration schema
+// Move replicator settings under `Database' and deprecate 'preH2' settings
+// --
+// endif::[]
+
 
 == About the Schema
 
@@ -48,7 +51,6 @@ Those features make it ideal for the JavaScript used in `sync` and `import_filte
 Use the following command to run Sync Gateway with a configuration file:
 
 [source, bashrc]
-
 ----
 sync_gateway sync-gateway-config.json
 ----
@@ -57,8 +59,14 @@ sync_gateway sync-gateway-config.json
 
 json_config_ui::{attachmentsdir}/sg.yaml[]
 
-=== {empty}
-.Configuration Schema
-json_config_ui::{attachmentsdir}/sg.yaml[]
+// == Configuration Schema
+// json_config_ui::{attachmentsdir}/sg.yaml[]
+
+
+== Example Sync Gateway Configuration
+
+include::example$configuration/sync-gateway-config.json[tags=icr-sample-sync-gateway-config]
+
+
 
 include::partial$block-related-content-api.adoc[]
