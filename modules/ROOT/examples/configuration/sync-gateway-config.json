@@ -113,79 +113,66 @@
 
 
 // tag::icr-simple-conflict-resolver[]
-
-[source, json]
-----
 "replications": [
   {
   "replication_id": "replication1",
   // other config as required
   "conflict_resolution_type": "custom",
   "custom_conflict_resolver": `
-    function(local, remote) {
-      if (doc.type == "a-doctype-1") {
+    function(conflict) {
+      if  (conflict.LocalDocument.type == "a-doctype-1") &&
+          (conflict.RemoteDocument.type == "a-doctype-1")
+       {
           // Invoke the built in resolver logic for remoteWins
-          Return remoteWinsPolicy(local, remote);
+          return remoteWinsPolicy(conflict);
         }
         else {
           // Invoke the built in default resolver logic
-          defaultPolicy(local, remote);
+          return defaultPolicy(conflict);
         }
     }
     `
 // other config as required
   }
 ]
-----
 // end::icr-simple-conflict-resolver[]
 
 // tag::icr-simple-own-winner-conflict-resolver[]
-
-[source, json]
-----
 "replications": [
   {
-    // Replication details for first replication
+    // . . . preceding replication details as required
   },
   {
     "replication_id": "replication2",
-    // other config as required
+    // . . .   other config as required
     "conflict_resolution_type": "custom",
     "custom_conflict_resolver": `
-      function(local, remote) {
+      function(conflict) {
         // Custom conflict resolution policy based on priority
-        if (local.body.priority > remote.body.priority) {
+        if (conflict.LocalDocument.body.priority > conflict.RemoteDocument.body.priority) {
           // Choose a local winner
           // Optionally apply application logic to manipulate
           // the local object before returning it as the winner
-          return {
-            body: local.body,
-            meta: local.meta
-            };
+          return conflict.LocalDocument;
         } else if (local.body.priority < remote.body.priority) {
             // Choose a remote winner
             // Optionally apply application logic to manipulate
             // the remote object before returning it as the winner
-          return {
-            body: remote.body,
-            meta: remote.meta
-          };
-        }
+          return conflict.RemoteDocument;
+          }; //end if
+        } //end func()
         // Apply the default policy as a catch all
-        return defaultPolicy(local, remote);
-    }`
-  },
+        return defaultPolicy(conflict);
+    }` // end resolver property
+  }, // end replication2
   {
-    // Replication details for subsequent replications
+    // . . . further replication details as required
   }
 ]
-// other config as required
-----
+// . . .   other config as required
 // end::icr-simple-own-winner-conflict-resolver[]
 
 // tag::my-icr-simple-merge-conflict-resolver[]
-[source, json]
-----
 "replications": [
   {
     // Replication details for previous replications
@@ -237,12 +224,9 @@
 // other config as required
   }
 ]
-----
 // end::my-icr-simple-merge-conflict-resolver[]
 
 // tag::xNEW-icr-sample-sync-gateway-config[]
-[source, json]
-----
 {
   "interface":":5984",
   "adminInterface":":5985",
@@ -420,7 +404,6 @@ function sync(doc, oldDoc) {
   }
   ]
   // other config as required
-----
 // end::xNEW-icr-sample-sync-gateway-config[]
 
 
@@ -605,8 +588,6 @@ function sync(doc, oldDoc) {
 
 
 // tag::old-icr-sample-sync-gateway-config[]
-[source, json]
-----
 {
   "logging": {
     "console": {
@@ -698,15 +679,12 @@ function sync(doc, oldDoc) {
     }
   ]
 }
-----
 // end::old-icr-sample-sync-gateway-config[]
 
 
 
 
 // tag::icr-sample-sync-gateway-config[]
-[source, json]
-----
 {
   "interface":":5984",
   "adminInterface":":5985",
@@ -901,7 +879,6 @@ function sync(doc, oldDoc) {
     }
   }
 }
-----
 // end::icr-sample-sync-gateway-config[]
 
 
