@@ -68,5 +68,4 @@ json_config_ui::{attachmentsdir}/sg.yaml[]
 include::example$configuration/sync-gateway-config.json[tags=icr-sample-sync-gateway-config]
 
 
-
 include::partial$block-related-content-api.adoc[]
