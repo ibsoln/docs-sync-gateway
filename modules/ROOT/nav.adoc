@@ -22,7 +22,7 @@ include::ROOT:partial$_page-index.adoc[]
 // END::Local Attributes
 
 // Bring in Couchbase Mobile's shared menu
-include::shared-mobile::partial$nav-shared.adoc[]
+// include::shared-mobile::partial$nav-shared.adoc[]
 // END::ATTRIBUTES AND INCLUSIONS
 
 // BEGIN::MENU STRUCTURE
