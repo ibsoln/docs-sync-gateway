@@ -1,0 +1,20 @@
+// tag::wip[]
+ifndef::release-status-sgw[:release-status-sgw!:]
+
+:do-it: no
+
+ifeval::["{release-status-sgw}" == "beta"]
+:do-it: yes
+endif::[]
+
+ifeval::["{release-status-sgw}" == "gamma"]
+:do-it: yes
+endif::[]
+
+ifeval::["{do-it}" == "yes"]
+
+.Author's Notes
+CAUTION: CONTENT UNDER DEVELOPMENT
+
+endif::[]
+// end::wip[]

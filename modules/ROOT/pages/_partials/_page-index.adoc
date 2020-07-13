@@ -37,12 +37,14 @@ endif::xref-pfx-sgw[]
 :sgw-pg-gs-sgw-prereqs: start/gs-sgw-prereqs.adoc
 :sgw-pg-gs-sgw-svr-cfg: start/gs-sgw-svr-cfg.adoc
 :sgw-pg-icr-overview: learn/icr-overview.adoc
+:sgw-pg-icr-sgreplicate1: learn/icr-sgreplicate1.adoc
 :sgw-pg-icr-admin: learn/icr-admin.adoc
 :sgw-pg-icr-behavior: learn/icr-behavior.adoc
 :sgw-pg-icr-conflict-resolution: learn/icr-conflict-resolution.adoc
 :sgw-pg-icr-delta-sync: learn/icr-delta-sync.adoc
 :sgw-pg-icr-high-availability: learn/icr-high-availability.adoc
 :sgw-pg-icr-managing: learn/icr-managing.adoc
+:sgw-pg-icr-monitoring: learn/icr-monitoring.adoc
 :sgw-pg-icr-running: learn/icr-running.adoc
 :sgw-pg-icr-stats: learn/icr-stats.adoc
 :sgw-pg-icr-replication-types: learn/icr-replication-types.adoc
@@ -79,6 +81,12 @@ endif::xref-pfx-sgw[]
 :xref-sgw-pg-adv-rest-api-client: {xref-pfx-sgw}{sgw-pg-adv-rest-api-client}[Use the REST API]
 :xref-sgw-pg-adv-sgw-cfg-import-filter: {xref-pfx-sgw}{sgw-pg-adv-sgw-cfg-import-filter}[Use Import Filters]
 :xref-sgw-pg-adv-sgw-cfg-sync-function: {xref-pfx-sgw}{sgw-pg-adv-sgw-cfg-sync-function}[Work With Sync Functions]
+:xref-sgw-endpoint-admin-api: {xref-pfx-sgw}{sgw-pg-admin-rest-api}
+:xref-sgw-pg-admin-api-replication: {xref-sgw-endpoint-admin-api}#/replication
+:xref-sgw-endpoint-admin-api-replication: {xref-sgw-pg-admin-api-replication}[_replication]
+:xref-sgw-endpoint-admin-api-replication-put: {xref-sgw-pg-admin-api-replication}/put__db___replication__replicationID_[_replication(replicationID)]
+:xref-sgw-endpoint-admin-api-replication-repstatus: {xref-sgw-pg-admin-api-replication}/get__db___replicationStatus__replicationID_[_replicationStatus(replicationID)]
+:xref-sgw-endpoint-admin-api-replication-repstatus-set: {xref-sgw-pg-admin-api-replication}/put__db___replicationStatus__replicationID__action__action_[_replicationStatus(replicationID)?action={action}]
 :xref-sgw-pg-admin-rest-api: {xref-pfx-sgw}{sgw-pg-admin-rest-api}[Admin REST API]
 :xref-sgw-pg-authentication: {xref-pfx-sgw}{sgw-pg-authentication}[Authentication]
 :xref-sgw-pg-cbmintro: {xref-pfx-sgw}{sgw-pg-cbmintro}[About Mobile]
@@ -120,6 +128,8 @@ endif::xref-pfx-sgw[]
 :xref-sgw-pg-icr-delta-sync: {xref-pfx-sgw}{sgw-pg-icr-delta-sync}[Delta-sync]
 :xref-sgw-pg-icr-high-availability: {xref-pfx-sgw}{sgw-pg-icr-high-availability}[High-Availability]
 :xref-sgw-pg-icr-managing: {xref-pfx-sgw}{sgw-pg-icr-managing}[Replication managing]
+:xref-sgw-pg-icr-monitoring: {xref-pfx-sgw}{sgw-pg-icr-monitoring}[Replication Monitoring]
+:xref-sgw-pg-icr-sgreplicate1: {xref-pfx-sgw}{sgw-pg-icr-sgreplicate1}[ICR with SGR-1]
 :xref-sgw-pg-icr-overview: {xref-pfx-sgw}{sgw-pg-icr-overview}[Inter-Cluster Replication]
 :xref-sgw-pg-icr-overview--intro: {xref-pfx-sgw}{sgw-pg-icr-overview}#introduction[Introducing Inter-Cluster Replication]
 :xref-sgw-pg-icr-running: {xref-pfx-sgw}{sgw-pg-icr-running}[Replication Running - Concept]
