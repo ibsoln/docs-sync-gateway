@@ -1,11 +1,14 @@
 = Replication monitoring
+:page-partial:
 :page-layout: article
 :page-status: {release-status-sgw} -- {release-comments-sgw}
 :page-edition: Under Development
 :page-role:
 :description: Inter-cluster replication (Sync Gateway to Sync Gateway) monitoring using SG-Replicate protocol
 
+
 include::partial$_std-hdr-sgw.adoc[]
+include::partial$block-authors-notes.adoc[tag=wip]
 :topic-group: Inter-cluster Replication
 :param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin}
 :param-abstract: This content covers the monitoring aspects of inter-cluster  replication
@@ -26,24 +29,94 @@ endif::[]
 
 
 == Overview
-ifeval::["{releaseStatus}" != "production"]
-[.pane__frame--orange]
-.Author's Notes
---
-CAUTION: CONTENT UNDER DEVELOPMENT
-
---
-endif::[]
 
 // tag::overview[]
-Summary of content of monitoring page.
+
+Use the {xref-sgw-endpoint-admin-api-replication-repstatus} Admin REST API endpoint to check the status of replications.
+
 // end::overview[]
 
+== Statistics Captured
 
-== SGR2
+Use the `_expvars` Admin REST API to access following stats:
+
+|===
+| Item | Notes
+
+
+|"sgr_num_attachment_bytes_transferred": 0,
+|Y (unchanged)
+
+| "sgr_num_attachments_transferred": 0,
+|Y (unchanged)
+
+| "sgr_num_docs_failed_to_push": 0,
+|Y (unchanged)
+
+|"sgr_num_docs_failed_to_push_access": 0,
+a|
+--
+NEW
+
+Cases when documents are rejected because user does not have read write permissions?
+--
+
+| "sgr_num_docs_pushed":
+|Y (unchanged)
+
+| "sgr_delta_pull_replication_count"
+|NEW
+
+
+| "sgr_delta_push_doc_count"
+|NEW
+
+| "sgr_deltas_requested":
+|NEW
+
+| "sgr_deltas_sent":
+|NEW
+
+
+|sgr_conflict_delected
+a|
+--
+NEW
+
+Count of documents where conflicts were detected
+--
+
+a|sgr_conflict_resolved
+a|
+--
+NEW
+
+Count of conflicting documents that were resolved successfully (by the active node)
+--
+
+|sgw_conflict_skipped_error
+a|
+--
+NEW
+
+Count of documents that were skipped during sync because of an error in conflict resolution
+--
+|===
+
+
 
 
 == SGR1
+
+* Use `_active_tasks` to monitor SG-Replicate 1.0 replications  (`GET`)
++
+The content returned will be the same as that returned by `_replicationStatus` and contains additional content over the SG-Replicate 1.0 version:
++
+** direction
+** is_persistent
+** status (stopped/running).
+** last_seq_push
+** last_seq_pull
 
 
 

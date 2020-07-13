@@ -1,18 +1,19 @@
 = High-Availability Replication
+:page-partial:
 :page-layout: article
 :page-status: {release-status-sgw} -- {release-comments-sgw}
-:page-edition: Under Development
+:page-edition: enterprise
 :page-role:
 :page-content-type: conceptual
 :description: High availability and Inter-cluster replication (Sync Gateway to Sync Gateway)
 :keywords: replication edge-to-cloud sync 'high availability' edge nosql api synchronization replication
 
 include::partial$_std-hdr-sgw.adoc[]
-
+include::partial$block-authors-notes.adoc[tag=wip]
 :topic-group: Inter-cluster Replication
 :param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin}
-:param-abstract: This content provides an overview of Inter-cluster replication, which is replication between Sync Gateway clusters using SG-Replicate 2.0.
-include::partial$_block-abstract.adoc[]
+:param-abstract: This content provides an overview of Inter-cluster replication high-availability
+include::partial$block-abstract.adoc[]
 
 // End of Page Definition Statements
 
@@ -68,67 +69,70 @@ https://docs.google.com/document/d/13E6JOq8u_AaUd_t8FZEPCAuq7jfkjryecjBQBHE3pG8/
 endif::[]
 
 [abstract]
-This content describes the concept of high-availability replication.
+
+
+== Introduction
+
+include::partial$block-caveats.adoc[tag=icr-sgr1-community]
+
 
 == About High-Availability Replication
 
+// tag::overview[]
+Sync Gateway's inter-cluster replications support High Availability (HA).
+
+The SG-Replicate 2.0 protocol ensures that any given replication runs on only one node at any given time.
+However, if that node fails the system automatically resumes the replication on one of the alternative nodes, providing such nodes have been configured.
+
+Replications are automatically redistributed as the number of available nodes in the cluster changes.
+// end::overview[]
+
+_Action_: To make a replication a candidate for HA the user must configure replications required to run in HA mode on at least two Sync Gateway nodes.
+
+== Node Distribution
+Sync Gateway minimizes the processing load and reduces bandwidth usage by ensuring that a replicator only runs on one node at any given time -- even if configured to run on multiple nodes.
+This is because it avoids the redundant exchange of data arising from duplicate replication.
+
+Where multiple replications are configured on multiple nodes, Sync Gateway automatically distributes these replications across all the available nodes for which replications are configured.
+
+Sync Gateway balances, as equally as possible, the number of replications running on each node.
+
+As the number of available nodes with the cluster changes, the replications are redistributed to maintain an optimal balance across the cluster.
+
+// Sync Gateway selects the node to run a replication on is selected by an election process. It uses a heartbeat check to establish whether a node is available or not.
+// If it isn't it will try the next node in the configured set.
+
+// Monitoring the node heartbeats is also the trigger for the re-balancing of running replications as it
+
+
+
+
+
+
+== Configuration Requirements
+
 [.pane__frame--orange]
 .Author's Notes
 --
-Define HA as a concept and its role in replication
+Include links to {xref-sgw-pg-config-properties}
+Configure multiple nodes for each replication required to be highly-available -- Examples linked tp scenarios below?
+
 --
 
-Sync Gateway supports High Availability replication. Its
-{glos-term-sg-replicate2-protocol} ensures that although a given replication runs on only one node at any given time, if that node fails, the system automatically elects another node for replication. Obviously this requires that the user configure at least two nodes for any given replication.
 
-Good becase it :
-
-* Improves throughput by distributing the replications
-By ensuring that a replicator only runs on one node even if configured to run on multiple nodes, the system  redundant exchange of data as a result of redundant replications. This will reduce the processing load on the sync gateway and reduce bandwidth usage
-
-* Enables future platform architectural enhancements around mobile manageability . This will allow us to deploy a truly homogenous cluster even in SG-replicate based environment where every SGW node in cluster has an identical configuration.
-
-== Node Switching
-
-//[{tabs}]
-//====
-//{enterprise}::
-//+
-//--
-
-[.pane__frame--orange]
-.Author's Notes
---
-Explain what this is, why its significant and how it is used.
---
-
-For {enterprise} the node to run on is selected by an election process. It uses a heartbeat check to establish whether a node is up or not. If it isn't it will try the next node in the configured set.
-//--
-
-For {community} users the Sync Gateway replicator runs on the node configured by the user.
-
-
-== Inserted stuff to sort out
-
-== High Availability
-
-There is no change in HA behavior for either SG-Replicate 1.0, or {community} edition, replications.
-In both instances, the replicator runs only on the node defined in the configuration.
-
-{enterprise}
-
-Sync Gateway supports highly-available replication. Each replication runs only on one node. If that node fails Sync Gateway will automatically elect an alternate node on which to continue running the replication.
-
-To take advantage of highly available replications, users must configure at least two nodes to run each replication where HA is required.
-
-Where multiple replications are configured Sync Gateway distributes these replications across all the available nodes for which replications are configured. Any given replication will run on only one node at any given point in time.
-
-Replications are automatically redistributed when nodes are added or removed from a cluster.
+== Examples of Expected behavior
 
 .HA Behavior in Multiple Scenarios
-// ====
+=====
+[{tabs}]
+====
+
+{enterprise}::
++
+--
+
 |===
-| Configured Scenario |Behavior in {enterprise} edition|Behavior in {community} edition
+| Configured Scenario |Behavior in {enterprise}
 
 a|* Three SGW nodes in a cluster, with homogeneous configuration.
 * All nodes configured to run _Replication Id 1_.
@@ -136,7 +140,7 @@ a|* Three SGW nodes in a cluster, with homogeneous configuration.
 a|* SGW automatically designates one of the three nodes to run _Replication Id 1_.
 * If a node goes down, SGW elects a different one of the three nodes.
 
-|SGW runs _Replication  Id 1_ on all nodes in the cluster.
+// |SGW runs _Replication  Id 1_ on all nodes in the cluster.
 
 a|* Three SGW nodes in a cluster.
 * All Three nodes are configured to run _Replication Id 1_.
@@ -145,9 +149,9 @@ a|* Three SGW nodes in a cluster.
 a| * SGW automatically designates either _Node 1_ or _Node 2_ to run the _Replication Id 1_.
 * If either _Node 1_ or _Node 2_ fails, SGW elects the non-failing node.
 
-|SGW runs _Replication Id 1_ on all nodes in cluster.
+// |SGW runs _Replication Id 1_ on all nodes in cluster.
 
-The system ignores the opt-out flag (`sgreplicate_enabled`).
+// The system ignores the opt-out flag (`sgreplicate_enabled`).
 
 a| * Three SGW nodes in a cluster.
 * _Node 1_ and _Node 2_  are configured to run _Replication Id 1_.
@@ -156,8 +160,8 @@ a| * Three SGW nodes in a cluster.
 a|* SGW automatically distributes replications such that each replication runs on one of _Node 1_, _Node 2_ or _Node 3_.
 * If any nodes fail, SGW elects a non-failing node to run replication on.
 
-a| * SGW runs _Replication  Id1_ on _Node 1_ and _Node 2_  in the cluster.
-* SGW runs _Replication Id 2_ on _Node 3_.
+// a| * SGW runs _Replication  Id1_ on _Node 1_ and _Node 2_  in the cluster.
+// * SGW runs _Replication Id 2_ on _Node 3_.
 
 a|* A single SGW node in a cluster.
 * _Node 1_ is configured to run _Replication Id 1_ and _Replication Id 2_.
@@ -167,8 +171,8 @@ a|* A single SGW node in a cluster.
 a| * SGW designates _Node 1_ run _Replication Id 1_ and _Replication Id 2_.
 * LATER, when _Node 2_ is added, SGW designates either _Replication Id 1_ or _Replication Id 2_ to run on _Node 2_ (and stops the corresponding replication on _Node 1_).
 
-a|* SGW designates _Node 1_ to run _Replication Id 1_ and _Replication Id 2_
-* LATER, when _Node 2_ is added SGW  designates _Node 2_ to runs _Replication Id 1_ and _Replication Id 2_
+// a|* SGW designates _Node 1_ to run _Replication Id 1_ and _Replication Id 2_
+// * LATER, when _Node 2_ is added SGW  designates _Node 2_ to runs _Replication Id 1_ and _Replication Id 2_
 
 a|* Three SGW nodes in cluster with a homogeneous configuration.
 * All three nodes are configured to run _Replication Id 1_, _Replication Id 2_ and _Replication Id 3_
@@ -181,58 +185,87 @@ a|* SGW automatically designates one of the nodes to run _Replication Id 1_, _Id
 ** _Node 3_ runs _Replication Id 3_
 * LATER, when _Node 3_  goes down, SGW elects either _Node 1_ or _Node 2_ to run _Replication Id 3_.
 
+// a|* SGW runs replication  Id1 , Id2 and Id3 on all nodes in cluster
+// * LATER, when _Node 3_ goes down, _Node 1_ and _Node 2_ continue to run _Replication Id 1_, Id2 and Id3
+
+|===
+--
+
+{community}::
++
+--
+|===
+| Configured Scenario |Behavior in {community}
+
+a|* Three SGW nodes in a cluster, with homogeneous configuration.
+* All nodes configured to run _Replication Id 1_.
+
+// a|* SGW automatically designates one of the three nodes to run _Replication Id 1_.
+// * If a node goes down, SGW elects a different one of the three nodes.
+
+|SGW runs _Replication  Id 1_ on all nodes in the cluster.
+
+a|* Three SGW nodes in a cluster.
+* All Three nodes are configured to run _Replication Id 1_.
+* The configuration on _Node 3_ has opted Out (`sgreplicate_enabled=false`) even though it has configured a replication).
+
+// a| * SGW automatically designates either _Node 1_ or _Node 2_ to run the _Replication Id 1_.
+// * If either _Node 1_ or _Node 2_ fails, SGW elects the non-failing node.
+
+|SGW runs _Replication Id 1_ on all nodes in cluster.
+
+The system ignores the opt-out flag (`sgreplicate_enabled`).
+
+a| * Three SGW nodes in a cluster.
+* _Node 1_ and _Node 2_  are configured to run _Replication Id 1_.
+* _Node 3_ is configured to run _Replication Id 2_.
+
+// a|* SGW automatically distributes replications such that each replication runs on one of _Node 1_, _Node 2_ or _Node 3_.
+// * If any nodes fail, SGW elects a non-failing node to run replication on.
+
+a| * SGW runs _Replication  Id1_ on _Node 1_ and _Node 2_  in the cluster.
+* SGW runs _Replication Id 2_ on _Node 3_.
+
+a|* A single SGW node in a cluster.
+* _Node 1_ is configured to run _Replication Id 1_ and _Replication Id 2_.
+* LATER, _Node 2_ is added to the cluster to run _Replication Id 1_ and _Replication Id 2_.
+
+
+// a| * SGW designates _Node 1_ run _Replication Id 1_ and _Replication Id 2_.
+// * LATER, when _Node 2_ is added, SGW designates either _Replication Id 1_ or _Replication Id 2_ to run on _Node 2_ (and stops the corresponding replication on _Node 1_).
+
+a|* SGW designates _Node 1_ to run _Replication Id 1_ and _Replication Id 2_
+* LATER, when _Node 2_ is added SGW  designates _Node 2_ to runs _Replication Id 1_ and _Replication Id 2_
+
+a|* Three SGW nodes in cluster with a homogeneous configuration.
+* All three nodes are configured to run _Replication Id 1_, _Replication Id 2_ and _Replication Id 3_
+* LATER, _Node 3_ goes down
+
+// a|* SGW automatically designates one of the nodes to run _Replication Id 1_, _Id 2_ and _Id 3_ respectively.
+// * I we assume the following distribution:
+// ** _Node 1_ runs _Replication Id 1_
+// ** _Node 2_ runs _Replication Id 2_
+// ** _Node 3_ runs _Replication Id 3_
+// * LATER, when _Node 3_  goes down, SGW elects either _Node 1_ or _Node 2_ to run _Replication Id 3_.
+
 a|* SGW runs replication  Id1 , Id2 and Id3 on all nodes in cluster
 * LATER, when _Node 3_ goes down, _Node 1_ and _Node 2_ continue to run _Replication Id 1_, Id2 and Id3
 
 |===
-// ====
 
-
-
-
-
-== Configuration Requirements
-[.pane__frame--orange]
-.Author's Notes
---
-Refactor and supplement below as necessary. Include links to {xref-sgw-pg-config-properties}
 --
 
-* Configure multiple nodes for each replication required to be highly-available
+====
+=====
 
-* {empty}
-+
---
-In case of multiple  replications, Sync Gateway by default must distribute the set of replications across all available sync gateway nodes (on which the replications are configured). Even if a replication is configured on multiple nodes, a given replication will only run on one node at any given time.
+== Monitoring Node Distribution
+
+Use the __replicationStatus_ endpoint to access information about which replications are running on which nodes -- see: {xref-sgw-endpoint-admin-api-replication-repstatus}
+  |  {xref-sgw-endpoint-admin-api-replication-repstatus-set}
+
+This information is also collected and available in the log files.
 
 
-This will apply to SG-Replicate 2
 
-This will provide the following -
-Improved throughput by distributing the replications
-By ensuring that a replicator only runs on one node even if configured to run on multiple nodes, the system  redundant exchange of data as a result of redundant replications. This will reduce the processing load on the sync gateway and reduce bandwidth usage
-This will allow us to deploy a truly homogenous cluster even in SG-replicate based environment where every SGW node in cluster has an identical configuration. This will enable future platform architectural enhancements around mobile manageability .
-
-Impl note: Based on set of replications defined, system will have a node election process/ heartbeat process
-
-Note : This requirement is true only for EE. In case of CE, Sync Gateway will behave as it does today. The replicator will run on the nodes that the users designate in their configuration. This implies that in case of a homogeneous cluster with every node having identical configuration , the replication will run on all nodes.
---
-* {empty}
-+
-[.edition]
-image::{enterprise}[]
-+
---
-In EE, replications will get automatically get redistributed as more Sync Gateways are added to the cluster or removed from cluster
---
-
-== Examples of Expected behavior
-
-[.pane__frame--orange]
-.Author's Notes
---
-Insert content based on this table here.
-https://docs.google.com/document/d/13E6JOq8u_AaUd_t8FZEPCAuq7jfkjryecjBQBHE3pG8/edit#heading=h.vwjngb7h5lpm
---
 
 include::partial$block-related-content-icr.adoc[]
