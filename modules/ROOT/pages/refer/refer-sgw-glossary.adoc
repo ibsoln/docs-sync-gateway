@@ -59,7 +59,7 @@ Cloud-to-Edge Sync::
 // tag::sgw-cloud-to-edge-def[]
 // tag::sgw-cloud-to-edge[]
 The term _cloud-to-edge_ refers to the multi-cloud deployment mode commonly know as _ship-to-shore_ or _hub-and-spoke_.
-Cloud-to-edge synchroization scenarios typically involve a hierarchy of couchbase mobile clusters, within which a large number of edge clusters sync with one or more clusters in cloud data centers.
+Cloud-to-edge synchronization scenarios typically involve a hierarchy of couchbase mobile clusters, within which a large number of edge clusters sync with one or more clusters in cloud data centers.
 // end::sgw-cloud-to-edge[]
 +
 Each edge can operate autonomously without network connectivity to the cloud data centers.
@@ -138,7 +138,7 @@ Persistent Replication::
 The term _Persistent replication_ refers to replications that survive Sync Gateway restarts.
 All replications are persisted by default unless explicitly flagged as not.
 // end::sgw-icr-persistent-replication[]
-Persistent replication is defined in the configuration file sync-gateway.json (see sync-gateway::config-properties.adoc).
+Persistent replication is defined in the configuration file sync-gateway.json (see {xref-sgw-pg-cofig-properties}.
 It is started automatically and survives restarts.
 The recommended method of defining a persistent replication is by using the configuration file.
 With SG Replicate 2.0 you can configure all nodes with the replicators.
