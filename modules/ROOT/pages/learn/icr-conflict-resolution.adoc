@@ -1,4 +1,5 @@
 = Conflict Resolution in Inter-cluster Replication
+:page-partial:
 :page-layout: article
 :page-status: {release-status-sgw} -- {release-comments-sgw}
 :page-edition: Enterprise
