@@ -1,4 +1,9 @@
-:page-partial:
+= REST API Schema Change Log
+
+
+// include::partial$config-changes.adoc[tag=all]
+
+// :page-partial:
 // This content may be used in multiple places
 // Tag Schema
 // - all
@@ -17,41 +22,43 @@
 // End tag schema
 
 // BEGIN CONTENT
+
 // tag::all[]
 // tag::all2-8[]
 // tag::2-8-1[]
 // replace me with content
 // end::2-8-1[]
 // tag::2-8-0[]
-== REST API Changes
+
+== Release 2.8 -  xx mmmm 2020
+
+== Structural Schema Changes
 // tag::2-8-0-structuralonly[]
 
-== Removed or Deprecated
+`_replicate` becomes `replications`::
+The SG-Replicate 1.0 global level `_replicate_` endpoint is deprecated at this release.
+
+SG-Replicate 2.0 replications are now defined with the `replications` endpoint, which operates at the individual database level.
+Note that any given database can still have multiple replications configured.
+
+== Unsupported Behaviors
+
+SG-Replicate 2.0 does not support replication between two remote hosts via a third Sync Gateway. Replications are now defined at the local database level, meaning at least one database must be local.
+
+// end::2-8-0-structuralonly[]
+
+== Removed or Deprecated Endpoints
 // tag::2-8-0-removedonly[]
 
-The SG Replicate 1.0 (SGR1) REST API is deprecated.
+The following SG Replicate 1.0 (SG1) REST API endpoints and-or parameters are deprecated.
 Deprecated functionality remains solely for backward compatibility with SG1 but is no longer supported:
 
-// tag::async[]
-async::
-_Removed - redundant_.
-+
-The _async_ property is a _REST-API-only_ property.
-It was formerly the method used to force a request to start without awaiting completion of one-shot replications (that is, to run asynchronuously).
-Now, it *always* run in async mode.
-// end::async[]
-
-// tag::change-feed-limit[]
-changes_feed_limit::
-_Removed - redundant_.
-// end::change-feed-limit[]
-// end::2-8-0-removedonly
-
-// tag::2-8-0-newonly[]
+* `_replicate`
+* `_active_tasks`
 
 == New Endpoints
 
-The following endpopints are added:
+The following new properties are added:
 
 // tag::remote[]
 [[remote-property, remote]]
@@ -92,15 +99,15 @@ Boolean value for whether to enable delta sync for this replication.
 // end::enable-delta-sync[]
 
 // tag::maximum-backoff-time[]
-maximum_backoff_time::
-The _maximum_backoff_time_ property deines the period of time during which Sync Gateway will attempt to reconnect unreachable targets.
+max_backoff_time::
+The _max_backoff_time_ property deines the period of time during which Sync Gateway will attempt to reconnect unreachable targets.
 // end::maximum-backoff-time[]
 
 // tag::replication-state[]
 Replication state::
-The _replication_state_ property reports the current state of a replication.
+The _state_ property reports the current state of a replication.
 +
-Possible values in replicationStatus response bodies are: stopping, stopped, starting, active.
+Possible values in `replicationStatus` response bodies are: stopping, stopped, starting, active.
 +
 Valid values in configuration or in a payload to a replication endpoint are: stopping, starting.
 // end::replication-state[]
@@ -108,8 +115,7 @@ Valid values in configuration or in a payload to a replication endpoint are: sto
 
 
 // tag::2-8-0-modifiedonly[]
-== Modified Endpoints
-
+== Modified Configuration Properties
 
 The following replication configuration properties have changed:
 
@@ -124,8 +130,7 @@ When used in the REST API, you must specify the `replication_id` of a running re
 // end::2-8-0-modifiedonly[]
 
 // tag::2-8-0-retainedonly[]
-== Retained Endpoints
-
+== Retained Configuration Properties
 The following replication configuration properties are retained unchanged:
 
 * continuous
