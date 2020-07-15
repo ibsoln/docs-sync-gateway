@@ -5,4 +5,4 @@ start_page: introduction.adoc
 # start_page: /learn/icr-overview.adoc
 nav:
 # - modules/ROOT/nav.adoc
-- modules/ROOT/nav-beta.adoc
+- modules/ROOT/nav.adoc
