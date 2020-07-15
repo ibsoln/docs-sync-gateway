@@ -34,7 +34,7 @@ High level intro with links to appropriate details topics
 
 Document replication concepts and use-cases
 High-availability sync-gateway cluster replication
-Persistent vs Transient replication types
+Persistent vs ad hoc replication types
 Replication use cases:
 mobile cluster replications
 cloud-edge/hub-spoke replication
@@ -65,7 +65,7 @@ Inter-cluster replication provides the ability to run replications between:
 * Sync Gateway clusters
 * Active mobile clusters.
 
-Sync Gateway's inter-cluster replication feature uses the SG-Replicate 2.0  protocol. It is an integral part of Sync Gateway, acting as the _{glos-term-active-replicator}_, pulling changes from a data source and pushing them to a target.
+Sync Gateway's inter-cluster replication feature uses the SG-Replicate protocol. It is an integral part of Sync Gateway, acting as the _{glos-term-active-replicator}_, pulling changes from a data source and pushing them to a target.
 
 [[icr-architecture]]
 .Inter-cluster replication architecture
@@ -96,20 +96,6 @@ In the architecture diagram (<<icr-architecture>>), any database changes made on
 // * Can specify which channel(s) to sync
 // * Supports Primary/Primary and Primary/Secondary topologies
 
-== Replication Protocols
-
-ifndef::release-status-sgw[:release-status-sgw!:]
-ifeval::["{release-status-sgw}" == "gamma"]
-[.pane_frame--orange]
-.Author's Notes
---
-Talk about SGR1 and SGR2. Set deprecation context. Use diagrams.
---
-endif::[]
-
-Sync Gateway
-
-
 
 == Replication Types
 
@@ -118,35 +104,27 @@ Sync Gateway supports two replication types
 Persistent::
 +
 --
-All replications are persistent unless they are dynamically created as transient using the REST API and setting `adhoc=true`.
-
 Persistent replications survive Sync Gateway node restarts.
-
-These replications are created by configuring them in the {xref-sgw-pg-config-properties} file or by using the {xref-sgw-pg-rest-api-admin} endpoint {xref-sgw-endpoint-admin-api-replication-put}. This is the recommended way to create replications in a production environment.
-
-Once created these replications will automatically start whenever Sync GAteway is restarted.
-
 This is the default replication-type.
+
+All replications created by configuring them in the {xref-sgw-pg-config-properties} file are persistent.
+This is the recommended way to create replications in a production environment.
+
+You can also create persistent replications by using the {xref-sgw-pg-rest-api-admin}.
+
 --
 
-Transient (adhoc)::
+Ad hoc::
 +
 --
-Transient replications exist only for the period of the replication. Once created -- using the Admin Rest API -- and run to 'stopped' status, they are automatically removed.
+Ad hoc replications exist only for the period of the replication. They can be created using the {xref-sgw-pg-rest-api-admin}.
+Once created they start in the 'running' state. When they enter 'stopped', or 'error', state they are automatically removed.
 
-These replications always start in 'running' state.
-Despite their transient name, they do survive restarts but *only if* they are in a 'running' state when Sync Gateway is restarted
-
-Transient replications are not guaranteed to run on the node on which they start as they will be distributed across available nodes -- see <<high-availability-replication>> for why this happens.
-
-Replications reach the 'stopped' state either on completion, or as a result of a user actively changing the state (for example by using the {xref-sgw-endpoint-admin-api-replication-repstatus-set}
- endpoint).
-
-Transient (adhoc) replications provide a convenient way to:
+Ad hoc replications provide a convenient way to:
 
 * Run one off replications (for example, when troubleshooting)
 * Run on-demand replications after Sync Gateway is started.
-For instance a replication that needs to be to be run only periodically can be configured as an adhoc replication by an automated script scheduled to run when needed.
+For instance a replication that needs to be to be run only periodically can be configured as an ad hoc replication by an automated script scheduled to run when needed.
 --
 
 
@@ -157,14 +135,14 @@ Cloud-to-edge synchronization::
 --
 In this multi-cloud deployment mode large numbers of multiple edge clusters sync with one or more clusters in cloud data centers. Each edge can operate autonomously without network connectivity to the cloud data centers {fn-arch}.
 
-SG-Replicate 2.0 delivers bi-directional sync, which:
+// SG-Replicate 2.0 delivers bi-directional sync, which:
 
-- is scalable
-- has high availability
-- features automatic and customizable conflict resolution options
-- has end-to-end security with fine grained access control.
+// - is scalable
+// - has high availability
+// - features automatic and customizable conflict resolution options
+// - has end-to-end security with fine grained access control.
 
-All very important considerations in this use case.
+// All very important considerations in this use case.
 
 A typical architecture for this use cases is shown in <<icr-cloud-to-edge>>
 
@@ -176,7 +154,7 @@ image::icr-cloud-to-edge200712.svg[,600]
 Active-to-active Mobile Synchronization::
 +
 --
-The performant SG-Replicate 2.0 protocol is also ideal where Sync Gateway deployments require data replication between active mobile clusters.
+Here active mobile clusters at the edge are replicated between geographically separate cloud-based Sync Gateway deployments.
 
 A typical architecture for this use cases is shown in <<icr-active-mobile>>
 
@@ -186,14 +164,14 @@ image::icr-active-mobile-sync200713.svg[,600]
 
 --
 
-Alternative Methods::
-+
---
-xref:server:manage:manage-xdcr/xdcr-management-overview.adoc[XDCR] (cross data centre replication) is the Couchbase Server API to replicate between Couchbase Server clusters.
+// Alternative Methods::
+// +
+// --
+// xref:server:manage:manage-xdcr/xdcr-management-overview.adoc[XDCR] (cross data centre replication) is the Couchbase Server API to replicate between Couchbase Server clusters.
 
-Both XDCR and SG Replicate 2.0 can be used to keep clusters in different data centres in sync.
-However, SG Replicate 2.0 was designed specifically for Couchbase Mobile deployments and must be used for replication between mobile clusters.
---
+// Both XDCR and SG Replicate 2.0 can be used to keep clusters in different data centres in sync.
+// However, SG Replicate 2.0 was designed specifically for Couchbase Mobile deployments and must be used for replication between mobile clusters.
+// --
 
 // == Constraints
 
@@ -215,6 +193,14 @@ include::page${sgw-pg-icr-conflict-resolution}[tag=overview]
 
 See: {xref-sgw-pg-icr-conflict-resolution}
 
+
+
+
+ifndef::release-status-sgw[:release-status-sgw!:]
+ifeval::["{release-status-sgw}" == "gamma"]
+[.pane_frame--orange]
+.Author's Notes
+
 == High-availability replication
 
 include::page${sgw-pg-icr-high-availability}[tag=overview]
@@ -224,10 +210,16 @@ See: {xref-sgw-pg-icr-high-availability}
 
 == Replication Monitoring
 
+=== Replication Status
 include::page${sgw-pg-icr-monitoring}[tag=overview]
 
 See: {xref-sgw-pg-icr-monitoring}
 
+=== Replication Stats
+
+Sync Gateway also compiles a comprehensive set of statistics.
+
+include::page${sgw-pg-icr-monitoring}[tag=stats]
 
 // == Platform Capability
 
@@ -298,6 +290,7 @@ See: {xref-sgw-pg-icr-monitoring}
 
 // |===
 
+
 == Administration
 
 include::page${sgw-pg-icr-admin}[tag=overview]
@@ -311,6 +304,12 @@ PLACEHOLDER
 == Authentication
 
 PLACEHOLDER
+
+== Replication Protocols
+--
+Talk about SGR1 and SGR2. Set deprecation context. Use diagrams.
+--
+endif::[]
 
 
 include::partial$block-related-content-icr.adoc[]
