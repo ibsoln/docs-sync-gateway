@@ -3,7 +3,7 @@
 :page-edition: Under development
 :page-layout: article
 :page-content-type: conceptual
-:page-role: panes
+:page-role: panes labels
 :page-aliases:
 :description: Sync Gateway Concept -- high availability replication
 :keywords: performan 'high availability' edge nosql api synchronization replication
@@ -36,7 +36,6 @@ Recommendation : To get HA, Users must be configure at least two nodes to run a 
 
 This will apply to SG-Replicate 2
 
-
 Impl note: Based on set of replications defined, system will have a node election process/ heartbeat process to detect if a node is up or not)
 
 Note : This requirement is true only for EE. In case of CE, Sync Gateway will behave as it does today. The replicator will run on the nodes that the users designate in their configuration.
@@ -66,8 +65,21 @@ This content describes the concept of high-availability replication.
 
 == About High-Availability Replication
 
+[.pane__frame--orange]
+.Author's Notes
+--
+Define HA as a concept and its role in replication
+--
+
 Sync Gateway supports High Availability replication. Its
 {glos-term-sg-replicate2-protocol} ensures that although a given replication runs on only one node at any given time, if that node fails, the system automatically elects another node for replication. Obviously this requires that the user configure at least two nodes for any given replication.
+
+Good becase it :
+
+* Improves throughput by distributing the replications
+By ensuring that a replicator only runs on one node even if configured to run on multiple nodes, the system  redundant exchange of data as a result of redundant replications. This will reduce the processing load on the sync gateway and reduce bandwidth usage
+
+* Enables future platform architectural enhancements around mobile manageability . This will allow us to deploy a truly homogenous cluster even in SG-replicate based environment where every SGW node in cluster has an identical configuration.
 
 == Node Switching
 
@@ -76,20 +88,28 @@ Sync Gateway supports High Availability replication. Its
 //{enterprise}::
 //+
 //--
+
+[.pane__frame--orange]
+.Author's Notes
+--
+Explain what this is, why its significant and how it is used.
+--
+
 For {enterprise} the node to run on is selected by an election process. It uses a heartbeat check to establish whether a node is up or not. If it isn't it will try the next node in the configured set.
 //--
 
 For {community} users the Sync Gateway replicator runs on the node configured by the user.
---
-====
 
-=== Configuration Requirements
+
+== Configuration Requirements
+[.pane__frame--orange]
+.Author's Notes
+--
+Refactor and supplement below as necessary. Include links to {xref-sgw-pg-config-properties}
+--
 
 * Configure multiple nodes for each replication required to be highly-available
-*
 
-
---
 * {empty}
 +
 --
@@ -109,17 +129,23 @@ Note : This requirement is true only for EE. In case of CE, Sync Gateway will be
 --
 * {empty}
 +
+[.edition]
+image::{enterprise}[]
++
 --
 In EE, replications will get automatically get redistributed as more Sync Gateways are added to the cluster or removed from cluster
 --
-* {empty}
-+
+
+== Examples of Expected behavior
+
+[.pane__frame--orange]
+.Author's Notes
 --
-Expected behavior
+Insert content based on this table here.
 https://docs.google.com/document/d/13E6JOq8u_AaUd_t8FZEPCAuq7jfkjryecjBQBHE3pG8/edit#heading=h.vwjngb7h5lpm
 --
 
-[.pane__frames--auto.cols-3]
+[.pane__frames.cols-3]
 == Related Content
 
 .How-to ...
@@ -140,7 +166,4 @@ https://docs.google.com/document/d/13E6JOq8u_AaUd_t8FZEPCAuq7jfkjryecjBQBHE3pG8/
 * Reference Material
 ** {xref-sgw-pg-config-properties}
 
-* Further Learning
-** {xref-url-cb-forum-mobile}
-** {xref-url-cb-blog}
-** https://docs.couchbase.com/tutorials/index.html[Tutorials]
+include::partial$_related-content[tags=community]
