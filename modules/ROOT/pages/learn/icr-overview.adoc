@@ -1,14 +1,23 @@
 = Inter-Cluster Replication
 :page-layout: article
 :page-status: {release-status-sgw} -- {release-comments-sgw}
-:page-edition: Under Develoment
+:page-edition: Under Development
 :page-role:
+:description: Inter-cluster replication (Sync Gateway to Sync Gateway) using SG-Replicate 2.0 protocol
 
-include::shared-mobile::partial$_attributes-shared.adoc[]
-include::partial$_attributes-local.adoc[]
-:xref-pfx-sgw: {xref-pfx-sgw}:
-include::partial$_page-index.adoc[]
-include::partial$_glossary-links.adoc[]
+
+include::partial$_std-hdr-sgw.adoc[]
+
+:topic-group: Inter-cluster Replication
+:param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin}
+:param-abstract: This content provides an overview of Inter-cluster replication, which is replication between Sync Gateway clusters using SG-Replicate 2.0.
+include::partial$block-abstract.adoc[]
+
+// include::shared-mobile::partial$_attributes-shared.adoc[]
+// include::partial$_attributes-local.adoc[]
+// :xref-pfx-sgw: {xref-pfx-sgw}:
+// include::partial$_page-index.adoc[]
+// include::partial$_glossary-links.adoc[]
 
 ifndef::release-status-sgw[:release-status-sgw!:]
 ifeval::["{release-status-sgw}" == "gamma"]
@@ -30,119 +39,197 @@ Persistent vs Transient replication types
 Replication use cases:
 mobile cluster replications
 cloud-edge/hub-spoke replication
+
+ protocol to enable replication between mobile clusters. That is, for example between a hub and its spoke clusters.
 --
 endif::[]
 
-[abstract]
---
-This content provides an overview of, and introduction to, Sync Gateway to Sync Gateway replication. Inter-cluster replication, uses SG Replicate protocol to enable replication between mobile clusters. That is, for example between a hub and its spoke clusters.
---
 
-== Introducing Inter-cluster Replication
+// Footnotes
+:fn-icr: footnote:icr[As of Sync Gateway version 2.8]
+:fn-arch: footnote:arch[This architecture is also known as _ship-to-shore_ or _hub-and-spoke_.]
+:fn-icr-ref: footnote:icr[]
+:fn-arch-ref: footnote:arch[]
 
-Couchbase Sync Gateway supports _{glos-term-inter-cluster-replication}_, an increasingly important enterprise-level requirement that
+
+== Overview
+
+Couchbase Sync Gateway supports _{glos-term-inter-cluster-replication}_, {fn-icr} an increasingly important enterprise-level requirement that
 supports _{glos-term-cloud-to-edge} synchronization_ use cases, where data changes must be synchronized between a centralized cloud cluster and a large number of edge clusters whilst still enforcing fine grained access control.
 
-Inter-cluster repliaction provides the ability to run replications between:
+Inter-cluster replication provides the ability to run replications between:
 
 * Sync Gateway clusters
 * Active mobile clusters.
 
 Sync Gateway's inter-cluster replication feature uses the SG-Replicate 2.0  protocol. It is an integral part of Sync Gateway, acting as the _{glos-term-active-replicator}_, pulling changes from a data source and pushing them to a target.
 
-.Inter-cluster replication architecture
 [[icr-architecture]]
+.Inter-cluster replication architecture
+====
 image::icr-replication-overview.svg[]
+====
 
-All documents pass through the target Sync Gateway's _{glos-term-sync-function}_ instance, ensuring that access rules are honored.
+All documents pass through the target Sync Gateway's _{glos-term-sync-function}_ instance, ensuring that access rules are honored. See: {xref-sgw-pg-adv-sgw-cfg-sync-function} for more on using `sync` functions)
 
-In the architecture diagram (<<icr-architecture>>), any changes that users/systems make on either Sync Gateway instance will be replicated to the other Sync Gateway instance.
+In the architecture diagram (<<icr-architecture>>), any database changes made on either Sync Gateway instance are replicated to the other Sync Gateway instance, in accordance with the replication's configuration -- see {xref-sgw-pg-config-properties-db-replications} for configuration detail.
 
-== Features
+== Feature Summary
 
-[.pane__frame--orange]
-.Author's Notes
---
-Expand on the following list. Include cross-references to their topic page/section as appropriate
---
-
-* Persistent vs Transient replication types
-* Replication use cases: see <<typical-inter-cluster-replication-use-cases, Started - see above>>
+* Replication use cases include (see <<typical-use-cases>>):
 ** Mobile cluster replications
 ** Cloud-edge/hub-spoke replication
 * {xref-sgw-pg-icr-high-availability} (HA)
 * {xref-sgw-pg-icr-delta-sync} option
-* Replicates via the Sync Gateway REST API (see: {xref-sgw-pg-adv-rest-api-client})
+* Create flexible replications using Sync Gateway's REST API -- see: {xref-sgw-pg-adv-rest-api-client}
 * Scalability
 * JSON configuration to specify replications
 * Supports multiple replications running concurrently
-* Supports multile replication types: _{glos-term-persistent-replication}_ and _{glos-term-transient-replication}_
-* Leverages the full duplex nature of websockets to support push and pull from a single connection
+* Supports multiple replication types: _{glos-term-persistent-replication}_ and _{glos-term-transient-replication}_ -- see {xref-sgw-pg-icr-replication-types}
+* Leverages the full duplex nature of websockets to support push and pull from a single connection -- see {xref-sgw-pg-config-properties-db-rep-direction}
 * Does not store anything persistently
 * Stateless -- can be interrupted/restarted anytime without negative side effects
 * Can specify which channel(s) to sync
 * Supports Primary/Primary and Primary/Secondary topologies
 
+== Use Cases
 
+Cloud-to-edge synchronization::
++
+--
+In this multi-cloud deployment mode large numbers of multiple edge clusters sync with one or more clusters in cloud data centers. Each edge can operate autonomously without network connectivity to the cloud data centers {fn-arch}.
 
-== Typical Inter-cluster Replication Use Cases
+SG-Replicate 2.0 delivers bi-directional sync, which:
 
-=== Cloud-to-Edge Synchronization
+- is scalable
+- has high availability
+- features automatic and customizable conflict resolution options
+- has end-to-end security with fine grained access control.
+
+All very important considerations in this use case.
 
 A typical architecture for this use cases is shown in <<icr-cloud-to-edge>>
 
-.Cloud-to-edge synchronization
 [[icr-cloud-to-edge]]
+.Cloud-to-edge synchronization
 image::icr-cloud-to-edge.svg[]
+--
 
-=== Active-to-active Mobile Synchronization
-
-The performant SG-replicate 2.0 prototcol is ideal where Sync Gateway, deployments require data replication between active mobile clusters.
+Active-to-active Mobile Synchronization::
++
+--
+The performant SG-Replicate 2.0 protocol is also ideal where Sync Gateway deployments require data replication between active mobile clusters.
 
 A typical architecture for this use cases is shown in <<icr-active-mobile>>
 
-.Active-active mobile synchronization
 [[icr-active-mobile]]
+.Active-active mobile synchronization
 image::icr-active-mobile-sync.svg[]
 
-=== Alternative Methods
+--
 
+Alternative Methods::
++
+--
 xref:server:manage:manage-xdcr/xdcr-management-overview.adoc[XDCR] (cross data centre replication) is the Couchbase Server API to replicate between Couchbase Server clusters.
-Both XDCR and SG Replicate can be used to keep clusters in different data centres in sync.
-However, SG Replicate was designed specifically for Couchbase Mobile deployments and must be used for replication between mobile clusters.
 
-== Limitations and Constraints
-
-[.pane__frame--orange]
-.Author's Notes
---
-Expand on the following list. Include cross-references to their topic page/section as appropriate
+Both XDCR and SG Replicate 2.0 can be used to keep clusters in different data centres in sync.
+However, SG Replicate 2.0 was designed specifically for Couchbase Mobile deployments and must be used for replication between mobile clusters.
 --
 
-* Can only replicate SG databases that are hosted on recent versions of Sync Gateway (after commit 50d30eb3d on March 7, 2014)
-* In deployments with multiple Sync Gateway nodes, only _one_ of the Sync Gateways should be configured for replications.
-If multiple Sync Gateways are configured for replications, it could substantially increase the amount of duplicate work, and therefore should be avoided.
-The limitation is that the system is not guaranteed to be Highly Available: if the Sync Gateway that is chosen to drive the replication goes down or is otherwise removed from the system, then the replications will stop.
-* Replication between Sync Gateway databases doesn't support automatic conflict resolution even when the no-conflicts mode is enabled (i.e xref:config-properties.adoc#databases-foo_db-allow_conflicts["allow_conflicts": false]).
-When running two Sync Gateway clusters with the no-conflicts mode enabled, cross-cluster document conflicts will result in that document no longer being replicated.
-Deployments  must implement a custom conflict resolver in an external app as specified xref:resolving-conflicts.adoc[here].
-To avoid this, the application must ensure concurrent, cross-cluster updates are not made to a given document.
+== Constraints
+
+SG-Replicate 2.- will only replicate Sync Gateway databases hosted on versions of Sync Gateway later than March 7, 2014 (commit 50d30eb3d).
+
+High availability::
++
+--
+In clusters containing multiple Sync Gateway nodes, only _one_ of the Sync Gateways should be configured fas the replicating node.
+
+Configuring multiple Sync Gateways as replicating nodes can substantially increase the amount of duplicate work, and therefore should be avoided.
+
+This limitation means the system cannot be guaranteed as Highly Available. If the replicating Sync Gateway fails or is otherwise removed from the system, then the replications will stop.
+--
+
+Conflict Resolution::
++
+--
+Replication between Sync Gateway databases doesn't support automatic conflict resolution even when the no-conflicts mode is enabled (that is where xref:config-properties.adoc#databases-foo_db-allow_conflicts["allow_conflicts": false]).
+
+When running two Sync Gateway clusters with the no-conflicts mode enabled, cross-cluster document conflicts will result in that document no longer being replicated. To avoid this, the application must ensure that concurrent cross-cluster updates are not made to a given document.
+
+Deployments  must implement a custom conflict resolver in an external app as specified in {xref-sgw-pg-resolving-conflicts}.
+--
+
+== Platform Capability
+
+[%autowidth]
+|===
+| capability |Edition | In CE | In EE
+
+| Replication configured in JSON config file
+| CE
+| Replication is created on every node it is configured on
+| The union of all configured replications is distributed across all config files
+
+| Replication created in REST API
+| CE
+| Replication is created on node from which the request is made
+| The union of all REST API created replications is distributed
+
+| Replication Monitoring using `_replication` and `_activeTasks`
+| CE
+| Will only return replications local to node on which request was made
+| --
+
+| Replication Monitoring using `_replicationStatus`
+| CE
+| Will only return replications local to node on which request was made
+|
+
+| Replication stats reporting (via _expvars)
+| CE
+|
+| Same in CE and EE
+
+| Default Conflict Resolution
+| CE
+|
+| Same in CE and EE
+
+| Out-of-box conflict resolvers (activeWins,passiveWins)
+| EE
+|
+|
+
+| Custom conflict resolution
+| EE
+|
+|
+
+| Delta-Sync
+| EE
+|
+|
+
+| Built-in-High Availability
+| EE
+| If HA is required, then replicators must be explicitly configured/created on multiple nodes
+|
+
+| Filters with Channels
+| CE
+|
+| Same in CE and EE
+
+| Tuneable Parameters
+| EE
+|
+| TBD
 
 
-[.pane__frames.cols-3]
-== Related Content
+|===
 
-.How-to ...
 
-* include how-to links as relevant,
-* include how-to links as relevant,
 
-.Learn more ...
-
-include::partial$_related-content.adoc[tags=icr]
-
-.Dive Deeper ...
-
-* Reference content
-** {xref-sgw-pg-config-properties}
-include::partial$_related-content.adoc[tags=community]
+include::partial$block-related-content-icr.adoc[]
