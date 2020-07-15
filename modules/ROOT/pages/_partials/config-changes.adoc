@@ -89,7 +89,6 @@ _Removed - redundant_.
 // end::2-8-0-removedonly
 
 // tag::2-8-0-newonly[]
-
 == New Configuration Properties
 
 The following new properties are added:
