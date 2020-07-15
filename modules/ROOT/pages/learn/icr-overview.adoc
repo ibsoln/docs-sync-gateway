@@ -50,7 +50,12 @@ endif::[]
 :fn-arch-ref: footnote:arch[]
 
 
-== Overview
+== Introducing Inter-cluster Replication
+
+Couchbase Sync Gateway supports _{glos-term-inter-cluster-replication}_, an increasingly important enterprise-level requirement that
+supports _{glos-term-cloud-to-edge} synchronization_ use cases, where data changes must be synchronized between a centralized cloud cluster and a large number of edge clusters whilst still enforcing fine grained access control.
+
+Inter-cluster repliaction provides the ability to run replications between:
 
 Couchbase Sync Gateway supports _{glos-term-inter-cluster-replication}_, {fn-icr} an increasingly important enterprise-level requirement that
 supports _{glos-term-cloud-to-edge} synchronization_ use cases, where data changes must be synchronized between a centralized cloud cluster and a large number of edge clusters whilst still enforcing fine grained access control.
