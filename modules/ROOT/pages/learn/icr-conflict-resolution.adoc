@@ -357,9 +357,6 @@ If both document.types are non-null and the local document.type is `usedefault`,
 include::example$configuration/sync-gateway-config.json[tags=icr-simple-merge-conflict-resolver, indent=0]
 ----
 --
-
 =====
-
-
 
 include::partial$block-related-content-icr.adoc[]
