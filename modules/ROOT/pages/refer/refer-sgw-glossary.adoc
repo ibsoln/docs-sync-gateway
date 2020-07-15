@@ -113,6 +113,20 @@ No conflicts mode is the process by which write operations that would result in 
 It is an optional feature in xref:couchbase-lite::swift.adoc#handling-conflicts[Couchbase Lite 2.0 and above] and xref:config-properties.adoc#databases-foo_db-allow_conflicts[Sync Gateway 2.0 and above].
 // end::sgw-conf-res-no-conflicts[]
 
+
+
+
+
+
+
+[#no-op-update]
+No op updates::
+// tag::sgw-conf-no-op-update[]
+The term _no-op update_ refers to a change made to the document body that does not impact application logic but does trigger a replication by the Sync Gateway.
+
+For example, you may include an otherwise redundant _counter_ property, that you increment in response to conflict resolver errors.
+// end::sgw-conf-no-op-update[]
+
 {goto-index}
 
 == P
