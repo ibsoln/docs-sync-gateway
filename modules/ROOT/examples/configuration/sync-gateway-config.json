@@ -296,7 +296,7 @@
 
                     }`,
                    "purge_on_removal":true,
-                   "remote": "http://user1:password@35.202.126.6:4984/db-remote",
+                   "remote": "http://user1:password@11.222.333.5:4984/db-remote",
                    "filter":"sync_gateway/bychannel",
                    "query_params": {
                        "channels":["channel.user1"]
@@ -357,7 +357,7 @@
          "pull-from-target-continuous-2" : {
              "direction": "pull",
              "purge_on_removal":true,
-             "remote": "http://user1:password@35.202.126.6:4984/db2name",
+             "remote": "http://user1:password@11.222.333.5:4984/db2name",
              "conflict_resolution_type":"custom",
              "custom_conflict_resolver":`
                     function(conflict) {
@@ -477,7 +477,7 @@ function sync(doc, oldDoc) {
 
                     }`,
                    "purge_on_removal":true,
-                   "remote": "http://user1:password@35.202.126.6:4984/db-remote",
+                   "remote": "http://user1:password@11.222.333.5:4984/db-remote",
                    "filter":"sync_gateway/bychannel",
                    "query_params": {
                        "channels":["channel.user1"]
@@ -538,7 +538,7 @@ function sync(doc, oldDoc) {
          "pull-from-target-continuous-2" : {
              "direction": "pull",
              "purge_on_removal":true,
-             "remote": "http://user1:password@35.202.126.6:4984/db2name",
+             "remote": "http://user1:password@11.222.333.5:4984/db2name",
              "conflict_resolution_type":"custom",
              "custom_conflict_resolver":`
                     function(conflict) {
@@ -780,7 +780,7 @@ function sync(doc, oldDoc) {
 // end::icr-simple-merge-conflict-resolver[]
                     , // end custom_conflict_resolver
                    "purge_on_removal":true,
-                   "remote": "http://user1:password@35.202.126.6:4984/db-remote",
+                   "remote": "http://user1:password@11.222.333.5:4984/db-remote",
                    "filter":"sync_gateway/bychannel",
                    "query_params": {
                        "channels":["channel.user1"]
@@ -841,7 +841,7 @@ function sync(doc, oldDoc) {
          "pull-from-target-continuous-2" : {
              "direction": "pull",
              "purge_on_removal":true,
-             "remote": "http://user1:password@35.202.126.6:4984/db2name",
+             "remote": "http://user1:password@11.222.333.5:4984/db2name",
              "conflict_resolution_type":"remoteWins",
              "filter":"sync_gateway/bychannel",
              "query_params": {
