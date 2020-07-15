@@ -1,4 +1,9 @@
-:page-partial:
+= Configuration Schema Change Log
+
+
+// include::partial$config-changes.adoc[tag=all]
+
+// :page-partial:
 // This content may be used in multiple places
 // Tag Schema
 // - all
@@ -17,18 +22,23 @@
 // End tag schema
 
 // BEGIN CONTENT
+
 // tag::all[]
 // tag::all2-8[]
 // tag::2-8-1[]
 // replace me with content
 // end::2-8-1[]
 // tag::2-8-0[]
+
+== Release 2.8 -  xx mmmm 2020
+
 == Structural Schema Changes
 // tag::2-8-0-structuralonly[]
 
 `_replicate` becomes `database.replication`::
-The replication configuration property `_replicate` is deprecated.
-SG-Replicate 2.0 replications are now defined with the `_replication` property, which is as a member of the `database` property.
+The SG-Replicate 1.0 global level `replications` configuration property is deprecated at his release.
+
+SG-Replicate 2.0 replications are now defined with a `replications` property at the individual database level; that is, as a member of the `database.this_db` properties.
 Note that any given database can still have multiple replications configured.
 
 Constraint: SG-Replicate 2 does not support replication between two remote hosts via a third Sync Gateway.
@@ -89,6 +99,7 @@ _Removed - redundant_.
 // end::2-8-0-removedonly
 
 // tag::2-8-0-newonly[]
+
 == New Configuration Properties
 
 The following new properties are added:
@@ -132,15 +143,15 @@ Boolean value for whether to enable delta sync for this replication.
 // end::enable-delta-sync[]
 
 // tag::maximum-backoff-time[]
-maximum_backoff_time::
-The _maximum_backoff_time_ property deines the period of time during which Sync Gateway will attempt to reconnect unreachable targets.
+max_backoff_time::
+The _max_backoff_time_ property deines the period of time during which Sync Gateway will attempt to reconnect unreachable targets.
 // end::maximum-backoff-time[]
 
 // tag::replication-state[]
 Replication state::
-The _replication_state_ property reports the current state of a replication.
+The _state_ property reports the current state of a replication.
 +
-Possible values in replicationStatus response bodies are: stopping, stopped, starting, active.
+Possible values in `replicationStatus` response bodies are: stopping, stopped, starting, active.
 +
 Valid values in configuration or in a payload to a replication endpoint are: stopping, starting.
 // end::replication-state[]
