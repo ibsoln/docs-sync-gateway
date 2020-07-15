@@ -1338,7 +1338,6 @@ properties:
             #   param-string-1:
             type: string
             description: query parameter string
-
   replicator_compression:
     description: |
       This sets the 'deflate' compression level to use when compressing messages sent via the WebSocket protocol, where 0 means no compression, 1 means fastest (least) compression, and 9 means slowest (most) compression.
