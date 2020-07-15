@@ -34,12 +34,104 @@ endif::[]
 
 Use the {xref-sgw-endpoint-admin-api-replication-repstatus} Admin REST API endpoint to check the status of replications.
 
+
+By default a simple one-shot replication blocks until it is complete and returns the stats for the completed task.
+Async one-shot and continuous replications return immediately with the in flight task stats.
+
+You can get a list of active replication tasks by sending a GET request to the `_active_tasks` endpoint, this will return a list of all running one-shot and continuous replications for the current Sync Gateway instance.
+
+The response is a JSON array of active task objects, each object contains the original request parameters for the replication, a unique `replication_id` and some stats for the replication instance.
+The list of returned stats and their meaning can be found on the API reference of the xref:admin-rest-api.adoc#/server/get\__active_tasks[`_active_tasks`] endpoint.
+
+[source,javascript]
+----
+[
+    {
+        "type":"replication",
+        "replication_id":"6a4924c24424b635a80f50cd660fb192",
+        "continuous":true,
+        "source":"http://example.com:4985/source",
+        "target":"http://example.com:4985/target",
+        "docs_read":0,
+        "docs_written":0,
+        "doc_write_failures":0,
+        "end_last_seq":null
+    },
+    {
+        "type":"replication",
+        "replication_id":"active-to-backup",
+        "continuous":true,
+        "source":"http://example2.com:4985/active",
+        "target":"http://example2.com:4985/backup",
+        "docs_read":1000,
+        "docs_written":850,
+        "doc_write_failures":10,
+        "end_last_seq":25680
+    }
+]
+----
+
+
+
+
+
+
+[{tabs}]
+====
+
+Request::
++
+--
+[source, console]
+----
+curl -X GET "http://localhost:4985/travel-sample/_replicationStatus/pull-from-target-continuous-2" -H "accept: application/json"
+----
+--
+
+Response::
++
+--
+[source, json]
+----
+{
+  "replication_id": "string",
+  "continuous": true,
+  "source": "string",
+  "target": "string",
+  "status": "string",
+  "docs_read": 0,
+  "docs_written": 0,
+  "doc_write_failures": 0,
+  "rejected_by_remote": 0,
+  "rejected_by_local": 0,
+  "error_message": "string",
+  "delta_enabled": true,
+  "last_seq_pull": "string",
+  "last_seq_push": "string"
+}
+----
+--
+
+====
+
+
+
 // end::overview[]
 
 == Statistics Captured
+// tag::stats[]
+Use the `_expvars` Admin REST API to access Sync Gateway stats shown in <<rep-related-stats>>.
 
-Use the `_expvars` Admin REST API to access following stats:
+[source, console]
+----
+curl -X GET "http://localhost:4985/_expvar" -H "accept: application/json"
+----
 
+You can find further details on the statistics here -- {xref-sgw-pg-stats-monitoring}.
+
+[#rep-related-stats]
+.Replication related statistics
+====
 |===
 | Item | Notes
 
@@ -102,8 +194,8 @@ NEW
 Count of documents that were skipped during sync because of an error in conflict resolution
 --
 |===
-
-
+====
+// end::stats[]
 
 
 == SGR1
