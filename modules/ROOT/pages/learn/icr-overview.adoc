@@ -4,10 +4,9 @@
 :page-edition: Under Development
 :page-role:
 :description: Inter-cluster replication (Sync Gateway to Sync Gateway) using SG-Replicate 2.0 protocol
-include::partial$keywords-icr.adoc[]
 
 include::partial$_std-hdr-sgw.adoc[]
-
+include::partial$block-authors-notes.adoc[tag=wip]
 :topic-group: Inter-cluster Replication
 :param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin}
 :param-abstract: This content provides an overview of Inter-cluster replication, which is replication between Sync Gateway clusters using SG-Replicate 2.0.
@@ -46,14 +45,12 @@ endif::[]
 
 // Footnotes
 :fn-icr: footnote:icr[As of Sync Gateway version 2.8]
-:fn-arch: footnote:arch[This architecture is also known as _ship-to-shore_ or _hub-and-spoke_.]
+:fn-arch: footnote:arch[This architecture is also known as 'ship-to-shore' or 'hub-and-spoke'.]
 :fn-icr-ref: footnote:icr[]
 :fn-arch-ref: footnote:arch[]
 
 
 == Overview
-
-THIS IS A WORK-IN-PROGRESS IN THIS BETA.
 
 Couchbase Sync Gateway supports _{glos-term-inter-cluster-replication}_, {fn-icr} an increasingly important enterprise-level requirement that
 supports _{glos-term-cloud-to-edge} synchronization_ use cases, where data changes must be synchronized between a centralized cloud cluster and a large number of edge clusters whilst still enforcing fine grained access control.
@@ -111,14 +108,41 @@ Sync Gateway
 
 == Replication Types
 
-ifndef::release-status-sgw[:release-status-sgw!:]
-ifeval::["{release-status-sgw}" == "gamma"]
-[.pane_frame--orange]
-.Author's Notes
+Sync Gateway supports two replication types
+
+Persistent::
++
 --
-Talk about Persistent vs Transient
+All replications are persistent unless they are dynamically created as transient using the REST API and setting `adhoc=true`.
+
+Persistent replications survive Sync Gateway node restarts.
+
+These replications are created by configuring them in the {xref-sgw-pg-config-properties} file or by using the {xref-sgw-pg-rest-api-admin} endpoint {xref-sgw-endpoint-admin-api-replication-put}. This is the recommended way to create replications in a production environment.
+
+Once created these replications will automatically start whenever Sync GAteway is restarted.
+
+This is the default replication-type.
 --
-endif::[]
+
+Transient (adhoc)::
++
+--
+Transient replications exist only for the period of the replication. Once created -- using the Admin Rest API -- and run to 'stopped' status, they are automatically removed.
+
+These replications always start in 'running' state.
+Despite their transient name, they do survive restarts but *only if* they are in a 'running' state when Sync Gateway is restarted
+
+Transient replications are not guaranteed to run on the node on which they start as they will be distributed across available nodes -- see <<high-availability-replication>> for why this happens.
+
+Replications reach the 'stopped' state either on completion, or as a result of a user actively changing the state (for example by using the {xref-sgw-endpoint-admin-api-replication-repstatus-set}
+ endpoint).
+
+Transient (adhoc) replications provide a convenient way to:
+
+* Run one off replications (for example, when troubleshooting)
+* Run on-demand replications after Sync Gateway is started.
+For instance a replication that needs to be to be run only periodically can be configured as an adhoc replication by an automated script scheduled to run when needed.
+--
 
 
 == Use Cases
@@ -141,7 +165,7 @@ A typical architecture for this use cases is shown in <<icr-cloud-to-edge>>
 
 [[icr-cloud-to-edge]]
 .Cloud-to-edge synchronization
-image::icr-cloud-to-edge.svg[]
+image::icr-cloud-to-edge200712.svg[,600]
 --
 
 Active-to-active Mobile Synchronization::
@@ -153,7 +177,7 @@ A typical architecture for this use cases is shown in <<icr-active-mobile>>
 
 [[icr-active-mobile]]
 .Active-active mobile synchronization
-image::icr-active-mobile-sync.svg[]
+image::icr-active-mobile-sync200713.svg[,600]
 
 --
 
@@ -185,6 +209,19 @@ However, SG Replicate 2.0 was designed specifically for Couchbase Mobile deploym
 include::page${sgw-pg-icr-conflict-resolution}[tag=overview]
 
 See: {xref-sgw-pg-icr-conflict-resolution}
+
+== High-availability replication
+
+include::page${sgw-pg-icr-high-availability}[tag=overview]
+
+See: {xref-sgw-pg-icr-high-availability}
+
+
+== Replication Monitoring
+
+include::page${sgw-pg-icr-monitoring}[tag=overview]
+
+See: {xref-sgw-pg-icr-monitoring}
 
 
 // == Platform Capability
@@ -262,25 +299,9 @@ include::page${sgw-pg-icr-admin}[tag=overview]
 
 See: {xref-sgw-pg-icr-admin}
 
-
-== Monitoring Replications
-
-* Use `_replicationStatus` to monitor SG-Replicate 2.0 replications  (`GET`).
-* Use `_active_tasks` to monitor SG-Replicate 1.0 replications  (`GET`)
-+
-The content returned will be the same as that returned by `_replicationStatus` and contains additional content over the SG-Replicate 1.0 version:
-+
-** direction
-** is_persistent
-** status (stopped/running).
-** last_seq_push
-** last_seq_pull
-
 == Filtering
 
 PLACEHOLDER
-
-
 
 == Authentication
 
