@@ -54,6 +54,8 @@ endif::[]
 
 == Overview
 
+THIS IS A WORK-IN-PROGRESS IN THIS BETA.
+
 Couchbase Sync Gateway supports _{glos-term-inter-cluster-replication}_, {fn-icr} an increasingly important enterprise-level requirement that
 supports _{glos-term-cloud-to-edge} synchronization_ use cases, where data changes must be synchronized between a centralized cloud cluster and a large number of edge clusters whilst still enforcing fine grained access control.
 
@@ -74,23 +76,23 @@ All documents pass through the target Sync Gateway's _{glos-term-sync-function}_
 
 In the architecture diagram (<<icr-architecture>>), any database changes made on either Sync Gateway instance are replicated to the other Sync Gateway instance, in accordance with the replication's configuration -- see {xref-sgw-pg-config-properties-db-replications} for configuration detail.
 
-== Feature Summary
+// == Feature Summary
 
-* Replication use cases include (see <<typical-use-cases>>):
-** Mobile cluster replications
-** Cloud-edge/hub-spoke replication
-* {xref-sgw-pg-icr-high-availability} (HA)
-* {xref-sgw-pg-icr-delta-sync} option
-* Create flexible replications using Sync Gateway's REST API -- see: {xref-sgw-pg-adv-rest-api-client}
-* Scalability
-* JSON configuration to specify replications
-* Supports multiple replications running concurrently
-* Supports multiple replication types: _{glos-term-persistent-replication}_ and _{glos-term-transient-replication}_ -- see {xref-sgw-pg-icr-replication-types}
-* Leverages the full duplex nature of websockets to support push and pull from a single connection -- see {xref-sgw-pg-config-properties-db-rep-direction}
-* Does not store anything persistently
-* Stateless -- can be interrupted/restarted anytime without negative side effects
-* Can specify which channel(s) to sync
-* Supports Primary/Primary and Primary/Secondary topologies
+// * Replication use cases include (see <<typical-use-cases>>):
+// ** Mobile cluster replications
+// ** Cloud-edge/hub-spoke replication
+// * {xref-sgw-pg-icr-high-availability} (HA)
+// * {xref-sgw-pg-icr-delta-sync} option
+// * Create flexible replications using Sync Gateway's REST API -- see: {xref-sgw-pg-adv-rest-api-client}
+// * Scalability
+// * JSON configuration to specify replications
+// * Supports multiple replications running concurrently
+// * Supports multiple replication types: _{glos-term-persistent-replication}_ and _{glos-term-transient-replication}_ -- see {xref-sgw-pg-icr-replication-types}
+// * Leverages the full duplex nature of websockets to support push and pull from a single connection -- see {xref-sgw-pg-config-properties-db-rep-direction}
+// * Does not store anything persistently
+// * Stateless -- can be interrupted/restarted anytime without negative side effects
+// * Can specify which channel(s) to sync
+// * Supports Primary/Primary and Primary/Secondary topologies
 
 == Use Cases
 
@@ -137,100 +139,103 @@ Both XDCR and SG Replicate 2.0 can be used to keep clusters in different data ce
 However, SG Replicate 2.0 was designed specifically for Couchbase Mobile deployments and must be used for replication between mobile clusters.
 --
 
-== Constraints
+// == Constraints
 
-SG-Replicate 2.- will only replicate Sync Gateway databases hosted on versions of Sync Gateway later than March 7, 2014 (commit 50d30eb3d).
+// SG-Replicate 2.0 will only replicate Sync Gateway databases hosted on versions of Sync Gateway later than March 7, 2014.
 
-High availability::
-+
---
-In clusters containing multiple Sync Gateway nodes, only _one_ of the Sync Gateways should be configured fas the replicating node.
+// High availability::
+// +
+// --
+// In clusters containing multiple Sync Gateway nodes, only _one_ of the Sync Gateways should be configured fas the replicating node.
 
-Configuring multiple Sync Gateways as replicating nodes can substantially increase the amount of duplicate work, and therefore should be avoided.
+// Configuring multiple Sync Gateways as replicating nodes can substantially increase the amount of duplicate work, and therefore should be avoided.
 
-This limitation means the system cannot be guaranteed as Highly Available. If the replicating Sync Gateway fails or is otherwise removed from the system, then the replications will stop.
---
+// This limitation means the system cannot be guaranteed as Highly Available. If the replicating Sync Gateway fails or is otherwise removed from the system, then the replications will stop.
+// --
 
-Conflict Resolution::
-+
---
-include::{sgw-pg-icr-conflict-resolution}[tag=overview]
---
+== Conflict Resolution
 
-== Platform Capability
+include::page${sgw-pg-icr-conflict-resolution}[tag=overview]
 
-[%autowidth]
-|===
-| capability |Edition | In CE | In EE
-
-| Replication configured in JSON config file
-| CE
-| Replication is created on every node it is configured on
-| The union of all configured replications is distributed across all config files
-
-| Replication created in REST API
-| CE
-| Replication is created on node from which the request is made
-| The union of all REST API created replications is distributed
-
-| Replication Monitoring using `_replication` and `_activeTasks`
-| CE
-| Will only return replications local to node on which request was made
-| --
-
-| Replication Monitoring using `_replicationStatus`
-| CE
-| Will only return replications local to node on which request was made
-|
-
-| Replication stats reporting (via _expvars)
-| CE
-|
-| Same in CE and EE
-
-| Default Conflict Resolution
-| CE
-|
-| Same in CE and EE
-
-| Out-of-box conflict resolvers (activeWins,passiveWins)
-| EE
-|
-|
-
-| Custom conflict resolution
-| EE
-|
-|
-
-| Delta-Sync
-| EE
-|
-|
-
-| Built-in-High Availability
-| EE
-| If HA is required, then replicators must be explicitly configured/created on multiple nodes
-|
-
-| Filters with Channels
-| CE
-|
-| Same in CE and EE
-
-| Tuneable Parameters
-| EE
-|
-| TBD
+See: {xref-sgw-pg-icr-conflict-resolution}
 
 
-|===
+// == Platform Capability
+
+// [%autowidth]
+// |===
+// | capability |Edition | In CE | In EE
+
+// | Replication configured in JSON config file
+// | CE
+// | Replication is created on every node it is configured on
+// | The union of all configured replications is distributed across all config files
+
+// | Replication created in REST API
+// | CE
+// | Replication is created on node from which the request is made
+// | The union of all REST API created replications is distributed
+
+// | Replication Monitoring using `_replication` and `_activeTasks`
+// | CE
+// | Will only return replications local to node on which request was made
+// | --
+
+// | Replication Monitoring using `_replicationStatus`
+// | CE
+// | Will only return replications local to node on which request was made
+// |
+
+// | Replication stats reporting (via _expvars)
+// | CE
+// |
+// | Same in CE and EE
+
+// | Default Conflict Resolution
+// | CE
+// |
+// | Same in CE and EE
+
+// | Out-of-box conflict resolvers (localWins,remoteWins)
+// | EE
+// |
+// |
+
+// | Custom conflict resolution
+// | EE
+// |
+// |
+
+// | Delta-Sync
+// | EE
+// |
+// |
+
+// | Built-in-High Availability
+// | EE
+// | If HA is required, then replicators must be explicitly configured/created on multiple nodes
+// |
+
+// | Filters with Channels
+// | CE
+// |
+// | Same in CE and EE
+
+// | Tuneable Parameters
+// | EE
+// |
+// | TBD
+
+
+// |===
 
 
 
 
 
 == Administration
+
+INCOMPLETE
 
 You can conduct Sync Gateway cluster administration manually should you wish, or circumstances (development environments, production failure or troubleshooting activities) dictate, but in most cases it is likely to be automated. Such automation may be implemented by script, Kubernetes or application server.
 
@@ -244,34 +249,32 @@ For instance, in the process of debugging why a replication is slow, there would
 Automated::
 +
 --
-Orchestration::
-+
 In the case of a decentralized cloud environments managed by an orchestration engine such as K8s, users will likely deploy clusters with a basic configuration. This is because each edge may have different channels and replication requirements.
-+
+
 To handle this, the configuration should be sufficient only to connect to the local cluster and to subsequently initialize replications on a per edge basis.
----
-
-Remote Configuration::
-A remote configuration facility to manage replications is highly desirable as it would ensure that config changes made to a cluster after launch are persisted on subsequent launches.
-+
-Under current Sync Gateway architecture the only way to do this is to embed the replication in the configuration file, because transient (`adhoc=true`) replications configured using the REST API are not persisted.
-
-Persisting replications only via config file has practical limitations. For example in cases where a replication is misbehaving causing Sync Gateway to crash (or fail) and must be removed (or updated) so it does not continue to crash (or malfunction) on restart. This may be the case if the replication target changes as a result of an infrastructure change, or filter params change after launch.
-
-Embedding the replication in config file is also not practical in an automated orchestration environment such as K8s, which will auto restart a failing Sync Gateway with same config file, causing repeating fails on restart .
-
-Even outside of K8s, restarting a sync gateway will shed any post-launch changes made by the administrator.
-
-Editing a config file to remove, or update, misconfigured replications means downtime as it  requires taking the Sync Gateway offline for temporary period while the changes are made. In
-an automated environment, the system may auto restart another replica to ensure that system has minimal number of servers running. This experience is not frictionless.
-
-Customized::
-In lieu of a global cluster-wide admin console for sync gateway (or on a per-node basis for that matter), customers may have to build one on their own. Providing an easy-to-use interface for configuring persistent replications would be highly desirable. Avoids the amount of book keeping that the “admin app” will have to do.
 --
 
-Use of `_active_tasks` is deprecated.
+// Remote Configuration::
+// A remote configuration facility to manage replications is highly desirable as it would ensure that config changes made to a cluster after launch are persisted on subsequent launches.
+// +
+// Under current Sync Gateway architecture the only way to do this is to embed the replication in the configuration file, because transient (`adhoc=true`) replications configured using the REST API are not persisted.
+
+// Persisting replications only via config file has practical limitations. For example in cases where a replication is misbehaving causing Sync Gateway to crash (or fail) and must be removed (or updated) so it does not continue to crash (or malfunction) on restart. This may be the case if the replication target changes as a result of an infrastructure change, or filter params change after launch.
+
+// Embedding the replication in config file is also not practical in an automated orchestration environment such as K8s, which will auto restart a failing Sync Gateway with same config file, causing repeating fails on restart .
+
+// Even outside of K8s, restarting a sync gateway will shed any post-launch changes made by the administrator.
+
+// Editing a config file to remove, or update, misconfigured replications means downtime as it  requires taking the Sync Gateway offline for temporary period while the changes are made. In
+// an automated environment, the system may auto restart another replica to ensure that system has minimal number of servers running. This experience is not frictionless.
+
+// Customized::
+// In lieu of a global cluster-wide admin console for sync gateway (or on a per-node basis for that matter), customers may have to build one on their own. Providing an easy-to-use interface for configuring persistent replications would be highly desirable. Avoids the amount of book keeping that the “admin app” will have to do.
+
 
 === REST API Admin capabilities:
+
+Use of `_active_tasks` is deprecated.
 
 Use `_replicate` to administrate replications  (`PUT`, `GET`, `DELETE`).
 
@@ -286,7 +289,6 @@ Stop an active persistent or transient replication::
 --
 For example to offline an edge cluster without waiting for a long replication to complete. The convenience API means only the `replication_id` parameter is required.
 --
-
 
 Reset a persistent replication::
 +
@@ -306,6 +308,8 @@ Remove a persistent or transient replication::
 Behavior is unchanged, with exception of a convenience API that required only the `replication_id`.
 --
 
+See: {xxref-sgw-pg-admin-rest-api}
+
 == Monitoring Replications
 
 * Use `_replicationStatus` to monitor SG-Replicate 2.0 replications  (`GET`).
@@ -319,15 +323,15 @@ The content returned will be the same as that returned by `_replicationStatus` a
 ** last_seq_push
 ** last_seq_pull
 
-
-
 == Filtering
+
+PLACEHOLDER
 
 
 
 == Authentication
 
-
+PLACEHOLDER
 
 
 include::partial$block-related-content-icr.adoc[]
