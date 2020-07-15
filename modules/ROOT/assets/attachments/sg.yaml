@@ -1272,8 +1272,7 @@ properties:
     type: string
 
   replications:
-    type: array
-    description: |2
+    description: |
       (**Deprecated**) This SG-Replicate 1.0 method of configuring replication is deprecated at version 2.8.
 
       For replication using the SG-Replicate 2.0 protocol configure the replication properties under _database.replications_ instead -- see [SG-Replicate 2.0 Replications](./../refer/config-properties.html#databases-this_db-replications).
@@ -1285,7 +1284,7 @@ properties:
       - default to a 'Running' state
       - do not support built-in, or custom, conflict resolution -- see [Resolving Conflicts](./../resolving-conflicts.html) and [SG-Replicate 2.0 Conflict Resolution](./../learn/icr-conflict-resolution.html)
       - use `source` and `target` to derive replication direction
-
+      -
     items:
       type: object
       properties:
@@ -1331,7 +1330,7 @@ properties:
           type: array
           description: |
             (**Deprecated**)
-            A set of key/value pairs to use in the query string of the replication. For example, the channels field can be used to pull from a set of channels (in this particular case, the filter key must be set for the channels field to work as expected).
+            A set of key/value pairs to use in the querystring of the replication. For example, the channels field can be used to pull from a set of channels (in this particular case, the filter key must be set for the channels field to work as expected).
           items:
             # type: object
             # properties:
