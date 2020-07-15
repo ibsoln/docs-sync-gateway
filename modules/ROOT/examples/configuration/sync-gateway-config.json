@@ -884,7 +884,32 @@ function sync(doc, oldDoc) {
 
 
 
+// tag::icr-repl-rest-oneshot[]
+{
+  "replication_id": "our-rep-1",
+  "direction": "pull",
+  "remote": "http://user:password@example.com:4985/db1",
+  "filter":"sync_gateway/bychannel",
+  "query_params": {
+    "channels": ["channel1.user1"]
+  }
+}
+// end::icr-repl-rest-oneshot[]
 
+// tag::icr-repl-rest-cont[]
+{
+  "replication_id": "our-rep1",
+  "direction": "pull",
+  "purge-on-removal": true,
+  "remote": "http://user:password@example.com:4985/db1",
+  "filter":"sync_gateway/bychannel",
+  "query_params": {
+    "channels": ["channel1.user1"]
+  },
+  "continuous": true
+
+}
+// end::icr-repl-rest-cont[]
 
 
 
