@@ -23,55 +23,14 @@
 // replace me with content
 // end::2-8-1[]
 // tag::2-8-0[]
-== Structural Schema Changes
+== REST API Changes
 // tag::2-8-0-structuralonly[]
 
-`_replicate` becomes `database.replication`::
-The replication configuration property `_replicate` is deprecated.
-SG-Replicate 2.0 replications are now defined with the `_replication` property, which is as a member of the `database` property.
-Note that any given database can still have multiple replications configured.
-
-Constraint: SG-Replicate 2 does not support replication between two remote hosts via a third Sync Gateway.
-// end::2-8-0-structuralonly[]
-
-== Removed or Deprecated Properties
+== Removed or Deprecated
 // tag::2-8-0-removedonly[]
 
-The following SG Replicate 1.0 (SG1) _ReplicationConfig_ configuration properties are deprecated.
+The SG Replicate 1.0 (SGR1) REST API is deprecated.
 Deprecated functionality remains solely for backward compatibility with SG1 but is no longer supported:
-
-// tag::create-target[]
-create_target::
-_SG 1.0 Deprecated_.
-The _create_target_ property remains in `ReplicationConfig` but is deprecated for Couchbase Server-backed use cases.
-// end::create-target[]
-
-// tag::proxy[]
-proxy::
-_SG 1.0 Deprecated_.
-The _proxy_ property remains in `ReplicationConfig` but is deprecated_.
-// end::proxy[]
-
-// tag::doc-ids[]
-doc_ids::
-_SG 1.0 Deprecated_.
-The _doc_ids_ property remains in `ReplicationConfig` but is deprecated_.
-// end::doc-ids[]
-
-// tag::source[]
-source::
-__SG 1.0 Deprecated__.
-+
-*For SG2:* the _source_ property is, implicitly, the database associated with the replication (that is, the 'database' property under which it is defined).
-// end::source[]
-
-// tag::target[]
-[[target-property,target]]
-target::
-__SG 1.0 Deprecated__.
-+
-*For SG2:* The _target_ property is replaced by the `<<remote-property>>` property.
-// end::target[]
 
 // tag::async[]
 async::
@@ -90,9 +49,9 @@ _Removed - redundant_.
 
 // tag::2-8-0-newonly[]
 
-== New Configuration Properties
+== New Endpoints
 
-The following new properties are added:
+The following endpopints are added:
 
 // tag::remote[]
 [[remote-property, remote]]
@@ -149,7 +108,8 @@ Valid values in configuration or in a payload to a replication endpoint are: sto
 
 
 // tag::2-8-0-modifiedonly[]
-== Modified Configuration Properties
+== Modified Endpoints
+
 
 The following replication configuration properties have changed:
 
@@ -164,7 +124,8 @@ When used in the REST API, you must specify the `replication_id` of a running re
 // end::2-8-0-modifiedonly[]
 
 // tag::2-8-0-retainedonly[]
-== Retained Configuration Properties
+== Retained Endpoints
+
 The following replication configuration properties are retained unchanged:
 
 * continuous
