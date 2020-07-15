@@ -919,6 +919,7 @@ properties:
 
                       The impact of this property is dependent on the [database.this_db.delta_sync](config-properties.html#databases-this_db-delta_sync-enabled) property as indicated by the table here
 
+                      With `enable_delta_sync=false` on "target" database
 
                       <h5>With `"delta_sync": {"enabled": false}` on the "target" database</h5>
 
@@ -953,16 +954,15 @@ properties:
 
                       <h5>With `"delta_sync": {"enabled": true}` on the "target" database</h5>
 
-                      |   | **Delta Sync Config1** | **Delta Sync Config2** |
-                      | :--- | :--- | :--- |
-                      |  **Source** | DB Level Irrelevant<br/><br/>Replicator Level Disabled | DB Level Irrelevant<br/><br/>Replicator Level Enabled |
-                      |  **Target** | DB Level Enabled<br/>Replicator Level : N/A | DB Level Enabled<br/>Replicator Level : N/A |
-                      |  **In SGR-2.0** | Delta Sync Disabled | Delta Sync Enabled |
+                      With `enable_delta_sync=true` on "target" database
 
                       **Constraints**
 
                       <p>Replications created prior to version 2.8 run with `enable_delta_sync=false`</p>
 
+                      **Constraints**
+
+                      Replications created prior to version 2.8 run with `enable_delta_sync=false`
                   filter:
                     type: string
                     default: None - no filter function is used
@@ -978,12 +978,6 @@ properties:
                       **Behavior**
 
                       Works in conjunction with.[query_params](config-properties.html#databases-this_db-replications-query_params) to control the documents processed by the replication.
-
-                      **Example**
-
-                      ```
-                      "filter":"sync_gateway/bychannel"
-                      ```
 
                       **Constraints**
 
@@ -1017,11 +1011,12 @@ properties:
 
                   purge_on_removal:
                     type: boolean
-                    default: false
+                    default: False
                     description: |2
+
                       **About**
 
-                      The optional `purge_on_removal` configuration property specifies, per replication, whether the removal of a `channel` triggers a purge.
+                      The optional `purge_on_removal` configuration property determines, per replication, whether the removal of a `channel` triggers a purge.
 
                       **Options**
                       - `true` or `false`
@@ -1049,7 +1044,7 @@ properties:
 
                       **Using**
 
-                      You can use `query_params`' *channels* function to *pull* from a specific set of `channels`.
+                      You can use `query_params`'s' *channels* function to *pull* from a specific set of `channels`.
                       To do so, you would also need to set the `filter` to  `sync_gateway/bychannels`.
 
                       For example :
@@ -1073,15 +1068,14 @@ properties:
                     description: |2
                       **About**
 
-                      The `remote` property represents a database endpoint for the remote Sync Gateway cluster.
-                      That is, it identifies the remote cluster that is the subject of this replication's *push*, *pull* or *push_and_pull action*.
+                      The **`remote`** property represents a database endpoint for the remote Sync Gateway cluster.
+                      That is, it identifies the remote cluster that is the subject of this replication's push, pull or push_and_pull action.
 
                       **Options**
 
                       The format can be one of --
                       - a string containing a valid URL for a (remote) Sync Gateway database.
                       - an object whose url property contains the Sync Gateway database URL.
-
 
                       **Behavior**
 
@@ -1091,12 +1085,6 @@ properties:
                       - `direction=pull`, then `remote` defines the remote cluster *from* which data is pulled
                       - `direction=push`, then `remote` defines the remote cluster *to* which data is pushed
                       - `direction=push_and_pull`, then `remote` defines the remote cluster *to* which data is pushed.
-
-                      **Example**
-
-                      ```
-                       "remote": "http://user1:password@11.222.333.5:4984/db2name",
-                      ```
 
                       **Constraints**
 
@@ -1114,7 +1102,7 @@ properties:
 
                       All replications are configured to start on Sync Gateway launch. So, if omitted, the state defaults to 'Running'.
 
-                      **Constraints**
+                      **Constraints*
 
                       Replications created prior to version 2.8 will all default to a state of 'Running'.
 
