@@ -1,14 +1,17 @@
-= Replication Administration
+
+= ICR Administration and Management
 :page-layout: article
 :page-status: {release-status-sgw} -- {release-comments-sgw}
 :page-edition: Under Development
-:page-role:
-:description: Inter-cluster replication (Sync Gateway to Sync Gateway) administration using SG-Replicate protocol
+:page-role: panes
+:description: This content covers the administration and management of inter-cluster replications
+:keywords:
 
 include::partial$_std-hdr-sgw.adoc[]
+include::partial$block-authors-notes.adoc[tag=wip]
 :topic-group: Inter-cluster Replication
 :param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin}
-:param-abstract: This content covers the administration aspects of inter-cluster  replication
+:param-abstract: Inter-cluster replication conflict resolution policies and behaviors.
 include::partial$block-abstract.adoc[]
 
 ifeval::["{releaseStatus}" == "gamma"]
@@ -21,180 +24,24 @@ Information sources include:
 
 *  https://issues.couchbase.com/browse/DOC-6493
 * https://docs.google.com/document/d/13E6JOq8u_AaUd_t8FZEPCAuq7jfkjryecjBQBHE3pG8/edit?ts=5e7cd22f#heading=h.b2gu37hg0ou0
-* See: https://docs.google.com/document/d/13E6JOq8u_AaUd_t8FZEPCAuq7jfkjryecjBQBHE3pG8/edit?ts=5e7cd22f#heading=h.b2gu37hg0ou0 for content
+
 --
 endif::[]
 
 
 == Overview
-ifeval::["{releaseStatus}" != "production"]
-[.pane__frame--orange]
-.Author's Notes
---
-CAUTION: CONTENT UNDER DEVELOPMENT
 
---
-endif::[]
+See: https://docs.google.com/document/d/13E6JOq8u_AaUd_t8FZEPCAuq7jfkjryecjBQBHE3pG8/edit?ts=5e7cd22f#heading=h.b2gu37hg0ou0 for content
 
-// tag::overview[]
-// end::overview[]
 
-The Admin REST API provides a number of endpoints to assist in the monitoring, administration and management of replications.
+.points to cover, include:
 
-You can use these to conduct Sync Gateway cluster administration, whether manually or by using automation (for example, scripts or a container orchestration system such as  Kubernetes).
-
-Manual operation will typically take place where a cluster is malfunctioning and needs troubleshooting, or in demonstration and development environments.
-For instance, in the process of debugging why a replication is slow, there would be a need to temporarily stop a replication and subsequently restart when the issue is resolved.  Another case would be if the parameters of the replication need to change.
-
-== REST API Admin capabilities:
-
-// Use of `_active_tasks` is deprecated.
-
-You can use the `_replication` endpoint to administrate replications  (`PUT`, `GET`, `DELETE`).
-
-List persistent and ad hoc replications::
+* configuration
 +
---
-The list includes replications initiated using configuration or REST APi and can be in any state.
-
-.Listing persistent and ad hoc replications
-====
-[source, json]
-----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-list-replications]
-----
-====
-
---
-
-Stop an active persistent or ad hoc replication::
-+
---
-For example to offline an edge cluster without waiting for a long replication to complete. The convenience API means only the `replication_id` parameter is required.
-
-.Stopping replications
-====
-[source, json]
-----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-stop-replications]
-----
-====
---
-
-Reset a persistent replication::
-+
---
-This is useful to escape a system state where one or more documents have failed to sync but where resuming from previous synced checkpoint would skip over those documents.
-
-.Resetting replications
-====
-[source, json]
-----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-reset-replications]
-----
-====
---
-
-Update a persistent continuous replication::
-+
---
-
-.Updating replications
-====
-[source, json]
-----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-reset-replications]
-----
-====
---
-
-Remove a persistent or ad hoc replication::
-+
---
-Behavior is unchanged, with exception of a convenience API that required only the `replication_id`.
-
-.Removing replications
-====
-[source, json]
-----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-reset-replications]
-----
-====
-
-
---
-
-See: {xref-sgw-pg-admin-rest-api}
+The replication  configuration for SG-replicate 2 will now be moved under the database section. The pre-Hydrogen way of configuring replication will be deprecated starting Hydrogen. Refer to upgrade section for specifics on how existing replications will be mapped to new model starting Hydrogen.
+*
 
 
 
-
-
-== Cancel a replication
-
-An active replication task is canceled by sending a POST request to the server endpoint `_replication`, with a JSON object.
-The JSON object must contain the `"cancel": true` parameter and a valid `replication_id`.
-
-.Canceling a replication
-=====
-
-[{tabs}]
-====
-Using replication_id::
-+
---
-This example will cancel an active replication with a `replication_id` of "my-one-shot-replication", the `replication_id` value can be obtained by sending a request to `_active_tasks`.
-
-[source,javascript]
-----
-{
-    "cancel": true,
-    "replication_id": "my-one-shot-replication"
-}
-----
---
-
-Without replication_id::
-+
---
-This will cancel a replication that was started with same "source" and "target" values as those in the cancel request.
-By omitting the "continuous" property it's value will default to *false*, a replication must also have been started as a one-shot to match.
-
-[source,javascript]
-----
-{
-    "cancel":true,
-    "source": "db",
-    "target": "db-copy"
-}
-----
---
-
-====
-
-=====
-
-
-When an active task is canceled, the response returns the stats of the replication up to the point when it was stopped.
-
-.Sample Stats Response
-====
-
-[source,javascript]
-----
-{
-    "type":"replication",
-    "replication_id":"3791d562153505408e0b2730603ed7c1",
-    "continuous":true,
-    "source":"http://0.0.0.0:4985/source",
-    "target":"http://0.0.0.0:4985/target",
-    "docs_read":12,
-    "docs_written":12,
-    "doc_write_failures":0,
-    "start_last_seq":0,
-    "end_last_seq":"28"
-}
-----
-====
 
 include::partial$block-related-content-icr.adoc[]
