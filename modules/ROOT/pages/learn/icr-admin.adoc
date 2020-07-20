@@ -7,13 +7,13 @@
 :keywords:
 
 include::partial$_std-hdr-sgw.adoc[]
-include::partial$block-authors-notes.adoc[tag=wip]
+// include::partial$block-authors-notes.adoc[tag=wip]
 :topic-group: Inter-cluster Replication
 :param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin}
 :param-abstract: Inter-cluster replication conflict resolution policies and behaviors.
 include::partial$block-abstract.adoc[]
 
-ifeval::["{releaseStatus}" == "gamma"]
+ifeval::["{release-status-sgw}" == "gamma"]
 [.pane__frame--orange]
 .Author's Notes
 --
@@ -28,17 +28,7 @@ Information sources include:
 endif::[]
 
 
-== Overview
-ifeval::["{releaseStatus}" != "production"]
-[.pane__frame--orange]
-.Author's Notes
---
-CAUTION: CONTENT UNDER DEVELOPMENT
-
-from priya "Admin/Management should be the same. Cover the _replicationStatus actions. Also, UPDATE, DEL replication ."
-
---
-endif::[]
+== Admin capabilities
 
 // tag::overview[]
 // end::overview[]
@@ -47,95 +37,200 @@ The Admin REST API provides a number of endpoints to assist in the monitoring, a
 
 You can use these to conduct Sync Gateway cluster administration, whether manually or by using automation (for example, scripts or a container orchestration system such as  Kubernetes).
 
-Manual operation will typically take place where a cluster is malfunctioning and needs troubleshooting, or in demonstration and development environments.
-For instance, in the process of debugging why a replication is slow, there would be a need to temporarily stop a replication and subsequently restart when the issue is resolved.  Another case would be if the parameters of the replication need to change.
+// Manual operation will typically take place where a cluster is malfunctioning and needs troubleshooting, or in demonstration and development environments.
+// For instance, in the process of debugging why a replication is slow, there would be a need to temporarily stop a replication and subsequently restart when the issue is resolved.  Another case would be if the parameters of the replication need to change.
 
-== REST API Admin capabilities:
+The Admin Rest API provides two endpoints with admin capabilities:
 
+_replication::
+* List - get
+* Update - put
+* Remove - del
+
+_replicationStatus::
+* Stop
+* Start
+* Reset
+
+
+//
+
+== Listing Replications
 // Use of `_active_tasks` is deprecated.
 
-You can use the `_replication` endpoint to administrate replications  (`PUT`, `GET`, `DELETE`).
+You can get a list of all replications across all nodes by using the `_replicate GET` endpoint.
 
-List persistent and ad hoc replications::
-+
---
 The list includes replications initiated using configuration or REST APi and can be in any state.
 
-.Listing persistent and ad hoc replications
+.Listing replications
+=====
+[{tabs}]
 ====
-[source, json]
-----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-list-replications]
-----
-====
-
---
-
-Stop an active persistent or ad hoc replication::
+Request::
 +
 --
-For example to offline an edge cluster without waiting for a long replication to complete. The convenience API means only the `replication_id` parameter is required.
-
-.Stopping replications
-====
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-stop-replications]
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-list-replications-req]
 ----
-====
 --
 
-Reset a persistent replication::
+Body::
 +
 --
-This is useful to escape a system state where one or more documents have failed to sync but where resuming from previous synced checkpoint would skip over those documents.
-
-.Resetting replications
-====
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-reset-replications]
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-list-replications-body]
 ----
-====
 --
 
-Update a persistent continuous replication::
+Response::
 +
 --
-
-.Updating replications
-====
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-reset-replications]
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-list-replications-resp]
 ----
-====
 --
+====
+=====
 
-Remove a persistent or ad hoc replication::
+== Getting Replication Details
+
+.Get a replication's definitions
+=====
+[{tabs}]
+====
+Request::
 +
 --
-Behavior is unchanged, with exception of a convenience API that required only the `replication_id`.
-
-.Removing replications
-====
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-reset-replications]
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replications-req]
 ----
-====
-
-
 --
 
-See: {xref-sgw-pg-admin-rest-api}
+Response::
++
+--
+[source, json]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replications-resp]
+----
+--
+====
+=====
+
+The following example retrieves definitions for all replications on a specified database, regardless of the node on which it was configured.
+The results are returned in an array; one entry per replication.
 
 
+.Get all replication details for a database
+=====
+[{tabs}]
+====
+Request::
++
+--
+[source, json]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replications-req-all-for-db]
+----
+--
 
-== Cancel a replication
+Response::
++
+--
+[source, json]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replications-resp-all-for-db]
+----
+--
+====
+=====
 
-An active replication task is canceled by sending a POST request to the server endpoint `_replication`, with a JSON object.
-The JSON object must contain the `"cancel": true` parameter and a valid `replication_id`.
+== Updating a Replication
+
+.Update a replication's details
+=====
+[{tabs}]
+====
+Request::
++
+--
+[source, json]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-update-replications-req]
+----
+--
++
+// Body::
+// +
+// --
+// [source, json]
+// ----
+// include::example$configuration/sync-gateway-config.json[tag=icr-rep-update-replications-body]
+// ----
+// --
+Response::
++
+--
+A successful update will return a 200 response, with the following body:
+[source, json]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-update-replications-resp]
+----
+--
+====
+=====
+
+See: {xref-sgw-pg-admin-rest-api}  |  Endpoint {xref-sgw-endpoint-admin-api-replication-put}
+
+== Removing a Replication
+
+Deleting a replication will remove:
+
+* The persisted replication definition
+* All checkpoints associated with the replication
+* All replication status information associated with the replication
+
+.Removing a replication
+=====
+[{tabs}]
+====
+
+Request::
++
+--
+[source, json]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-remove-replications-req]
+----
+--
+
+Response::
++
+--
+[source, json]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-remove-replications-resp]
+----
+
+--
+====
+=====
+
+See: {xref-sgw-pg-admin-rest-api}  |  Endpoint {xref-sgw-endpoint-admin-api-replication-delete}
+
+== Canceling a Replication
+
+An active replication task is canceled by sending a PUT or POST request to the server endpoint `_replication`, with a JSON object.
+
+The JSON object's body must contain the parameter `"cancel": true` and a valid `replication_id`.
+
+Note that the details within the body of the request must be identical to the original replication for the cancelation request to be honoured.
+
+So if. for example, the original request was a one-shot replication you can omit the `"continous": false` parameter; false is the default value and so will match the original details.
 
 .Canceling a replication
 =====
@@ -149,10 +244,7 @@ This example will cancel an active replication with a `replication_id` of "my-on
 
 [source,javascript]
 ----
-{
-    "cancel": true,
-    "replication_id": "my-one-shot-replication"
-}
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-cancel-replications-body]
 ----
 --
 
@@ -164,39 +256,201 @@ By omitting the "continuous" property it's value will default to *false*, a repl
 
 [source,javascript]
 ----
-{
-    "cancel":true,
-    "source": "db",
-    "target": "db-copy"
-}
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-cancel-replications-body-no-id]
+----
+--
+
+Response::
++
+--
+When an active task is canceled, the response returns the stats of the replication up to the point when it was stopped.
+
+[source,javascript]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-cancel-replications-resp]
+----
+--
+====
+=====
+
+
+
+
+== Getting Replication Status Data
+
+.Get status data for a specified replication
+=====
+[{tabs}]
+====
+Request::
++
+--
+[source, json]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replication-status-req]
+----
+--
+
+Response::
++
+--
+[source, json]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replication-status-resp]
+----
+--
+====
+=====
+
+The following example retrieves status data for all replications that meet the specified criteria.
+
+The results are returned in an array; one entry per replication.
+
+.Get status data for all replications meeting criteria
+=====
+[{tabs}]
+====
+Request::
++
+--
+This example's criteria selects non-active, local, adhoc or persistent Rest API replications.
+
+[source, json]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replication-status-req-all]
+----
+--
+
+Response::
++
+--
+[source, json]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replication-status-resp-all]
+----
+--
+====
+=====
+
+== Starting a Replication
+
+Stop an active persistent or ad hoc replication
+
+For example to offline an edge cluster without waiting for a long replication to complete. The convenience API means only the `replication_id` parameter is required.
+
+.Start a replication
+=====
+[{tabs}]
+====
+Request::
++
+--
+[source, json]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-start-replications-req]
+----
+--
+
+Response::
++
+--
+[source, json]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-start-replications-resp]
 ----
 --
 
 ====
-
 =====
 
+== Stopping a Replication
 
-When an active task is canceled, the response returns the stats of the replication up to the point when it was stopped.
+Stop an active persistent or ad hoc replication
 
-.Sample Stats Response
+For example to offline an edge cluster without waiting for a long replication to complete. The convenience API means only the `replication_id` parameter is required.
+
+.Stopping replications
+=====
+[{tabs}]
 ====
+Request::
++
+--
+[source, json]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-stop-replications-req]
+----
+--
 
-[source,javascript]
+Response::
++
+--
+[source, json]
 ----
-{
-    "type":"replication",
-    "replication_id":"3791d562153505408e0b2730603ed7c1",
-    "continuous":true,
-    "source":"http://0.0.0.0:4985/source",
-    "target":"http://0.0.0.0:4985/target",
-    "docs_read":12,
-    "docs_written":12,
-    "doc_write_failures":0,
-    "start_last_seq":0,
-    "end_last_seq":"28"
-}
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-stop-replications-resp]
 ----
+--
+
 ====
+=====
+
+== Resetting a Replication
+
+Reset a persistent replication
+
+This is useful to escape a system state where one or more documents have failed to sync but where resuming from previous synced checkpoint would skip over those documents.
+
+.Reset a replication
+=====
+[{tabs}]
+====
+Request::
++
+--
+[source, json]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-reset-replications-req]
+----
+--
+
+Response::
++
+--
+[source, json]
+----
+include::example$configuration/sync-gateway-config.json[tag=icr-rep-reset-replications-resp]
+----
+--
+====
+=====
 
 include::partial$block-related-content-icr.adoc[]
+
+
+// == Updating a Replication
+
+// .Update a replication's details
+// =====
+// [{tabs}]
+// ====
+// Request::
+// +
+// --
+// include::example$configuration/sync-gateway-config.json[tag=icr-rep-list-replications-req]
+// --
+
+// Body::
+// +
+// --
+// include::example$configuration/sync-gateway-config.json[tag=icr-rep-list-replications-body]
+// --
+
+// Response::
+// +
+// --
+// include::example$configuration/sync-gateway-config.json[tag=icr-rep-list-replications-resp]
+// --
+
+// ====
+// =====
+
