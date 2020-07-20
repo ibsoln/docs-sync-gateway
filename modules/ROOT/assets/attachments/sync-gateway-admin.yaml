@@ -596,7 +596,8 @@ parameters:
 # replicationStatus-localOnly:
     - in: query
       name: localOnly
-      description: When true, returns a list of replications that are running or have been run only on the local node since startup. By default, replications that are run across all nodes are returned.
+      description: |2
+        When true, returns only replications that are running (or have been run) only on the local node since startup.
       type: boolean
       default: false
       required: false
@@ -609,31 +610,56 @@ parameters:
       default: true
       required: false
 
-  replication_id:
-    in: path
-    type: string
-    name: replicationID
-    description: If supplied, the **replicationID** parameter must be a valid replication id. If it is not supplied for a *new replication*, then a random UUID is generated.
+  # replication_id:
+  #   in: path
+  #   type: string
+  #   name: replicationID
+  #   description: If supplied, the **replicationID** parameter must be a valid replication id. If it is not supplied for a *new replication*, then a random UUID is generated.
 
-  replication_id-get:
-    in: path
-    type: string
-    name: replicationID
-    description: |2
-      The *replicationID* parameter specifies the required replication.
-
-  replication_id-delete:
+  replication_id-upsert:
     in: path
     type: string
     name: replicationID
     description: |2
-      The *replicationID* parameter specifies the replication to be deleted.
+      <p>If supplied, the <i>replicationID</i> parameter must be a valid replication id.</p>
+      <p>If it is not supplied for a <i>new</i> replication*, then a random UUID is generated.</p>
 
+  # replication_id-get:
+  #   in: path
+  #   type: string
+  #   name: replicationID
+  #   description: |2
+  #     The *replicationID* parameter specifies the required replication.
 
+  # replication_id-delete:
+  #   in: path
+  #   type: string
+  #   name: replicationID
+  #   description: |2
+  #     The *replicationID* parameter specifies the replication to be deleted.
 
+  replication_id-required:
+    in: path
+    type: string
+    name: replicationID
+    required: true
+    description: |2
+      The {replicationID} parameter identifies the target replication.
 
+  replicationStatus-action:
+    in: query
+    name: action
+    type: string
+    default: none
+    required: true
+    description: |2
+      The value of the {action} parameter specifies the value you want the selected replication's status set to.
 
+      <p>Valid values are:</p>
 
+      - **start** : Use this action to start a stopped replication
+      - **stop** : Use this action to stop a started replication
+      - **reset** : Use this action to reset a stopped replication. This will set the checkpoint to zero. For bidirectional replication, both push and pull checkpoints are reset to zero.
   rev:
     name: rev
     in: query
@@ -1585,7 +1611,7 @@ paths:
       tags:
       # - database
       - replication
-      summary: Returns all replication definitions
+      summary: Retrieve all replication definitions
       description: |
         Returns an array object containing all replication definitions
       parameters:
@@ -1604,12 +1630,12 @@ paths:
       tags:
       # - database
       - replication
-      summary: Returns a replication definition
+      summary: Retrieve a replication definition
       description: |
         Returns requested (**replicationID**) replication definition
       parameters:
         - $ref: '#/parameters/db-local'
-        - $ref: '#/parameters/replication_id-get'
+        - $ref: '#/parameters/replication_id-required'
 
       responses:
         200:
@@ -1624,18 +1650,21 @@ paths:
       tags:
       # - database
       - replication
-      summary: Start a database replication operation
+      summary: Upsert a replication definition
       description: |
         The **_replication** endpoint is used to manage both *ad hoc* and *persistent* replication operations.
 
-        Cancelling Replications::
-          You can cancel continuous replications by adding the cancel field to the JSON request object and setting the value to true.
-          Note that the structure of the request must be identical to the original for the cancellation request to be honoured.
+        Using a PUT request you can update (or insert, if it doesn't exist) a set of replication details.
 
-          For example, if you requested continuous replication, the cancellation request must also contain the continuous field.
+        <br>**To cancel a replication**
+        You can cancel continuous replications by adding the cancel field to the JSON request object and setting the value to true.
+
+        Note that the structure of the request must be identical to the original for the cancellation request to be honoured.
+
+        For example, if you requested continuous replication, the cancellation request must also contain the continuous field.
       parameters:
         - $ref: '#/parameters/db-local'
-        - $ref: '#/parameters/replication_id'
+        - $ref: '#/parameters/replication_id-upsert'
         - $ref: '#/parameters/replication__replication-body'
       responses:
         200:
@@ -1650,10 +1679,13 @@ paths:
       tags:
       # - database
       - replication
-      summary: Start a database replication operation
-      description: |
+      summary: Create a replication definition
+      description: |2
         The **_replication** endpoint is used to manage both *ad hoc* and *persistent* replication operations.
 
+        Using a POST request you can insert a new set of replication details.
+
+        <br>**To Cancel a Replication**
         You can cancel continuous replications by adding the cancel field to the JSON request object and setting the value to true.
 
         Note that the structure of the request must be identical to the original for the cancellation request to be honoured.
@@ -1661,7 +1693,7 @@ paths:
         For example, if you requested continuous replication, the cancellation request must also contain the continuous field.
       parameters:
       - $ref: '#/parameters/db-local'
-      - $ref: '#/parameters/replication_id'
+      - $ref: '#/parameters/replication_id-upsert'
       - $ref: '#/parameters/replication__replication-body'
       responses:
         200:
@@ -1684,7 +1716,7 @@ paths:
         - Deletes all replication status information associated with the replication
       parameters:
         - $ref: '#/parameters/db-local'
-        - $ref: '#/parameters/replication_id-delete'
+        - $ref: '#/parameters/replication_id-required'
       response:
         200:
           description: Replication successfully deleted
@@ -1697,27 +1729,34 @@ paths:
     get:
       tags:
         - replication
-      summary: Returns all replications matching filter criteria
+      summary: Returns replication status data for  replications matching the criteria
       description:
-        Returns the list of replications in accordance with the supplied filter (**queryString**)
+        Returns replication status data for all replications matching the criteria specified in the {querystring} parameter.
 
-        This endpoint returns the status of SG-Replicate 2 replications across *all* nodes. By default, it returns replications that include
+        Th selection is made from all SG-Replicate 2.0 replications across *all* nodes.
 
-         - persistent and adhoc
+        By default, returned replications include
 
-         - all types (one shot and continuous)
+         - all types (persistent and ad hoc)
 
-         - all states (running, stopped or errored-out or not )
+         - all modes (one shot and continuous)
+
+         - all states (running, stopped or errored)
 
 
-        The `queryString` parameter supports the following  parameters to filter by `state`
+        The `{queryString}` parameter supports the following filter parameters
 
-          - `activeOnly` (boolean) -- When *true*, only active replications (state=starting, running, stopping) are returned
+          - `activeOnly`
+          -- (boolean)
+          -- When *true*, only active replications (state=starting, running, stopping) are returned
 
-          - `localOnly` (boolean) --  When *true* returns a list of replications that are running or have been run only on the local node since startup. By default, replications that are run across all nodes are returned.
+          - `localOnly`
+          -- (boolean)
+          -- When *true* returns a list of replications that are running or have been run only on the local node since startup. By default, replications that are run across all nodes are returned.
 
-          - `includeError` (boolean) -- When *false*, omits replications stopped due to error (`state=error`)
-
+          - `includeError`
+            - (boolean)
+            - When *false*, omits replications stopped due to error (`state=error`)
 
           <h5>Example</h5>
 
@@ -1751,7 +1790,7 @@ paths:
         Returns the status of the requested (**replicationID**) replication
       parameters:
         - $ref: '#/parameters/db'
-        - $ref: '#/parameters/replication_id-get'
+        - $ref: '#/parameters/replication_id-required'
       responses:
         200:
           description: Information about specified replication.
@@ -1777,8 +1816,6 @@ paths:
 
            - `reset` -- resets a stopped replication (resets checkpoint to zero). For bidirectional replication, both push and pull checkpoints are reset to zero.
 
-
-
            For example
 
            ```
@@ -1786,15 +1823,17 @@ paths:
            ```
       parameters:
         - $ref: '#/parameters/db'
-        - in: query
-          name: action
-          type: string
-          default: none
-          required: true
-          description: Specifies the status to be set (`start`, `stop` or `reset`)
+        - $ref: '#/parameters/replication_id-required'
+        - $ref: '#/parameters/replicationStatus-action'
+        # - in: query
+        #   name: action
+        #   type: string
+        #   default: none
+        #   required: true
+        #   description: Specifies the status to be set (`start`, `stop` or `reset`)
       responses:
         200:
-          description: status reset successfully
+          description: The required status is successfully set
 
 
   /{db}/_revs_diff:
@@ -3283,7 +3322,7 @@ definitions:
 
       parameters:
       - $ref: '#/parameters/db'
-      - $ref: '#/parameters/replication_id'
+      - $ref: '#/parameters/replication_id-upsert'
       - $ref: '#/parameters/replication__replication-body'
       responses:
         200:
@@ -3740,6 +3779,13 @@ definitions:
 
           Replications created prior to version 2.8 will all default to a state of 'Running'.
 
+  block-rep-cancel-text:
+    description: |2
+      You can cancel continuous replications by adding the cancel field to the JSON request object and setting the value to true.
+
+      Note that the structure of the request must be identical to the original for the cancellation request to be honoured.
+
+      For example, if you requested continuous replication, the cancellation request must also contain the continuous field.
 
 # END: Define sync-gateway replications
 
