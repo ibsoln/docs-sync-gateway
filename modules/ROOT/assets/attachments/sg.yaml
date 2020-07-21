@@ -124,7 +124,7 @@ properties:
               }
               ```
 
-              Foot notes:
+              Footnotes:
 
               - Delta Sync is automatically enabled for peer-to-peer sync between Couchbase Lite clients.
               - Delta sync is disabled for Couchbase Lite database replicas.
@@ -789,7 +789,7 @@ properties:
                     description: |2
                       **About**
 
-                      Use the optional `batch_size` property specifies the number of changes to be included in a single batch during replication.
+                      The optional `batch_size` property specifies the number of changes to be included in a single batch during replication.
 
                   conflict_resolution_type:
                     type: string
@@ -902,11 +902,11 @@ properties:
                     type: boolean
                     default: false -- delta sync is off
                     description: |2
+
                       **About**
 
                       The optional `enable_delta_sync` property turns on delta sync for a replication.
-
-                      For more on *delta sync* replication, see -- [delta sync replications](./../learn/icr-delta-sync.html)
+                      It works in conjunction with the database level [database.this_db.delta_sync.enabled](config-properties.html#databases-this_db-delta_sync-enabled).
 
                       **Options**
 
@@ -917,51 +917,17 @@ properties:
 
                       **Behavior**
 
-                      The impact of this property is dependent on the [database.this_db.delta_sync](config-properties.html#databases-this_db-delta_sync-enabled) property as indicated by the table here
+                      The impact of this property is dependent on the [database.this_db.delta_sync.enabled](config-properties.html#databases-this_db-delta_sync-enabled) property setting for the relevant databases as indicated here.
 
+                      - **If** `"delta_sync.enabled": true` for both databases involved in the replication, then this parameter enables or disables its use for this specific replication.
 
-                      <h5>With `"delta_sync": {"enabled": false}` on the "target" database</h5>
-
-                      <style>
-
-                        table { width: 100%;
-                                border: 1px solid lightgrey;
-                                padding: 2px;
-                        }
-
-                        table th { color: white;
-                                background-color: darkgrey;
-                                }
-
-                        table th:first-of-type {
-                            width: 20%;
-                        }
-                        table th:nth-of-type(2) {
-                            width: 40%;
-                        }
-                        table th:nth-of-type(3) {
-                            width: 40%;
-                        }
-
-                      </style>
-
-                      |   | **Delta Sync Config1** | **Delta Sync Config2** |
-                      | :--- | :--- | :--- |
-                      |  **Source** | DB Level Irrelevant<br/><br/>Replicator Level Disabled | DB Level Irrelevant<br/><br/>Replicator Level Enabled |
-                      |  **Target** | DB Level Disabled<br/>Replicator Level : N/A | DB Level Disabled<br/>Replicator Level : N/A |
-                      |  **In SGR-2.0** | Delta Sync Disabled | Delta Sync Disabled |
-
-                      <h5>With `"delta_sync": {"enabled": true}` on the "target" database</h5>
-
-                      |   | **Delta Sync Config1** | **Delta Sync Config2** |
-                      | :--- | :--- | :--- |
-                      |  **Source** | DB Level Irrelevant<br/><br/>Replicator Level Disabled | DB Level Irrelevant<br/><br/>Replicator Level Enabled |
-                      |  **Target** | DB Level Enabled<br/>Replicator Level : N/A | DB Level Enabled<br/>Replicator Level : N/A |
-                      |  **In SGR-2.0** | Delta Sync Disabled | Delta Sync Enabled |
+                      -  In all other cases it has no effect and the replication runs without delta-sync.
 
                       **Constraints**
 
-                      <p>Replications created prior to version 2.8 run with `enable_delta_sync=false`</p>
+                      - Requires *Enterprise Edition*
+                      - Replications created prior to version 2.8 run with `"enable_delta_sync": false`
+
 
                   filter:
                     type: string
@@ -1100,7 +1066,23 @@ properties:
 
                       **Constraints**
 
-                      OPTIONAL for stops and removes
+                      - You must specify the 'remote' database's url even if it is located on the same cluster as the replication's database.
+                      - OPTIONAL for stops and removes
+
+
+                  replication_id:
+                    type: string
+                    description: |2
+                      **About**
+
+                      The *replication_id* property specifies either:
+                      - For NEW replications, the ID to be assigned to the the replication. If no *replication_id* is specified, Sync Gateway will assign a random UUID to new replications.
+                      - For existing replications, this is the ID of the required replication.
+                      - If **cancel=true**, this is the id of the active replication task to be cancelled.
+
+                      **Constraints**
+
+                      If this is specified in the body of a POST or PUT request then it must be the same value as specified in the request URL.
 
                   state:
                     type: string
