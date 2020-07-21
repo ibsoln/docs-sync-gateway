@@ -188,9 +188,6 @@ include::page${sgw-pg-icr-conflict-resolution}[tag=overview]
 
 See: {xref-sgw-pg-icr-conflict-resolution}
 
-
-
-
 ifndef::release-status-sgw[:release-status-sgw!:]
 ifeval::["{release-status-sgw}" == "gamma"]
 [.pane_frame--orange]
