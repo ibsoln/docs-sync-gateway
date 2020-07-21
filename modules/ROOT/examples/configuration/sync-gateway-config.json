@@ -259,9 +259,9 @@
     }
   },
   "databases": {
-       "localdb1": {
+       "db1-local": {
             "import_docs": true,
-            "bucket":"localdb1",
+            "bucket":"db1-local",
             "server": "couchbase://cb-server",
             "enable_shared_bucket_access":true,
             "delta_sync": {
@@ -281,7 +281,7 @@
            "num_index_replicas":0,
            "sgreplicate_enabled":false,
            "replications":{
-               "this-rep-id-1" : {
+               "db1-rep-id1" : {
                    "direction": "pushAndPull",
                    "conflict_resolution_type":"custom",
                     "custom_conflict_resolver":`
@@ -296,7 +296,7 @@
 
                     }`,
                    "purge_on_removal":true,
-                   "remote": "http://user1:password@11.222.333.5:4984/db-remote",
+                   "remote": "http://user1:password@example.com:4984/db1-remote",
                    "filter":"sync_gateway/bychannel",
                    "query_params": {
                        "channels":["channel.user1"]
@@ -332,9 +332,9 @@
       }
             `
           },
-    "localdb2": {
+    "db2-local": {
       "import_docs": true,
-      "bucket":"localdb2",
+      "bucket":"db2-local",
       "server": "couchbase://cb-server",
       "enable_shared_bucket_access":true,
       "delta_sync": {
@@ -354,10 +354,10 @@
      "num_index_replicas":0,
      "sgreplicate_enabled":true,
      "replications":{
-         "example-pull-db2" : {
+         "db2-rep-id1-pull" : {
              "direction": "pull",
              "purge_on_removal":true,
-             "remote": "http://user1:password@11.222.333.5:4984/db2name",
+             "remote": "http://user1:password@example2.com:4984/db2_remote",
              "conflict_resolution_type":"custom",
              "custom_conflict_resolver":`
                     function(conflict) {
@@ -440,9 +440,9 @@ function sync(doc, oldDoc) {
     }
   },
   "databases": {
-       "localdb1": {
+       "db1-local": {
             "import_docs": true,
-            "bucket":"localdb1",
+            "bucket":"db1-local",
             "server": "couchbase://cb-server",
             "enable_shared_bucket_access":true,
             "delta_sync": {
@@ -462,7 +462,7 @@ function sync(doc, oldDoc) {
            "num_index_replicas":0,
            "sgreplicate_enabled":false,
            "replications":{
-               "this-rep-id-1" : {
+               "db1-rep-id1" : {
                    "direction": "pushAndPull",
                    "conflict_resolution_type":"custom",
                     "custom_conflict_resolver":`
@@ -477,7 +477,7 @@ function sync(doc, oldDoc) {
 
                     }`,
                    "purge_on_removal":true,
-                   "remote": "http://user1:password@11.222.333.5:4984/db-remote",
+                   "remote": "http://user1:password@example.com:4984/db1-remote",
                    "filter":"sync_gateway/bychannel",
                    "query_params": {
                        "channels":["channel.user1"]
@@ -513,9 +513,9 @@ function sync(doc, oldDoc) {
       }
             `
           },
-    "localdb2": {
+    "db2-local": {
       "import_docs": true,
-      "bucket":"localdb2",
+      "bucket":"db2-local",
       "server": "couchbase://cb-server",
       "enable_shared_bucket_access":true,
       "delta_sync": {
@@ -535,10 +535,10 @@ function sync(doc, oldDoc) {
      "num_index_replicas":0,
      "sgreplicate_enabled":true,
      "replications":{
-         "example-pull-db2" : {
+         "db2-rep-id1-pull" : {
              "direction": "pull",
              "purge_on_removal":true,
-             "remote": "http://user1:password@11.222.333.5:4984/db2name",
+             "remote": "http://user1:password@example2.com:4984/db2-remote",
              "conflict_resolution_type":"custom",
              "custom_conflict_resolver":`
                     function(conflict) {
@@ -605,9 +605,9 @@ function sync(doc, oldDoc) {
       "sgreplicate_enabled": true,
       "replications": [
         { // first replication - uses custom resolver
-          "replication_id": "this-repl-1",
+          "replication_id": "db-rep-id1-pushpull",
           "direction": "push-and-pull",
-          "remote": "http://otherhost.com:8092/db1",
+          "remote": "http://user1:password@example1.com:4984/db1-remote",
           "continuous": true,
           "conflict_resolution_type": "custom",
           "custom_conflict_resolver": `
@@ -646,16 +646,16 @@ function sync(doc, oldDoc) {
       "sgreplicate_enabled": true,
       "replications": [
         { // Second replication uses default auto resolution policy
-          "replication_id": "this-repl-2",
+          "replication_id": "db2-rep-id1-pull",
           "direction": "pull",
-          "remote": "http://otherhost.com:4985/db2",
+          "remote": "http://user1:password@example1.com:4984/db1-remote",
           "continuous": true,
           "conflict_resolution_type": "default",
         }
         { // Third replication -- uses localWins policy
-          "replication_id": "this-repl-3",
+          "replication_id": "db2-rep-id2-push",
           "direction": "push",
-          "remote": "http://otherhost.com:4985/db2",
+          "remote": "http://user1:password@example1.com:4984/db2-remote",
           "continuous": true,
           "conflict_resolution_type": "localWins",
         }
@@ -666,15 +666,15 @@ function sync(doc, oldDoc) {
   // SG-Replicate 1.0 Replications
   "replications": [
     {
-      "replication_id": "push-to-other-continuous",
-      "source": "http://localhost:4985/db",
-      "target": "http://otherhost.com:4985/db",
+      "replication_id": "db1-rep-id1-push-cont",
+      "source": "http://example1.com:4985/db1-local",
+      "target": "http://example2.com:4985/db1-remote",
       "continuous": true
     },
     {
-      "replication_id": "pull-from-other-continuous",
-      "source": "http://otherhost.com:4985/db",
-      "target": "http://localhost:4985/db",
+      "replication_id": "db1-rep-id1-pull-cont",
+      "source": "http://example2.com:4985/db1-remote",
+      "target": "http://example1.com:4985/db1-local",
       "continuous": true
     }
   ]
@@ -717,9 +717,9 @@ function sync(doc, oldDoc) {
     }
   },
   "databases": {
-       "localdb1": {
+       "db1-local": {
             "import_docs": true,
-            "bucket":"localdb1",
+            "bucket":"db1-local",
             "server": "couchbase://cb-server",
             "enable_shared_bucket_access":true,
             "delta_sync": {
@@ -739,7 +739,7 @@ function sync(doc, oldDoc) {
            "num_index_replicas":0,
            "sgreplicate_enabled":false,
            "replications":{
-               "this-rep-id-1" : {
+               "db1-rep-id1" : {
                    "direction": "pushAndPull",
                    "conflict_resolution_type":"custom",
 // tag::icr-simple-merge-conflict-resolver[]
@@ -780,7 +780,7 @@ function sync(doc, oldDoc) {
 // end::icr-simple-merge-conflict-resolver[]
                     , // end custom_conflict_resolver
                    "purge_on_removal":true,
-                   "remote": "http://user1:password@11.222.333.5:4984/db-remote",
+                   "remote": "http://user1:password@example.com:4984/db1-remote",
                    "filter":"sync_gateway/bychannel",
                    "query_params": {
                        "channels":["channel.user1"]
@@ -816,9 +816,9 @@ function sync(doc, oldDoc) {
       }
             `
           },
-    "localdb2": {
+    "db2-local": {
       "import_docs": true,
-      "bucket":"localdb2",
+      "bucket":"db2-local",
       "server": "couchbase://cb-server",
       "enable_shared_bucket_access":true,
       "delta_sync": {
@@ -838,10 +838,10 @@ function sync(doc, oldDoc) {
      "num_index_replicas":0,
      "sgreplicate_enabled":true,
      "replications":{
-         "example-pull-db2" : {
+         "db2-rep-id1-pull" : {
              "direction": "pull",
              "purge_on_removal":true,
-             "remote": "http://user1:password@11.222.333.5:4984/db2name",
+             "remote": "http://user1:password@example2.com:4984/db2-remote",
              "conflict_resolution_type":"remoteWins",
              "filter":"sync_gateway/bychannel",
              "query_params": {
@@ -886,9 +886,9 @@ function sync(doc, oldDoc) {
 
 // tag::icr-repl-rest-oneshot[]
 {
-  "replication_id": "our-rep-1",
+  "replication_id": "db1-rep-id3-pull",
   "direction": "pull",
-  "remote": "http://user:password@example.com:4985/db1",
+  "remote": "http://user:password@example.com:4985/db1-remote",
   "filter":"sync_gateway/bychannel",
   "query_params": {
     "channels": ["channel1.user1"]
@@ -898,30 +898,44 @@ function sync(doc, oldDoc) {
 
 // tag::icr-repl-rest-cont[]
 {
-  "replication_id": "our-rep1",
+  "replication_id": "db1-rep-id1-pull",
   "direction": "pull",
   "purge-on-removal": true,
-  "remote": "http://user:password@example.com:4985/db1",
+  "remote": "http://user:password@example.com:4985/db1-remote",
   "filter":"sync_gateway/bychannel",
   "query_params": {
     "channels": ["channel1.user1"]
   },
   "continuous": true
-
 }
 // end::icr-repl-rest-cont[]
 
 
 // tag::icr-rep-retrieve-replication-status-req[]
-
-// end::icr-rep-retrieve-replication-status-req[]
-
+curl --location --request GET 'http://localhost:4985/db1/_replicationStatus/db1-rep-id2' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic ZGVtbzpwYXNzd29yZA==' \
+--data-raw ''// end::icr-rep-retrieve-replication-status-req[]
 // tag::icr-rep-retrieve-replication-status-resp[]
-
+[
+  {
+    "replication_id": "db1-rep-id2",
+    "docs_read": 0,
+    "docs_written": 10,
+    "doc_write_failures": 0,
+    "doc_write_conflict": 0,
+    "status": "running",
+    "rejected_by_remote": 0,
+    "rejected_by_local": 0,
+    "last_seq_pull": "8851",
+    "last_seq_push": "10402"
+}
+]
 // end::icr-rep-retrieve-replication-status-resp[]
 
 // tag::icr-rep-retrieve-replication-status-req-all[]
-curl --location --request GET 'http://localhost:4985/db-local/_replicationStatus?includeActive=false&includeConfig=false&localOnly=true' \
+curl --location --request GET "http://localhost:4985/db1-local/_replicationStatus?activeOnly=false&includeConfig=true&localOnly=false&includeError=true" \ // <.>
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic ZGVtbzpwYXNzd29yZA==' \
@@ -931,42 +945,66 @@ curl --location --request GET 'http://localhost:4985/db-local/_replicationStatus
 // tag::icr-rep-retrieve-replication-status-resp-all[]
 [
   {
-    "replication_id": "db1-this-rep-id1",
+    "replication_id": "db1-rep-id1-pull",
     "docs_read": 0,
     "docs_written": 0,
     "doc_write_failures": 0,
     "doc_write_conflict": 0,
-    "status": "stopped",
+    "status": "running",
     "rejected_by_remote": 0,
-    "rejected_by_local": 0
+    "rejected_by_local": 0,
+    "config": { // <.>
+        "replication_id": "db1-rep-id1-pull",
+        "cancel": true,
+        "direction": "pull",
+        "purge-on-removal": true,
+        "remote": "http://user:password@example.com:4985/db1-remote",
+        "filter":"sync_gateway/bychannel",
+        "query_params": {
+          "channels": ["channel1.user1"]
+        },
+        "continuous": true
+    }
   },
   {
-    "replication_id": "db1-this-rep-id2",
+    "replication_id": "db1-rep-id2",
     "docs_read": 0,
     "docs_written": 0,
     "doc_write_failures": 0,
     "doc_write_conflict": 0,
-    "status": "stopped",
+    "status": "stopped",  // <.>
     "rejected_by_remote": 0,
-    "rejected_by_local": 0
+    "rejected_by_local": 0,
+    "config": {
+        "replication_id": "db1-rep-id2",
+        "direction": "pull",
+        "remote": "http://user:password@example.com:4985/db1-remote",
+        "continuous": true
+      }
   },
   {
-    "replication_id": "db2-this-rep-id1",
+    "replication_id": "db2-rep-id1",
     "docs_read": 0,
     "docs_written": 0,
     "doc_write_failures": 0,
     "doc_write_conflict": 0,
-    "status": "stopped",
+    "status": "error", // <.>
     "rejected_by_remote": 0,
-    "rejected_by_local": 0
-  },
+    "rejected_by_local": 0,
+    "config": {
+      "replication_id": "db2-rep-id1",
+      "direction": "pull",
+      "remote": "http://user:password@example2.com:4985/db2-remote",
+      "continuous": true
+    }
+  }
 ]
 // end::icr-rep-retrieve-replication-status-resp-all[]
 
-// curl -X PUT "http://localhost:4985/local_db1/_replicationStatus/{replicationID}?action=start" -H "accept: application/json"
+// curl -X PUT "http://localhost:4985/db1-local_replicationStatus/{replicationID}?action=start" -H "accept: application/json"
 
 // tag::icr-rep-start-replications-req[]
-curl --location --request PUT 'http://localhost:4985/db1-local/_replicationStatus/{{a-replication-id}}?action=start' \
+curl --location --request PUT 'http://localhost:4985/db1-local/_replicationStatus/{{db1-rep-id}}?action=start' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic ZGVtbzpwYXNzd29yZA==' \
@@ -982,7 +1020,7 @@ Success Response::
   Response Status 200 OK
   Payload in body
 {
-  "replication_id": "db1-this-rep-id1",
+  "replication_id": "db1-rep-id1",
   "docs_read": 0,
   "docs_written": 10,
   "doc_write_failures": 0,
@@ -995,10 +1033,10 @@ Success Response::
 }
 // end::icr-rep-start-replications-resp[]
 
-// curl -X PUT "http://localhost:4985/local_db1/_replicationStatus/{replicationID}?action=reset" -H "accept: application/json"
+// curl -X PUT "http://localhost:4985/db1-local_replicationStatus/{replicationID}?action=reset" -H "accept: application/json"
 
 // tag::icr-rep-reset-replications-req[]
-curl --location --request PUT 'http://localhost:4985/db1-local/_replicationStatus/{{rthis-rep-id2}}?action=reset' \
+curl --location --request PUT 'http://localhost:4985/db1-local/_replicationStatus/{{db1-rep-id2}}?action=reset' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic ZGVtbzpwYXNzd29yZA==' \
@@ -1014,7 +1052,7 @@ Success Response::
   Response Status 200 OK
   Payload in body
 {
-  "replication_id": "this-rep-id2",
+  "replication_id": "db1-rep-id2",
   "docs_read": 0,
   "docs_written": 0,
   "doc_write_failures": 0,
@@ -1025,10 +1063,10 @@ Success Response::
 }
 // end::icr-rep-reset-replications-resp[]
 
-// curl -X PUT "http://localhost:4985/local_db1/_replicationStatus/{replicationID}?action=stop" -H "accept: application/json"
+// curl -X PUT "http://localhost:4985/db1-local_replicationStatus/{replicationID}?action=stop" -H "accept: application/json"
 
 // tag::icr-rep-stop-replications-req[]
-curl --location --request PUT 'http://localhost:4985/db1-local/_replicationStatus/{{this-rep-id}}?action=stop' \
+curl --location --request PUT 'http://localhost:4985/db1-local/_replicationStatus/{{db1-rep-id1}}?action=stop' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic ZGVtbzpwYXNzd29yZA==' \
@@ -1042,7 +1080,7 @@ Success Response::
   Response Status 200 OK
   Payload in body
 {
-  "replication_id": "db2-this-rep-id2",
+  "replication_id": "db1-rep-id1",
   "docs_read": 0,
   "docs_written": 0,
   "doc_write_failures": 0,
@@ -1055,34 +1093,34 @@ Success Response::
 
 // tag::icr-rep-update-replications-req[]
 // tag::icr-rep-update-replications-req-push[]
-curl --location --request PUT 'http://localhost:4985/db1-local/_replication/example-push-db2' \
+curl --location --request PUT 'http://localhost:4985/db1-local/_replication/db1-rep-id1 \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic ZGVtbzpwYXNzd29yZA==' \
 --data-raw '{
 // tag::icr-rep-update-replications-body[]
   "direction": "push",
-  "purge_on_removal":true,
-  "remote": "http://user1:password1@example.com:4984/db2",
+  "purge_on_removal":false, // set back to default
+  "remote": "http://user1:password1@example.com:4984/db1-remote",
   "filter":"sync_gateway/bychannel",
   "query_params": {
     "channels":["channel.user1"]
   },
-  "continuous": true
+  "continuous": false
   // end::icr-rep-update-replications-body[]
   }'
 // end::icr-rep-update-replications-req[]
 // end::icr-rep-update-replications-req-push[]
 
 // tag::icr-rep-update-replications-req-pull[]
-curl --location --request PUT 'http://localhost:4985/db1-local/_replication/example-pull-db2' \
+curl --location --request PUT 'http://localhost:4985/db2-local/_replication/db2-rep-id1-pull' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic ZGVtbzpwYXNzd29yZA==' \
 --data-raw '{
   "direction": "pull",
   "purge_on_removal":true,
-  "remote": "http://user1:password@example.com:4984/db2",
+  "remote": "http://user1:password@example.com:4984/db2-remote",
   "filter":"sync_gateway/bychannel",
   "query_params": {
     "channels":["channel.user1"]
@@ -1093,13 +1131,35 @@ curl --location --request PUT 'http://localhost:4985/db1-local/_replication/exam
 // end::icr-rep-update-replications-req-pull[]
 
 // tag::icr-rep-update-replications-resp[]
+// tag::icr-rep-update-replications-resp-200[]
 Success Response::
   Response Status 200 OK
   No payload
+// end::icr-rep-update-replications-resp-200[]
+
+// tag::icr-rep-update-replications-resp-400[]
+Bad Request Response::
+  Response Status 400 Bad request
+
+{
+    "error": "Bad Request",
+    "reason": "Replication ID in body \"db1-rep-id1\" does not match request URI"
+}
+// end::icr-rep-update-replications-resp-400[]
+
+// tag::icr-rep-update-replications-resp-401[]
+// Not Found Response::
+// Response Status 401 Not Found
+
+// {
+//   "error": "Not Found",
+//   "reason": "Replication ID in body \"pushandpull-with-target-continuous-1\" does not match request URI"
+// }
+// end::icr-rep-update-replications-resp-401[]
 // end::icr-rep-update-replications-resp[]
 
 // tag::icr-rep-remove-replications-req[]
-curl --location --request DELETE 'http://localhost:4985/db1-local/_replication/example-push-db2' \
+curl --location --request DELETE 'http://localhost:4985/db2-local/_replication/db2-rep-id3' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic ZGVtbzpwYXNzd29yZA==
@@ -1116,14 +1176,21 @@ Success Response::
 // end::icr-rep-remove-replications-resp[]
 
 // tag::icr-rep-cancel-replications-req[]
-
+{
+  "replication_id": "db1-rep-id1-pull",
+  "cancel": true,
+  "direction": "pull",
+  "purge-on-removal": true,
+  "remote": "http://user:password@example.com:4985/db1-remote",
+  "filter":"sync_gateway/bychannel",
+  "query_params": {
+    "channels": ["channel1.user1"]
+  },
+  "continuous": true
+}
 // end::icr-rep-cancel-replications-req[]
 
 // tag::icr-rep-cancel-replications-body[]
-{
-  "cancel": true,
-  "replication_id": "my-one-shot-replication"
-}
 // end::icr-rep-cancel-replications-body[]
 
 // tag::icr-rep-cancel-replications-body-no-id[]
@@ -1140,25 +1207,21 @@ Success Response::
   Payload in body
 {
   "type":"replication",
-  "replication_id":"3791d562153505408e0b2730603ed7c1",
-  "continuous":true,
-  "source":"http://0.0.0.0:4985/source",
-  "target":"http://0.0.0.0:4985/target",
+  "replication_id":"db1-rep-id1",
   "docs_read":12,
   "docs_written":12,
   "doc_write_failures":0,
-  "start_last_seq":0,
-  "end_last_seq":"28"
+  "doc_write_conflict": 0,
+  "status": "stopped",
+  "rejected_by_remote": 0,
+  "rejected_by_local": 0,
+  "last_seq_pull": "8851",
+  "last_seq_push": "10402"
 }
 // end::icr-rep-cancel-replications-resp[]
 
-// tag::icr-rep-cancel-replications-resp-all[]
-
-// end::icr-rep-cancel-replications-resp-all[]
-
-
 // tag::icr-rep-retrieve-replications-req[]
-curl --location --request GET 'http://localhost:4985/db1-local/_replication/{{db1-this-rep-id1}}' \
+curl --location --request GET 'http://localhost:4985/db1-local/_replication/{{db1-rep-id1}}' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic ZGVtbzpwYXNzd29yZA==' \
@@ -1182,9 +1245,9 @@ Success Response::
   Response Status 200 OK
   Payload in body
 {
-  "db1-this-rep-id1": {
-    "replication_id": "db1-this-rep-id1",
-    "remote": "http://user1:password@example.com:4984/remote-db1",
+  "db1-rep-id1": {
+    "replication_id": "db1-rep-id1",
+    "remote": "http://user1:password@example.com:4984/db1-remote",
     "direction": "pull",
     "purge_on_removal": true,
     "continuous": true,
@@ -1229,12 +1292,11 @@ Success Response::
   Response Status 200 OK
   Payload in body
 {
-  "this-rep-id-1": {
-      "replication_id": "this-rep-id-1",
-      "remote": "http://user1:password@example.com:4984/db-remote",
+  "db1-rep-id1": {
+      "replication_id": "db1-rep-id1",
+      "remote": "http://user1:password@example1.com:4984/db1-remote",
       "direction": "pushAndPull",
-      "conflict_resolution_type": "custom",
-      "custom_conflict_resolver": "function(conflict) {\n                       function(conflict) {\n                              if ( (conflict.LocalDocument.type != null) && (conflict.RemoteDocument.type != null)&& (conflict.LocalDocument.type == \"usedefault\")) {\n                                        console.log(\"Will use default policy\");\n                                        return defaultPolicy(conflict);\n                              }\n                              else {\n                                  var remoteDoc = conflict.RemoteDocument;\n                                  console.log(\"full remoteDoc doc: \"+JSON.stringify(remoteDoc));\n                                  var localDoc = conflict.LocalDocument;\n                                  console.log(\"full localDoc doc: \"+JSON.stringify(localDoc));\n                                  var mergedDoc = extend({}, localDoc, remoteDoc);\n                                 \n                                  console.log(\"full merged doc: \"+JSON.stringify(mergedDoc));\n                                  return mergedDoc;\n                                  \n                                  function extend(target) {\n                                      var sources = [].slice.call(arguments, 1);\n                                      sources.forEach(function (source) {\n                                          for (var prop in source) {\n                                              target[prop] = source[prop];\n                                          }\n                                      });\n                                      return target;\n                                  }\n                              }\n                   }",
+      "conflict_resolution_type": "remoteWins",
       "purge_on_removal": true,
       "enable_delta_sync": true,
       "state": "stopped",
@@ -1248,12 +1310,11 @@ Success Response::
       "batch_size": 1000,
       "assigned_node": "2c9b0d00a4e7c65a"
   },
-  "this-rep-id-adhoc": {
-      "replication_id": "this-rep-id-adhoc",
-      "remote": "http://user1:password@example.com:4984/db-remote",
+  "db1-rep-id2": {
+      "replication_id": "db1-rep-id2",
+      "remote": "http://user1:password@example2.com:4984/db1-remote",
       "direction": "pushAndPull",
-      "conflict_resolution_type": "custom",
-      "custom_conflict_resolver": "\n                                function(conflict) {\n                                    var remoteDoc = conflict.RemoteDocument;\n                                     console.log(\"full remoteDoc doc: \"+JSON.stringify(remoteDoc));\n                                    var localDoc = conflict.LocalDocument;\n                                    console.log(\"full remoteDoc doc: \"+JSON.stringify(localDoc));\n                                    var mergedDoc = {...localDoc,...remoteDoc};\n                                    console.log(\"full remoteDoc doc: \"+JSON.stringify(mergedDoc));\n                                    return mergedDoc;\n                                                  \n                    }",
+      "conflict_resolution_type": "remoteWins",
       "purge_on_removal": true,
       "enable_delta_sync": true,
       "max_backoff_time": 5,
