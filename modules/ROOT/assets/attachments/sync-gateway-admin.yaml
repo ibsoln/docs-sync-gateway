@@ -557,38 +557,6 @@ parameters:
 
 
 
-
-  replicationStatus__queryString:
-#    name: querystring
-#    type: array
-#    description: This query string supports the following valid values
-#    parameters:
-
-# replicationStatus-activeOnly:
-    - in: query
-      name: activeOnly
-      description: When true, only active replications (*state=starting, running, stopping*) are returned
-      type: boolean
-      default: false
-      required: false
-
-# replicationStatus-localOnly:
-    - in: query
-      name: localOnly
-      description: |2
-        When true, returns only replications that are running (or have been run) only on the local node since startup.
-      type: boolean
-      default: false
-      required: false
-
-# replicationStatus-includeError:
-    - in: query
-      name: includeError
-      description: When false, omits replications stopped due to error (state=error)
-      type: boolean
-      default: true
-      required: false
-
   # replication_id:
   #   in: path
   #   type: string
@@ -1709,46 +1677,98 @@ paths:
       tags:
         - replication
       summary: Returns replication status data for  replications matching the criteria
-      description:
+      description: |2
+        **About**
+
         Returns replication status data for all replications matching the criteria specified in the {querystring} parameter.
 
-        Th selection is made from all SG-Replicate 2.0 replications across *all* nodes.
+        **Options**
 
-        By default, returned replications include
-
-         - all types (persistent and ad hoc)
-
-         - all modes (one shot and continuous)
-
-         - all states (running, stopped or errored)
-
-
-        The `{queryString}` parameter supports the following filter parameters
+        The `{queryString}` parameter supports the following filter parameters - see *Parameter* section for more details
 
           - `activeOnly`
-          -- (boolean)
-          -- When *true*, only active replications (state=starting, running, stopping) are returned
-
           - `localOnly`
-          -- (boolean)
-          -- When *true* returns a list of replications that are running or have been run only on the local node since startup. By default, replications that are run across all nodes are returned.
-
+          - `includeConfig`
           - `includeError`
-            - (boolean)
-            - When *false*, omits replications stopped due to error (`state=error`)
+
+        **Behavior**
+
+        The selection is made from all replications across *all* nodes.
+
+        By default the response includes status data for replications in any state (starting, running, stopped or error) from across all nodes.
 
           <h5>Example</h5>
 
-          This example (shows default settings) --
-
           ```
-
           http://localhost:4985/{db}/_replicationStatus?activeOnly=false&localOnly=false&includeError=true
 
           ```
       parameters:
-        $ref: '#/parameters/replicationStatus__queryString'
-        description: |2
+        # $ref: '#/parameters/replicationStatus__queryString'
+        # description: |2
+
+        # replicationStatus-activeOnly:
+        - in: query
+          name: activeOnly
+          type: boolean
+          default: false
+          required: false
+          description: |2
+            **Behavior**
+
+            When *true*, only active replications (state=starting, running, stopping) are returned
+
+            **Default**
+
+            false
+
+        # replicationStatus-localOnly:
+        - in: query
+          name: localOnly
+          type: boolean
+          default: false
+          required: false
+          description: |2
+            **Behavior**
+
+            When *true* returns only replications run (or running) the local node since startup.
+
+            **Default**
+
+            false
+
+            By default the response includes replications run or running across all nodes since node start-up.
+
+        # replicationStatus-includeError:
+        - in: query
+          name: includeError
+          type: boolean
+          default: true
+          required: false
+          description: |2
+            **Behavior**
+
+            When false, omits replications stopped due to error (state=error)
+
+            **Default**
+
+            true
+
+            By default the response includes replications in `error` state.
+
+        - in: query
+          name: includeConfig
+          type: boolean
+          default: false
+          required: false
+          description: |2
+            **Behavior**
+
+            When *true* the replication definition is included in the response.
+
+            **Default**
+
+             false
 
 
       responses:
@@ -1759,6 +1779,11 @@ paths:
             items:
               type: object
               $ref: '#/definitions/ReplicationStatusResponseBody'
+              config:
+                type: object
+                description: Optional response content. Returned only when `includeConfig=true`
+
+
 
   /{db}/_replicationStatus/{replicationID}:
     get:
@@ -1813,6 +1838,11 @@ paths:
       responses:
         200:
           description: The required status is successfully set
+          schema:
+            # type: array
+            # items:
+            type: object
+            $ref: '#/definitions/ReplicationStatusResponseBody'
 
 
   /{db}/_revs_diff:
@@ -3409,8 +3439,19 @@ definitions:
           The number of delta-sync changes requested.
 
           This should always be non-zero when delta_sync.enabled is true.
+      config:
+        type: object
+        description: |2
+          This optional response content is returned only when using the {querystring} option with `includeConfig=true`. For example,
 
-      # delta_enabled:
+          ```
+          GET http://localhost:4985/db-local/_replicationStatus?includeError=true&includeConfig=true
+          ```
+
+          It comprises the replication definition as would be returned using a `GET` request to the  `_replication` endpoint.
+        # schema:
+        #   $ref: '#/definitions/ReplicationResponseBody'
+        # delta_enabled:
       #   type: boolean
       #   description: Flag indicating whether the replication is using delta sync
 #
@@ -3466,6 +3507,7 @@ definitions:
       items:
         type: object
         $ref: '#/definitions/ReplicationStatusResponseBody'
+
 
   ReplicationResponseBody:
     type: object
@@ -3788,5 +3830,3 @@ definitions:
       For example, if you requested continuous replication, the cancellation request must also contain the continuous field.
 
 # END: Define sync-gateway replications
-
-
