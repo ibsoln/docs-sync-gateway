@@ -331,7 +331,7 @@ So, documents of type `a-doc-type-1` are always resolved in favor of the remote 
 
 [source,json]
 ----
-include::example$configuration/sync-gateway-config.json[tags=icr-simple-conflict-resolver, indent=0]
+include::{example-cfg}[tags=icr-simple-conflict-resolver, indent=0]
 ----
 --
 
@@ -342,7 +342,7 @@ This example selects a winner based on relative priorities and builds a return r
 
 [source,json]
 ----
-include::example$configuration/sync-gateway-config.json[tags=icr-simple-own-winner-conflict-resolver, indent=0]
+include::{example-cfg}[tags=icr-simple-own-winner-conflict-resolver, indent=0]
 ----
 --
 Merge a Winner::
@@ -354,7 +354,7 @@ If both document.types are non-null and the local document.type is `usedefault`,
 
 [source,json]
 ----
-include::example$configuration/sync-gateway-config.json[tags=icr-simple-merge-conflict-resolver, indent=0]
+include::{example-cfg}[tags=icr-simple-merge-conflict-resolver, indent=0]
 ----
 --
 =====
