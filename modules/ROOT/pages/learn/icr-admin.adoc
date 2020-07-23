@@ -67,7 +67,7 @@ include::partial$block-caveats.adoc[tags=community-only-rep-same-node]
 // --
 // [source, json]
 // ----
-// include::example$configuration/sync-gateway-config.json[tag=icr-rep-list-replications-req]
+// include::{example-cfg}[tag=icr-rep-list-replications-req]
 // ----
 // --
 
@@ -76,7 +76,7 @@ include::partial$block-caveats.adoc[tags=community-only-rep-same-node]
 // --
 // [source, json]
 // ----
-// include::example$configuration/sync-gateway-config.json[tag=icr-rep-list-replications-body]
+// include::{example-cfg}[tag=icr-rep-list-replications-body]
 // ----
 // --
 
@@ -85,7 +85,7 @@ include::partial$block-caveats.adoc[tags=community-only-rep-same-node]
 // --
 // [source, json]
 // ----
-// include::example$configuration/sync-gateway-config.json[tag=icr-rep-list-replications-resp]
+// include::{example-cfg}[tag=icr-rep-list-replications-resp]
 // ----
 // --
 // ====
@@ -112,7 +112,7 @@ Request::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replications-req]
+include::{example-cfg}[tag=icr-rep-retrieve-replications-req]
 ----
 --
 
@@ -121,7 +121,7 @@ Response::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replications-resp]
+include::{example-cfg}[tag=icr-rep-retrieve-replications-resp]
 ----
 --
 ====
@@ -140,7 +140,7 @@ Request::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replications-req-all-for-db]
+include::{example-cfg}[tag=icr-rep-retrieve-replications-req-all-for-db]
 ----
 --
 
@@ -149,7 +149,7 @@ Response::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replications-resp-all-for-db]
+include::{example-cfg}[tag=icr-rep-retrieve-replications-resp-all-for-db]
 ----
 --
 ====
@@ -176,7 +176,7 @@ Request::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-update-replications-req]
+include::{example-cfg}[tag=icr-rep-update-replications-req]
 ----
 --
 +
@@ -187,14 +187,14 @@ A successful update will return a 200 response, with the following body:
 
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-update-replications-resp-200]
+include::{example-cfg}[tag=icr-rep-update-replications-resp-200]
 ----
 
 If the `replication_id` in the body does not match that quoted in the URI you will see a 400 response as below.
 
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-update-replications-resp-400]
+include::{example-cfg}[tag=icr-rep-update-replications-resp-400]
 ----
 --
 ====
@@ -224,7 +224,7 @@ Request::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-remove-replications-req]
+include::{example-cfg}[tag=icr-rep-remove-replications-req]
 ----
 --
 
@@ -233,7 +233,7 @@ Response::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-remove-replications-resp]
+include::{example-cfg}[tag=icr-rep-remove-replications-resp]
 ----
 
 --
@@ -270,7 +270,7 @@ This example cancels an active replication with a `replication_id` of "db1-rep-i
 
 [source,javascript]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-cancel-replications-req]
+include::{example-cfg}[tag=icr-rep-cancel-replications-req]
 ----
 --
 +
@@ -282,7 +282,7 @@ include::example$configuration/sync-gateway-config.json[tag=icr-rep-cancel-repli
 //
 // [source,javascript]
 // ----
-// include::example$configuration/sync-gateway-config.json[tag=icr-rep-cancel-replications-body-no-id]
+// include::{example-cfg}[tag=icr-rep-cancel-replications-body-no-id]
 // ----
 // --
 //
@@ -292,7 +292,7 @@ Response::
 
 [source,javascript]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-cancel-replications-resp]
+include::{example-cfg}[tag=icr-rep-cancel-replications-resp]
 ----
 --
 ====
@@ -349,7 +349,7 @@ Request::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-start-replications-req]
+include::{example-cfg}[tag=icr-rep-start-replications-req]
 ----
 --
 
@@ -358,7 +358,7 @@ Response::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-start-replications-resp]
+include::{example-cfg}[tag=icr-rep-start-replications-resp]
 ----
 --
 
@@ -381,7 +381,7 @@ Request::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-stop-replications-req]
+include::{example-cfg}[tag=icr-rep-stop-replications-req]
 
 ----
 --
@@ -391,7 +391,7 @@ Response::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-stop-replications-resp]
+include::{example-cfg}[tag=icr-rep-stop-replications-resp]
 ----
 --
 
@@ -417,7 +417,7 @@ Request::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-reset-replications-req]
+include::{example-cfg}[tag=icr-rep-reset-replications-req]
 ----
 --
 
@@ -426,7 +426,7 @@ Response::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-reset-replications-resp]
+include::{example-cfg}[tag=icr-rep-reset-replications-resp]
 ----
 --
 ====
@@ -444,19 +444,19 @@ include::partial$block-related-content-icr.adoc[]
 // Request::
 // +
 // --
-// include::example$configuration/sync-gateway-config.json[tag=icr-rep-list-replications-req]
+// include::{example-cfg}[tag=icr-rep-list-replications-req]
 // --
 
 // Body::
 // +
 // --
-// include::example$configuration/sync-gateway-config.json[tag=icr-rep-list-replications-body]
+// include::{example-cfg}[tag=icr-rep-list-replications-body]
 // --
 
 // Response::
 // +
 // --
-// include::example$configuration/sync-gateway-config.json[tag=icr-rep-list-replications-resp]
+// include::{example-cfg}[tag=icr-rep-list-replications-resp]
 // --
 
 // ====
