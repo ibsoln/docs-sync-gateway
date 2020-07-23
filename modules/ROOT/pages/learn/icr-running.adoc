@@ -95,7 +95,7 @@ The request will return immediately and the replication will run asynchronously.
 
 [source,javascript]
 ----
-include::example$configuration/sync-gateway-config.json[tags=icr-repl-rest-oneshot]
+include::{example-cfg}[tags=icr-repl-rest-oneshot]
 ----
 --
 
@@ -122,7 +122,7 @@ Source database documents will be filtered so that only those tagged with the ch
 
 [source, javascript]
 ----
-include::example$configuration/sync-gateway-config.json[tags=icr-repl-rest-cont]
+include::{example-cfg}[tags=icr-repl-rest-cont]
 ----
 --
 
@@ -213,7 +213,7 @@ Replications defined in config may not contain the `cancel` property.
 ====
 [source,javascript]
 ----
-include::example$configuration/sync-gateway-config.json[tags=icr-replication-config]
+include::{example-cfg}[tags=icr-replication-config]
 ----
 ====
 // {
