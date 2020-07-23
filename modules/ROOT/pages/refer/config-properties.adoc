@@ -3,7 +3,7 @@
 :page-status: {release-status-sgw} -- {release-comments-sgw}
 :page-content: reference
 :description: This content describes Sync Gateway's configuration schema providing parameter explanations and examples of use
-:param-abstract: This content describes Sync Gateway's configuration schema providing parameter explanations and examples of use
+// :param-abstract: This content describes Sync Gateway's configuration schema providing parameter explanations and examples of use
 :keywords:
 
 include::partial$_std-hdr-sgw.adoc[]
