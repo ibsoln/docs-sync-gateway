@@ -40,7 +40,7 @@ Request::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replication-status-req-all]
+include::{example-cfg}[tag=icr-rep-retrieve-replication-status-req-all]
 ----
 <.> This example's criteria selects replications with any status (including errors), on local and remote nodes. The returned status details also include replication definition details.
 --
@@ -50,7 +50,7 @@ Response::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replication-status-resp-all]
+include::{example-cfg}[tag=icr-rep-retrieve-replication-status-resp-all]
 ----
 
 <.> The configuration details included because `includeConfig=true`
@@ -83,7 +83,7 @@ Request::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replication-status-req]
+include::{example-cfg}[tag=icr-rep-retrieve-replication-status-req]
 ----
 --
 
@@ -92,7 +92,7 @@ Response::
 --
 [source, json]
 ----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replication-status-resp]
+include::{example-cfg}[tag=icr-rep-retrieve-replication-status-resp]
 ----
 --
 
