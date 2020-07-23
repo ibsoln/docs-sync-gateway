@@ -22,7 +22,7 @@
 
 
 
-
+:example-cfg: example$configuration/sync-gateway-config.json
 
 
 // SGW Version numbers
