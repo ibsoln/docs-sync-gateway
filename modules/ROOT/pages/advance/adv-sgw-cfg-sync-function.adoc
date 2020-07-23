@@ -15,7 +15,7 @@ Add the `sync` function defined below into your `sync-gateway-config.json`:
 
 [source,json]
 ----
-include::example$configuration/sync-gateway-config.json[tag="sync-function-config"]
+include::{example-cfg}[tag="sync-function-config"]
 ----
 Configuration properties:
 
