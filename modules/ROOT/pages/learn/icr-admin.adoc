@@ -11,7 +11,7 @@ include::partial$_std-hdr-sgw.adoc[]
 // include::partial$block-authors-notes.adoc[tag=wip]
 :topic-group: Inter-cluster Replication
 :param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin}
-:param-abstract: Inter-cluster replication conflict resolution policies and behaviors.
+:param-abstract: Use it to learn how to manage and monitor inter-cluster replications
 include::partial$block-abstract.adoc[]
 
 ifeval::["{release-status-sgw}" == "gamma"]
@@ -300,78 +300,34 @@ include::example$configuration/sync-gateway-config.json[tag=icr-rep-cancel-repli
 
 == Getting Replication Status Data
 
-You can obtain replication status details either for a specified replication, or for all replications across all nodes.
-This can be useful to obtain replication_id details to enable further replication management.
+include::partial$icr-replicationStatus-GET.adoc[tag=overview]
 
-When requesting all replication statuses you can apply one or more filters using `queryparams` string. The filters are applied cumulatively.
+For more information on monitoring see: {xref-sgw-pg-icr-monitoring}
 
-The available options are:
-
-* activeOnly - return only active replications (default=false)
-* localOnly - return replications from the local node only (default=false)
-* includeError - return replications even if their status is "error" (default=true)
-* includeConfig - return the replication configuration as well as status details. This will include remote configuration definitions if `localOnly=false` (default=false)
-
-_Action_: Send a `GET` request to the `_replicationStatus` endpoint
-
-Note:
-include::partial$block-caveats.adoc[tags=community-only-rep-same-node]
-
-.Get status data for a specified replication
+.For a Single Replication
 =====
+This example targets a known `replication-id` and returns its status data.
+
 [{tabs}]
 ====
-Request::
-+
---
-[source, json]
-----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replication-status-req]
-----
---
 
-Response::
-+
---
-[source, json]
-----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replication-status-resp]
-----
---
+include::partial$icr-replicationStatus-GET.adoc[tag=example-specific]
+
 ====
 =====
 
-The following example retrieves status data, from across all nodes, for all replications that meet the specified criteria.
-
-The results are returned in an array; one entry per replication.
-
-.Get status data for all replications meeting criteria
+.For All Replications
 =====
+
+This example targets all replications across all nodes.
+It filters the results using a query string -- see:
+{xref-sgw-pg-icr-monitoring} for more on using this option.
+
 [{tabs}]
 ====
-Request::
-+
---
 
-[source, json]
-----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replication-status-req-all]
-----
-<.> This example's criteria selects replications with any status (including errors), on local and remote nodes. The returned status details also include replication definition details.
---
-+
-Response::
-+
---
-[source, json]
-----
-include::example$configuration/sync-gateway-config.json[tag=icr-rep-retrieve-replication-status-resp-all]
-----
+include::partial$icr-replicationStatus-GET.adoc[tag=example-all]
 
-<.> The configuration details included because `includeConfig=true`
-<.> "Stopped" replications included because `activeOnly=false`
-<.> "error" replications included because `includeError=true`
---
 ====
 =====
 
@@ -426,6 +382,7 @@ Request::
 [source, json]
 ----
 include::example$configuration/sync-gateway-config.json[tag=icr-rep-stop-replications-req]
+
 ----
 --
 
