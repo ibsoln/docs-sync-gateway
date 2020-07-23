@@ -13,7 +13,7 @@ The following steps explain how to configure Sync Gateway to connect to a Couchb
 --
 [source,json]
 ----
-include::example$configuration/sync-gateway-config.json[tag="getting-started-config"]
+include::{example-cfg}[tag="getting-started-config"]
 ----
 
 .Configuration properties:
