@@ -6,16 +6,21 @@
 
 // tag::community-icr[]
 //* Community
-* {xref-url-cb-forum-mobile}  *|*  {xref-url-cb-blog}   *|*  https://docs.couchbase.com/tutorials/index.html[Tutorials]
-* Conflict Related Blogs: {url-blog-doc-conflicts-auto-resolutions}   *|*  {url-blog-doc-conflicts-demystifying}  *|*  {url-blog-cat-conflicts}
+// * {xref-url-cb-forum-mobile}
+// *  {xref-url-cb-blog}
+// *  https://docs.couchbase.com/tutorials/index.html[Tutorials]
+// * Conflict Related Blogs:
+* {url-blog-doc-conflicts-auto-resolutions}
+* {url-blog-doc-conflicts-demystifying}
+* {url-blog-cat-conflicts}
 // end::community-icr[]
 
 // tag::how-std[]
-* Standard how to section
+
 // end::how-std[]
 
 // tag::how-icr[]
-* {empty}
+
 // end::how-icr[]
 
 // tag::how-deploy[]
