@@ -20,9 +20,8 @@
 :url-blog-doc-conflicts-demystifying: {url-cb-blog}conflict-resolution-couchbase-mobile/[Demystifying Conflict Resolution]
 :url-blog-cat-conflicts: {url-cb-blog}tag/conflict-resolution/[Conflict Resolution (category)]
 
-
-
 :example-cfg: example$configuration/sync-gateway-config.json
+:example-restapi: example$configuration/sync-gateway-restapi.adoc
 
 
 // SGW Version numbers
@@ -68,6 +67,24 @@
 :xref-pfx-svr: xref:{component-svr}:
 :xref-pfx-cao: xref:{component-cao}:
 :xref-pfx-tut: xref:{component-tut}:
+
+
+// Standard Topic Groups
+
+:tg-rep-icr: Inter-cluster replication
+:tg-rep-start: Getting Stated with Sync Gateway
+:tg-sgw-cfg: Sync Gateway Configuration
+:tg-sgw-concepts: Sync Gateway Concepts
+:tg-sgw-api: Sync Gateway REST API
+:tg-ref-info: Reference Information
+
+:cbm: Couchbase for Mobile
+
+// Page constraints
+:page-width: 1440
+:img-max: 1024
+:img-min: 337
+:img-med: 675
 
 
 // END
