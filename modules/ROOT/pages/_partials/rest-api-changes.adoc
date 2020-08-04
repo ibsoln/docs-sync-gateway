@@ -30,7 +30,7 @@
 // tag::2-8-0-removedonly[]
 
 The SG Replicate 1.0 (SGR1) REST API is deprecated.
-Deprecated functionality remains solely for backward compatibility with SG1 but is no longer supported:
+Deprecated functionality remains solely for backward compatibility with SGR-1 but is no longer supported:
 
 // tag::async[]
 async::
