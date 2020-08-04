@@ -39,13 +39,10 @@ You can use the endpoints manually or by using automation (for example, scripts 
 
 // Manual operation will typically take place where a cluster is malfunctioning and needs troubleshooting, or in demonstration and development environments.
 // For instance, in the process of debugging why a replication is slow, there would be a need to temporarily stop a replication and subsequently restart when the issue is resolved.  Another case would be if the parameters of the replication need to change.
-Available endpoint admin uses:
+The available endpoints used for admin tasks are::
 
-_replication::
-Get, Update or Remove a replication
-
-_replicationStatus::
-Stop, Start or Reset a replication
+* `_replication` -- Retrieve, Update or Remove a _replication definition_
+* _replicationStatus -- Stop, Start or Reset a replication
 
 Note:
 include::partial$block-caveats.adoc[tags=community-only-rep-same-node]
@@ -67,7 +64,7 @@ include::partial$block-caveats.adoc[tags=community-only-rep-same-node]
 // --
 // [source, json]
 // ----
-// include::{example-cfg}[tag=icr-rep-list-replications-req]
+// include::{example-restapi}[tag=icr-rep-list-replications-req]
 // ----
 // --
 
@@ -76,7 +73,7 @@ include::partial$block-caveats.adoc[tags=community-only-rep-same-node]
 // --
 // [source, json]
 // ----
-// include::{example-cfg}[tag=icr-rep-list-replications-body]
+// include::{example-restapi}[tag=icr-rep-list-replications-body]
 // ----
 // --
 
@@ -85,7 +82,7 @@ include::partial$block-caveats.adoc[tags=community-only-rep-same-node]
 // --
 // [source, json]
 // ----
-// include::{example-cfg}[tag=icr-rep-list-replications-resp]
+// include::{example-restapi}[tag=icr-rep-list-replications-resp]
 // ----
 // --
 // ====
@@ -112,7 +109,7 @@ Request::
 --
 [source, json]
 ----
-include::{example-cfg}[tag=icr-rep-retrieve-replications-req]
+include::{example-restapi}[tag=icr-rep-retrieve-replications-req]
 ----
 --
 
@@ -121,7 +118,7 @@ Response::
 --
 [source, json]
 ----
-include::{example-cfg}[tag=icr-rep-retrieve-replications-resp]
+include::{example-restapi}[tag=icr-rep-retrieve-replications-resp]
 ----
 --
 ====
@@ -140,7 +137,7 @@ Request::
 --
 [source, json]
 ----
-include::{example-cfg}[tag=icr-rep-retrieve-replications-req-all-for-db]
+include::{example-restapi}[tag=icr-rep-retrieve-replications-req-all-for-db]
 ----
 --
 
@@ -149,7 +146,7 @@ Response::
 --
 [source, json]
 ----
-include::{example-cfg}[tag=icr-rep-retrieve-replications-resp-all-for-db]
+include::{example-restapi}[tag=icr-rep-retrieve-replications-resp-all-for-db]
 ----
 --
 ====
@@ -176,7 +173,7 @@ Request::
 --
 [source, json]
 ----
-include::{example-cfg}[tag=icr-rep-update-replications-req]
+include::{example-restapi}[tag=icr-rep-update-replications-req]
 ----
 --
 +
@@ -187,20 +184,20 @@ A successful update will return a 200 response, with the following body:
 
 [source, json]
 ----
-include::{example-cfg}[tag=icr-rep-update-replications-resp-200]
+include::{example-restapi}[tag=icr-rep-update-replications-resp-200]
 ----
 
 If the `replication_id` in the body does not match that quoted in the URI you will see a 400 response as below.
 
 [source, json]
 ----
-include::{example-cfg}[tag=icr-rep-update-replications-resp-400]
+include::{example-restapi}[tag=icr-rep-update-replications-resp-400]
 ----
 --
 ====
 =====
 
-See: {xref-sgw-pg-admin-rest-api}  |  Endpoint {xref-sgw-endpoint-admin-api-replication-put}
+See: {xref-sgw-pg-admin-rest-api}  |  Endpoint {xref-sgw-ep-admin-api-replication-put}
 
 == Removing a Replication
 
@@ -224,7 +221,7 @@ Request::
 --
 [source, json]
 ----
-include::{example-cfg}[tag=icr-rep-remove-replications-req]
+include::{example-restapi}[tag=icr-rep-remove-replications-req]
 ----
 --
 
@@ -233,14 +230,14 @@ Response::
 --
 [source, json]
 ----
-include::{example-cfg}[tag=icr-rep-remove-replications-resp]
+include::{example-restapi}[tag=icr-rep-remove-replications-resp]
 ----
 
 --
 ====
 =====
 
-See: {xref-sgw-pg-admin-rest-api}  |  Endpoint {xref-sgw-endpoint-admin-api-replication-delete}
+See: {xref-sgw-pg-admin-rest-api}  |  Endpoint {xref-sgw-ep-admin-api-replication-delete}
 
 == Canceling a Replication
 
@@ -270,7 +267,7 @@ This example cancels an active replication with a `replication_id` of "db1-rep-i
 
 [source,javascript]
 ----
-include::{example-cfg}[tag=icr-rep-cancel-replications-req]
+include::{example-restapi}[tag=icr-rep-cancel-replications-req]
 ----
 --
 +
@@ -282,7 +279,7 @@ include::{example-cfg}[tag=icr-rep-cancel-replications-req]
 //
 // [source,javascript]
 // ----
-// include::{example-cfg}[tag=icr-rep-cancel-replications-body-no-id]
+// include::{example-restapi}[tag=icr-rep-cancel-replications-body-no-id]
 // ----
 // --
 //
@@ -292,7 +289,7 @@ Response::
 
 [source,javascript]
 ----
-include::{example-cfg}[tag=icr-rep-cancel-replications-resp]
+include::{example-restapi}[tag=icr-rep-cancel-replications-resp]
 ----
 --
 ====
@@ -349,7 +346,7 @@ Request::
 --
 [source, json]
 ----
-include::{example-cfg}[tag=icr-rep-start-replications-req]
+include::{example-restapi}[tag=icr-rep-start-replications-req]
 ----
 --
 
@@ -358,7 +355,7 @@ Response::
 --
 [source, json]
 ----
-include::{example-cfg}[tag=icr-rep-start-replications-resp]
+include::{example-restapi}[tag=icr-rep-start-replications-resp]
 ----
 --
 
@@ -381,7 +378,7 @@ Request::
 --
 [source, json]
 ----
-include::{example-cfg}[tag=icr-rep-stop-replications-req]
+include::{example-restapi}[tag=icr-rep-stop-replications-req]
 
 ----
 --
@@ -391,7 +388,7 @@ Response::
 --
 [source, json]
 ----
-include::{example-cfg}[tag=icr-rep-stop-replications-resp]
+include::{example-restapi}[tag=icr-rep-stop-replications-resp]
 ----
 --
 
@@ -417,7 +414,7 @@ Request::
 --
 [source, json]
 ----
-include::{example-cfg}[tag=icr-rep-reset-replications-req]
+include::{example-restapi}[tag=icr-rep-reset-replications-req]
 ----
 --
 
@@ -426,7 +423,7 @@ Response::
 --
 [source, json]
 ----
-include::{example-cfg}[tag=icr-rep-reset-replications-resp]
+include::{example-restapi}[tag=icr-rep-reset-replications-resp]
 ----
 --
 ====
@@ -444,19 +441,19 @@ include::partial$block-related-content-icr.adoc[]
 // Request::
 // +
 // --
-// include::{example-cfg}[tag=icr-rep-list-replications-req]
+// include::{example-restapi}[tag=icr-rep-list-replications-req]
 // --
 
 // Body::
 // +
 // --
-// include::{example-cfg}[tag=icr-rep-list-replications-body]
+// include::{example-restapi}[tag=icr-rep-list-replications-body]
 // --
 
 // Response::
 // +
 // --
-// include::{example-cfg}[tag=icr-rep-list-replications-resp]
+// include::{example-restapi}[tag=icr-rep-list-replications-resp]
 // --
 
 // ====

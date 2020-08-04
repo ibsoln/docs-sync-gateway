@@ -50,8 +50,8 @@ SG-Replicate 2.0 does not support replication between two remote hosts via a thi
 == Removed or Deprecated Endpoints
 // tag::2-8-0-removedonly[]
 
-The following SG Replicate 1.0 (SG1) REST API endpoints and-or parameters are deprecated.
-Deprecated functionality remains solely for backward compatibility with SG1 but is no longer supported:
+The following SG Replicate 1.0 (SGR-1) REST API endpoints and-or parameters are deprecated.
+Deprecated functionality remains solely for backward compatibility with SGR-1 but is no longer supported:
 
 * `_replicate`
 * `_active_tasks`

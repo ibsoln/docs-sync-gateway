@@ -28,7 +28,7 @@ ifeval::["{releaseStatus}" == "gamma"]
 .Author's Notes
 --
 Document relevant aspects of _Upgrading Sync Gateway_.
-Specifically, any aspect pertaining to moving to SG2.
+Specifically, any aspect pertaining to moving to SGR-2.
 
 Information sources include:
 

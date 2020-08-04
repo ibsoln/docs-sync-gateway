@@ -60,9 +60,7 @@ Improved throughput by distributing the replications
 By ensuring that a replicator only runs on one node even if configured to run on multiple nodes, the system  redundant exchange of data as a result of redundant replications. This will reduce the processing load on the sync gateway and reduce bandwidth usage
 This will allow us to deploy a truly homogenous cluster even in SG-replicate based environment where every SGW node in cluster has an identical configuration. This will enable future platform architectural enhancements around mobile manageability .
 
-Impl note: Based on set of replications defined, system will have a node election process/ heartbeat process
-
-Note : This requirement is true only for EE. In case of CE, Sync Gateway will behave as it does today. The replicator will run on the nodes that the users designate in their configuration. This implies that in case of a homogeneous cluster with every node having identical configuration , the replication will run on all nodes.
+Impl note: Based on set of replications d
 
 In EE, replications will get automatically get redistributed as more Sync Gateways are added to the cluster or removed from cluster
 
@@ -76,17 +74,22 @@ endif::[]
 // tag::overview[]
 Sync Gateway's inter-cluster replications support High Availability (HA).
 
+In {enterprise} SGR-2 automatically provides for high-availability.
+_Node distribution_ ensures all running replications are evenly distributed across all available nodes, regardless of their originating node.
+
+Any given replication runs on only one node at any give time.
+
+When a node fails, the system automatically resumes the node's replications on an alternative node (providing the replication has been configured on multiple nodes).
+
 For {community} deployments::
 Although high-availability replication is not automatic, you can make replication availability more robust by configuring or creating the same replication on multiple nodes.
 This means that should one node fail the duplicate replication on other nodes may be able to continue.
-
-In {enterprise} the SG-Replicate 2.0 protocol automatically provides for high availability replication.
-It uses <<node-distribution>> to ensure that should any given node fail the system automatically resumes the node's replications on an alternative node (providing the replication has been configured on multiple nodes).
 // end::overview[]
 
-_Action_: To make a replication a candidate for HA the user must configure it on at least two Sync Gateway nodes.
+_Action_: To make a replication a candidate for HA the user must configure the same replication on at least two Sync Gateway nodes.
 
 == Node Distribution
+
 The goal of node distribution is to maintain an optimal balance of replications across the cluster.
 
 To achieve this Sync Gateway automatically balances, as equally as possible, the number of replications running on each node.
@@ -291,10 +294,23 @@ WHEN . . . _Node 3_ goes down . . . _Node 1_ and _Node 2_ continue to run _Repli
 
 == Monitoring Node Distribution
 
-Use the __replicationStatus_ endpoint to access information about which replications are running on which nodes -- see: {xref-sgw-endpoint-admin-api-replication-repstatus}
-  |  {xref-sgw-endpoint-admin-api-replication-repstatus-set}
+Use the __replicationStatus_ endpoint to access information about which replications are running on which nodes -- see: {xref-sgw-ep-admin-api-replication-repstatus}
+  |  {xref-sgw-ep-admin-api-replication-repstatus-set}
 
 This information is also collected and available in the log files.
+
+
+
+// chrck thie points covered
+
+
+In clusters containing multiple Sync Gateway nodes, only _one_ of the Sync Gateways should be configured fas the replicating node.
+
+Configuring multiple Sync Gateways as replicating nodes can substantially increase the amount of duplicate work, and therefore should be avoided.
+
+This limitation means the system cannot be guaranteed as Highly Available.
+If the replicating Sync Gateway fails or is otherwise removed from the system, then the replications will stop.
+
 
 
 
