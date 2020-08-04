@@ -47,8 +47,8 @@ Constraint: SG-Replicate 2 does not support replication between two remote hosts
 == Removed or Deprecated Properties
 // tag::2-8-0-removedonly[]
 
-The following SG Replicate 1.0 (SG1) _ReplicationConfig_ configuration properties are deprecated.
-Deprecated functionality remains solely for backward compatibility with SG1 but is no longer supported:
+The following SG Replicate 1.0 (SGR-1) _ReplicationConfig_ configuration properties are deprecated.
+Deprecated functionality remains solely for backward compatibility with SGR-1 but is no longer supported:
 
 // tag::create-target[]
 create_target::
@@ -72,7 +72,7 @@ The _doc_ids_ property remains in `ReplicationConfig` but is deprecated_.
 source::
 __SG 1.0 Deprecated__.
 +
-*For SG2:* the _source_ property is, implicitly, the database associated with the replication (that is, the 'database' property under which it is defined).
+*For SGR-2:* the _source_ property is, implicitly, the database associated with the replication (that is, the 'database' property under which it is defined).
 // end::source[]
 
 // tag::target[]
@@ -80,7 +80,7 @@ __SG 1.0 Deprecated__.
 target::
 __SG 1.0 Deprecated__.
 +
-*For SG2:* The _target_ property is replaced by the `<<remote-property>>` property.
+*For SGR-2:* The _target_ property is replaced by the `<<remote-property>>` property.
 // end::target[]
 
 // tag::async[]
