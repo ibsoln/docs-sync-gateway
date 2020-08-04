@@ -1,4 +1,4 @@
-= Inter-Cluster Replication with SG-Replicate 1.0
+= Inter-Cluster Replication (SGR-1)
 :pge-aliases: running-replications.adoc
 :page-layout: article
 :page-status: {release-status-sgw} -- {release-comments-sgw}
@@ -7,10 +7,10 @@
 :description: Inter-cluster replication (Sync Gateway to Sync Gateway) using SG-Replicate1.0 protocol
 
 include::partial$_std-hdr-sgw.adoc[]
-include::partial$block-authors-notes.adoc[tag=sgr1]
+// include::partial$block-authors-notes.adoc[tag=sgr1]
+
 :topic-group: Inter-cluster Replication
 :param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin}
-:param-abstract: This content provides an overview of Inter-cluster replication, which is replication between Sync Gateway clusters using SG-Replicate 1.0.
 include::partial$block-abstract.adoc[]
 
 
@@ -20,111 +20,78 @@ include::partial$block-abstract.adoc[]
 :fn-icr-ref: footnote:icr[]
 :fn-arch-ref: footnote:arch[]
 
+CAUTION: This content covers inter-cluster replication using the SG-Replicate 1.0 protocol.
 
-== Introduction
+== Replication Characteristics
 
-We support the ability to run replications between two Sync Gateway clusters.
-SG-Replicate is the protocol that supports that replication.
-Documents go through the Sync Function on the target Sync Gateway instance which ensures that access permissions are updated.
+= Protocol
 
-On the architecture diagram below, any changes that users/systems make on either Sync Gateway instance will be replicated to the other Sync Gateway instance.
+Sync Gateway supports the ability to run replications between two Sync Gateway clusters using SG-Replicate 1.0 (SGR-1).
 
-image::running-replications.png[]
+SGR-1 replications are HTTP(s)-based.
 
-NOTE: A _Sync Gateway database_ can also be referred to as a namespace for documents, the data is *always* stored in Couchbase Server.
+One-shot replications are always run asynchronously even if the `async` property is not set to true.
 
-== SG Replicate vs XDCR
+Replications always run on their initializing node.
 
-xref:server:manage:manage-xdcr/xdcr-management-overview.adoc[XDCR] (cross data centre replication) is the Couchbase Server API to replicate between Couchbase Server clusters.
-Both XDCR and SG Replicate can be used to keep clusters in different data centres in sync.
-However, SG Replicate was designed specifically for a Couchbase Mobile deployment and must be used for replication between mobile clusters.
 
-== Features
 
-* Replicates via the Sync Gateway REST API
-* JSON configuration to specify replications
-* Supports multiple replications running concurrently
-* Can run both OneShot and Continuous replications
-* Does not store anything persistently
-* Stateless -- can be interrupted/restarted anytime without negative side effects
-* Can specify which channel(s) to sync
-* Supports Primary/Primary and Primary/Secondary topologies
+// All replications are based on a {glos-term-replication-definition} provided either to the Admin REST API or the JSON configuration file -- see: <<replication-definitions>>.
 
-== Limitations
+// Replications may be given a user defined `replication_id` otherwise Sync Gateway will generate a random UUID.
 
-* Can only replicates SG databases that are hosted on recent versions of Sync Gateway (after commit 50d30eb3d on March 7, 2014)
-* In deployments with multiple Sync Gateway nodes, only _one_ of the Sync Gateways should be configured for replications.
-If multiple Sync Gateways are configured for replications, it could substantially increase the amount of duplicate work, and therefore should be avoided.
-The limitation is that the system is not guaranteed to be Highly Available: if the Sync Gateway that is chosen to drive the replication goes down or is otherwise removed from the system, then the replications will stop.
-* Replication between Sync Gateway databases doesn't support automatic conflict resolution even when the no-conflicts mode is enabled (i.e xref:config-properties.adoc#databases-foo_db-allow_conflicts["allow_conflicts": false]).
-When running two Sync Gateway clusters with the no-conflicts mode enabled, cross-cluster document conflicts will result in that document no longer being replicated.
-Deployments  must implement a custom conflict resolver in an external app as specified xref:resolving-conflicts.adoc[here].
-To avoid this, the application must ensure concurrent, cross-cluster updates are not made to a given document.
+=== Types of Replication
+Replications are either: {glos-term-adhoc-replication} (REST API only) or {glos-term-persistent-replication}.
+They can also be configured to run in one of two-modes: {glos-term-continuous} or {glos-term-oneshot}.
 
-== Running replications via the REST API
+=== Granularity
 
-A replication is run by sending a POST request to the server endpoint `_replicate`, with a JSON object defining the replication parameters.
-Both one-shot and continuous replications can be run.
-Each replication is one-way between two local or remote Sync Gateway databases.
-Multiple replications can run simultaneously, supporting bi-directional replications and different replication topologies.
-Be aware that both databases being synchronized should have the same sync function, otherwise it could lead to unexpected behavior.
+Replications take place at document level with routing provided by channel filtering where required.
 
-These parameters start a one-shot replication between two databases on the local Sync Gateway instance.
-The request will block until the replication has completed.
+=== Directionality
+Replications are uni-directional between two Sync Gateway databases (local or remote).
+You can achieve bi-directional replication by running multiple replications  simultaneously.
+For example by running a Pull on database _A_ from _B_ and concurrently a Pull on _B_ from _A_.
 
-[source,javascript]
-----
-{
-    "source": "db",
-    "target": "db-copy"
-}
-----
+== Security
 
-These parameters start a one-shot replication between one database on the local Sync Gateway instance and one on a remote Sync Gateway instance, with user credentials.
-The request will return immediately and the replication will run asynchronously.
+=== Authentication
 
-[source,javascript]
-----
-{
-    "source": "db",
-    "target": "http://user:password@example.com:4985/db-copy",
-    "async":true
-}
-----
+Under SGR01 inter-cluster replications are HTTP(s)-based.
 
-These parameters start a continuous replication between one database on the local Sync Gateway instance and one on a remote Sync Gateway instance with the user provided `replication_id`.
-The request will return immediately and the replication will run asynchronously.
+=== Access Control
+Access control is achieved by using the _Sync function_ together with the security credentials (user name and password).
 
-[source,javascript]
-----
-{
-    "replication_id":"my-named-replication",
-    "source": "db",
-    "target": "http://user:password@example.com:4985/db-copy",
-    "continuous":true
-}
-----
+.Author's Note
+[NOTE]
+--
+Include an example sync function demonstrating this.
+--
 
-These parameters start a continuous replication between one database on the local Sync Gateway instance and one on a remote Sync Gateway instance.
-The replicator will batch up to 1000 revisions at a time, this will improve replication performance but will use more memory resources.
-Source database documents will be filtered so that only those tagged with the channel names "channel1" or "channel2" are replicated.
+== Availability and Resilience
 
-[source,javascript]
-----
-{
-    "source": "db",
-    "target": "http://user:password@example.com:4985/db-copy",
-    "continuous":true,
-    "changes_feed_limit":1000,
-    "filter":"sync_gateway/bychannel",
-    "query_params":["channel1","channel2"]
-}
-----
+=== High Availability
+A measure of high-availability can be achieved by running a replication on multiple nodes in the cluster, although this result in redundant processing.
 
-== Configuration Properties
+== Network Resilience
+Network resiliency is built-in for _continuous_ replications, which will restart automatically whenever the node does and will retry lost connections every 500ms indefinitely.
 
-The `_replicate` JSON Object supports the following properties.
+== Initialization
+As covered in {xref-sgw-pg-icr-sgreplicate-init},
+replications are defined by a {glos-term-replication-definition} in either:
 
+* The JSON configuration file (`sync-gateway-config.json`) for _persistent_ replications (_continuous_ or _one-shot_) -- see: <<running-configured-replications>>
+* The  REST API for _ad hoc_ replications (one-shot only) -- see: <<running-rest-api-initialized-replications>>
+
+
+== Replication Definitions
+
+All replications are 'initialized' by a {glos-term-replication-definition} in the configuration file or Admin REST API.
+For SGR-1 _replications definition_ are at Sync Gateway level -- see: <<replication-definition-elements>>.
+
+
+[#replication-definition-elements]
+.Replication Definition Elements
 [cols="1,1,3,1"]
 |===
 |Name |Type |Description |Default
@@ -181,17 +148,17 @@ Replication progress can be monitored by using the `_active_tasks` resource.
 |50
 |===
 
-== Running replication on startup
+== Running Configured Replications
 
-If you want to run replications as soon as Sync Gateway starts, you can define replications in the top level "replications" property of the Sync Gateway configuration, the "replications" value is an array of objects, each object defines a single replication, the object properties are the same as those for the `_replicate` end-point on the Admin REST API.
+All replications in the Sync Gateway configuration file will auto-start when Sync Gateway starts.
+For replication definition parameters/properties -- see: <<replication-definitions>>.
 
-One-shot replications are always run asynchronously even if the `async` property is not set to true.
+NOTE: One-shot replications that reference local databases (as source or target) will start after a short delay (5 seconds) to allow the local REST APIs to start.
 
-A One-shot replication that references a local database for either source or target, will be run after a short delay (5 seconds) in order to allow the local REST API's to come up.
-Replications may be given a user defined `replication_id` otherwise Sync Gateway will generate a random UUID.
-Replications defined in config may not contain the `cancel` property.
 
-[source,javascript]
+.Running a replication on startup
+====
+[source,json]
 ----
 {
     "log":["*"],
@@ -238,13 +205,95 @@ Replications defined in config may not contain the `cancel` property.
     }
 }
 ----
+====
 
-== Monitoring replications
+== Running REST API Initialized Replications
+
+REST API replications are initialized and run by sending a `POST` request to the server endpoint `_replicate`, with a request body comprising a JSON object containing the replication definition's parameters.
+
+Both one-shot and continuous replications can be run in this way.
+
+NOTE: When running multiple replications on a Sync Gateway database both source and target databases must use identical _sync functions_, otherwise it could lead to unexpected behavior.
+
+.Running replications via the API
+=====
+[{tabs}]
+====
+
+One-shot (local)::
++
+--
+These parameters start a one-shot replication between two databases on the local Sync Gateway instance.
+The request will block until the replication has completed.
+
+[source, json]
+----
+{
+  "source": "db",
+  "target": "db-copy"
+}
+----
+--
+
+One-shot::
++
+--
+These parameters start a one-shot replication between one database on the local Sync Gateway instance and one on a remote Sync Gateway instance, with user credentials.
+The request will return immediately and the replication will run asynchronously.
+
+[source,javascript]
+----
+{
+    "source": "db",
+    "target": "http://user:password@example.com:4985/db-copy",
+    "async":true
+}
+----
+--
+
+Continuous::
++
+--
+These parameters start a continuous replication between one database on the local Sync Gateway instance and one on a remote Sync Gateway instance with the user provided `replication_id`.
+The request will return immediately and the replication will run asynchronously.
+
+[source,javascript]
+----
+{
+    "replication_id":"my-named-replication",
+    "source": "db",
+    "target": "http://user:password@example.com:4985/db-copy",
+    "continuous":true
+}
+----
+--
+
+Continuous (batched and filtered)::
++
+--
+These parameters start a continuous replication between one database on the local Sync Gateway instance and one on a remote Sync Gateway instance.
+The replicator will batch up to 1000 revisions at a time, this will improve replication performance but will use more memory resources.
+Source database documents will be filtered so that only those tagged with the channel names "channel1" or "channel2" are replicated.
+
+[source,javascript]
+----
+{
+    "source": "db",
+    "target": "http://user:password@example.com:4985/db-copy",
+    "continuous":true,
+    "changes_feed_limit":1000,
+    "filter":"sync_gateway/bychannel",
+    "query_params":["channel1","channel2"]
+}
+----
+--
+=====
 
 
 
 
-== SGR1
+
+== Monitoring Replications
 
 * Use `_active_tasks` to monitor SG-Replicate 1.0 replications  (`GET`)
 +
@@ -255,10 +304,6 @@ The content returned will be the same as that returned by `_replicationStatus` a
 ** status (stopped/running).
 ** last_seq_push
 ** last_seq_pull
-
-
-
-
 
 By default a simple one-shot replication blocks until it is complete and returns the stats for the completed task.
 Async one-shot and continuous replications return immediately with the in flight task stats.
@@ -341,13 +386,9 @@ When an active task is canceled, the response returns the stats of the replicati
 }
 ----
 
+== Replication Statistics
 
-
-
-== Statistics Captured
-
-include::partial$icr-api-expvars-GET
-
+include::partial$icr-api-expvars-GET.adoc[]
 
 
 Use the `_expvars` Admin REST API to access following stats:
@@ -396,6 +437,18 @@ Use the `_expvars` Admin REST API to access following stats:
 
 
 
+
+
+== Constraints
+[temporary holding]
+* Can only replicates SG databases that are hosted on recent versions of Sync Gateway (after commit 50d30eb3d on March 7, 2014)
+* In deployments with multiple Sync Gateway nodes, only _one_ of the Sync Gateways should be configured for replications.
+If multiple Sync Gateways are configured for replications, it could substantially increase the amount of duplicate work, and therefore should be avoided.
+The limitation is that the system is not guaranteed to be Highly Available: if the Sync Gateway that is chosen to drive the replication goes down or is otherwise removed from the system, then the replications will stop.
+* Replication between Sync Gateway databases doesn't support automatic conflict resolution even when the no-conflicts mode is enabled (i.e xref:config-properties.adoc#databases-foo_db-allow_conflicts["allow_conflicts": false]).
+When running two Sync Gateway clusters with the no-conflicts mode enabled, cross-cluster document conflicts will result in that document no longer being replicated.
+Deployments  must implement a custom conflict resolver in an external app as specified xref:resolving-conflicts.adoc[here].
+To avoid this, the application must ensure concurrent, cross-cluster updates are not made to a given document.
 
 
 include::partial$block-related-content-icr.adoc[]
