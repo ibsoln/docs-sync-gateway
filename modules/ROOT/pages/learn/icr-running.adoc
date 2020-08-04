@@ -1,16 +1,18 @@
-= Running Replications
+= Initializing Replications
 :page-aliases: running-replications
 :page-layout: article
 :page-status: {release-status-sgw} -- {release-comments-sgw}
 :page-edition: Under Development
 :page-role: panes
-:description: This content covers how to run inter-cluster replication (replication between Sync Gateway clusters)
+:description: This content covers how to initialize and run inter-cluster replication (replication between Sync Gateway clusters)
 :keywords:
 
 include::partial$_std-hdr-sgw.adoc[]
+
 include::partial$block-authors-notes.adoc[tag=wip]
+
 :topic-group: Inter-cluster Replication
-:param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin}
+:param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin} | {xref-sgw-pg-icr-admin}
 :param-abstract:
 include::partial$block-abstract.adoc[]
 
@@ -28,7 +30,7 @@ Information sources include:
 
 
 .points to cover also include:
-
+done-7/27/20
 * Replications defined in the root level config that don’t have a local database as source or target will
 Log an error, prevent SG from starting (breaks backward compatibility without proper deprecation notice)
 +
@@ -40,99 +42,222 @@ Documentation : Highlight this breaking change in our release notes and in main 
 --
 endif::[]
 
-== Running via the REST API
-
-A replication is run by sending a POST request to the server endpoint `replication`, with a JSON object defining the replication parameters.
-Both one-shot and continuous replications can be run.
-
-Each replication is one-way between two local or a local and a remote Sync Gateway databases.
-
-Multiple replications can run simultaneously, supporting bi-directional replications and different replication topologies.
-Be aware that both databases being synchronized should have the same sync function, otherwise it could lead to unexpected behavior.
-
-You can submit the request using the `curl` utility or an application such as _Postman_
+:fn-restonly-par: footnote:fn-restonly[This parameter is not available in the configuration file.]
+:fnref-restonly: footnote:fn-restonly[]
 
 
+// == Overview
+
+// Inter-custer replication supports both persistent and ad hoc replication types.
+
+// You can initialize a persistent inter-cluster replication by using either of these methods:
+
+// * Configuring it in the node's configuration file (`sync-gateway-config.json`)
+// * Using {xref-sgw-pg-rest-api-admin} requests through a utility such as `curl`, or an application such as _Postman_
+
+// You can also initialize ad hoc inter-cluster replications by using the
+//  {xref-sgw-pg-rest-api-admin}.
+
+== Initialization
+
+
+All replications operate within the context of a local database:
+
+
+* Configured replications use the `database.{db-name}.replications` property to add a replication definition to a local database.
+* REST API replications specify the local database and replication identity in the API POST/PUT request.
+Providing the replication definition parameters in the request body as a JSON string.
+
+Both of these scenarios and a summary of the available replication properties are shown in <<replication-properties>>.
+It is a brief introduction to the replication properties, which are covered in more detail in {xref-sgw-pg-config-properties} (the definitions apply to configured and API replications).
+
+Replication highlights:
+
+* There are two types of replication: persistent and ad hoc (REST API only).
+* Replications of both types can run in one-shot or continuous replications modes.
+* All replications involve at least one local database.
+* Replications can be configured to purge documents when channel access is revoked (a removal notification is received).
+
+* Persistent continuous replications can be:
+** Reset -- checkpoint back to starting value ?? check
+** Updated -- only the parameter values provided in the PUT request body will be updated
+
+* Persistent and ad hoc replications can be:
+** Removed -- only the replication_id is needed to delete ongoing continuous or one-shot replications.
+
+* {enterprise} only:
+** Replications can use delta-sync mode, whereby only the changed data-items are replicated.
+
+
+ Running highlights
+
+* Multiple identical replicators can be initiated on a Sync Gateway node provided each has a unique `replication_Id`.
+* SGR-1 and SGR-2 replications can run on the same node, but you must ensure that they each have a different `replication_id`.
+* The user under which replication is being run must have read and write access to the data being replicated.
+* Exponential backoff when connection lost. Doesn't apply to `adhoc`.
+* SGR-2 will continue trying to connect for 30 minutes following authentication failure (including user-invalid/doesn't exist).
+* Running replications can be stopped. Stopped replications can be (re)Started.
+// [On disconnected replications, replication will it will do exponential backoff upto reconnect-interval and then attempt to reconnect indefinitely based on this value. If 0, it will do exponential backoff upto 5 min before stopping the replication]
+
+* If ALL the Sync Gateway nodes in a source or target Sync Gateway cluster go down in the middle of continuous replication, by default, the system should pick up from the last document that was successfully processed by both sides when the replication/cluster is restarted
+
+
+* REST ONLY
+** POST databases/{db}/_replication creates a replication using the {rep-id} specified in the body or if none specified, a unique UUID.
+** PUT databases/{db}/_replication/{rep-id} upserts replication {rep-id}.
+
+
+* {enterprise} only:
+** Replications are distributed even across all available Sync Gateway nodes and so are not guaranteed to run on their originating node.
+** If a multi-node Sync Gateway cluster loses a subset of sync gateway nodes, the remaining nodes continue replication uninterrupted IF they have been configured to handle the replication (continuous and one-shot replications).
+
+include::partial$icr-repl-props-table-sgr2.adoc[]
+
+
+
+
+
+// The `replications` value is an array of objects.
+// Each object defines a single replication.
+
+// // One-shot replications are always run asynchronously even if the `async` property is not set to true.
+
+// Replications may be given a user defined `replication_id` otherwise Sync Gateway will generate a random UUID.
+
+// Replications defined in config may not contain the `cancel` or `adhoc` properties; these dynamic settings are API only parameters.
+
+// .Simple replication config
+// ====
+// [source,javascript]
+// ----
+// include::{example-cfg}[tags=icr-replication-config]
+// ----
+// ====
+
+== Generic Constraints
+
+.To run SGR-2 replications
+[CAUTION]
+--
+All active nodes in active cluster must be running Sync Gateway version 2.8 or higher.
+--
+
+{enterprise}::
+All replications are distributed evenly across available nodes. This means they cannot be guaranteed to run on the node from which they originate.
+
+Access rights::
+The user running the replication must have read and write access to the data being replicated.
+This is not enforced by the system.
+Use your `sync` function to ensure a consistent approach is applied across all clusters.
+
+Mixing SGR1 and SGR2 replications::
+Both protocols can legitimately be in use at the same time, especially during transition. However, you should avoid initializing identical SGR1 and SGR2 replications.
+
+== Running Configured Replications
+
+Replications in the configuration file start automatically whenever Sync Gateway is (re)started.
+Unless you inhibit this by adding a `"state": "stopped"` parameter to the replication definition -- see: {xref-sgw-pg-config-properties-db-rep-state}.
+You can manually start 'stopped' replication using {xref-sgw-pg-icr-admin-start}.
+
+.Configured Replications -- Continuous and One-shot
+=====
+[{tabs}]
+====
+Continuous::
++
+--
+[source, json]
+----
+include::{example-cfg}[tags=icr-repl-create-pull-cont]
+----
+
+include::{example-cfg}[tag=icr-repl-create-pull-cont-callouts]
+--
+
++
+One-shot::
++
+--
+[source, json]
+----
+include::{example-cfg}[tag=icr-repl-create-pull-oneshot]
+----
+
+include::{example-cfg}[tag=icr-repl-create-pull-oneshot-callouts]
+--
+
+====
+=====
+
+== Running Admin REST API Replications
+
+Replications initialized by sending a `POST`, or `PUT`, request to the `_replication` endpoint will start running automatically, unless the `"state": "stopped"` parameter is specified. with a JSON object defining the replication parameters -- as shown in  <<submitting-api-requests>>.
+
+* You can run multiple replications simultaneously with different replication topologies, provided both databases being synchronized have the same sync function.
+
+You can submit requests using the `curl` utility (as in these examples) or an application such as _Postman_.
+
+[#submitting-api-requests]
 .Submitting API Requests
 =====
 [{tabs}]
 ====
-Using CURL::
+Continuous Pull Replication::
 +
 --
-[source, console]
+This example initializes a persistent, continuous, replication between a local database and one on a remote Sync Gateway instance.
+
+[source, json]
 ----
-curl -X PUT "http://localhost:4985/db1/_replication/rep1" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"adhoc\": false, \"batch_size\": 0, \"conflict_resolution_type\": \"string\", \"continuous\": false, \"custom_conflict_resolver\": \"string\", \"direction\": \"string\", \"enable_delta_sync\": false, \"filter\": \"string\", \"max_backoff_time\": 0, \"perf_tuning_params\": [ \"string\" ], \"purge_on_removal\": false, \"query_params\": [ \"string\" ], \"remote\": \"string\", \"replication_id\": \"string\", \"state\": \"string\"}"
+include::{example-restapi}[tag=icr-repl-create-pull-cont]
 ----
+
+include::{example-cfg}[tag=icr-rep-create-pull-cont-callouts]
+
 --
-
-Using Postman::
-+
---
-image::postman.png[,800]
---
-====
-=====
-
-
-
-[{tabs}]
-====
-
-// one-shot local::
-// +
-// --
-
-// These parameters start a one-shot replication between two databases on the local Sync Gateway instance.
-// The request will block until the replication has completed.
 
 One-shot::
 +
 --
+This example initializes a persistent, one-shot, replication between a local database and one on a remote Sync Gateway instance.
 
-These parameters start a one-shot replication between one database on the local Sync Gateway instance and one on a remote Sync Gateway instance, with user credentials.
-The request will return immediately and the replication will run asynchronously.
+The replication will run once, after a short delay to allow the Rest API to start.
+It will then run once after each Sync Gateway restart and-or when manually initiated using the `_replicationStatus` endpoint -- see {xref-sgw-pg-icr-admin}.
+
+[source, json]
+----
+include::{example-restapi}[tags=icr-repl-create-pull-oneshot]
+----
+
+include::{example-cfg}[tags=icr-repl-create-pull-oneshot-callouts]
+
+--
+
+Ad-hoc::
++
+--
 
 [source,javascript]
 ----
-include::{example-cfg}[tags=icr-repl-rest-oneshot]
+include::{example-restapi}[tags=icr-repl-adhoc-pull]
 ----
---
 
-Continuous::
-+
---
-// These parameters start a continuous replication between one database on the local Sync Gateway instance and one on a remote Sync Gateway instance with the user provided `replication_id`.
-// The request will return immediately and the replication will run asynchronously.
-
-// [source,javascript]
-// ----
-// {
-//     "replication_id":"my-named-replication",
-//     "source": "db",
-//     "target": "http://user:password@example.com:4985/db-copy",
-//     "continuous":true
-// }
-// ----
-// --
-
-These parameters start a continuous replication between one database on the local Sync Gateway instance and one on a remote Sync Gateway instance.
-The replicator will batch up to 1000 revisions at a time, this will improve replication performance but will use more memory resources.
-Source database documents will be filtered so that only those tagged with the channel names "channel1" or "channel2" are replicated.
-
-[source, javascript]
-----
-include::{example-cfg}[tags=icr-repl-rest-cont]
-----
+include::{example-cfg}[tags=icr-repl-adhoc-pull-callouts]
 --
 
 ====
+=====
+
+include::partial$block-related-content-icr.adoc[]
+
+
+
 
 // == Configuration Properties
 
-See: {xref-sgw-pg-config-properties} for a full description of the available configuration properties.
+// See: {xref-sgw-pg-config-properties} for a full description of the available configuration properties.
 
-You will find the replication properties defined here: {xref-sgw-pg-config-properties-db-replications}.
+// You will find the replication properties defined here: {xref-sgw-pg-config-properties-db-replications}.
 
 // The `_replicate` JSON Object supports the following properties.
 
@@ -192,30 +317,9 @@ You will find the replication properties defined here: {xref-sgw-pg-config-prope
 // |50
 // |===
 
-== Running replication on startup
 
-If you want to run replications as soon as Sync Gateway starts, you can define replications in the JSON configuration file -- see: {xref-sgw-pg-config-properties} for a full description of the available configuration properties.
 
-Replications are defined in the context of a local database; that is they are defined under the `databases.<db>` property.
-You will find the replication properties defined here: {xref-sgw-pg-config-properties-db-replications}.
 
-The `replications` value is an array of objects. Each object defines a single replication. The object properties are, in the main, the same as those for the `replication` end-point on the Admin REST API.
-
-One-shot replications are always run asynchronously even if the `async` property is not set to true.
-
-One-shot replications are run after a short delay (5 seconds), which allows the local REST API's to come up.
-
-Replications may be given a user defined `replication_id` otherwise Sync Gateway will generate a random UUID.
-
-Replications defined in config may not contain the `cancel` property.
-
-.Simple replication config
-====
-[source,javascript]
-----
-include::{example-cfg}[tags=icr-replication-config]
-----
-====
 // {
 //     "log":["*"],
 //     "replications":[
@@ -260,88 +364,3 @@ include::{example-cfg}[tags=icr-replication-config]
 //         }
 //     }
 // }
-
-// == Monitoring replications
-
-// By default a simple one-shot replication blocks until it is complete and returns the stats for the completed task.
-// Async one-shot and continuous replications return immediately with the in flight task stats.
-
-// You can get a list of active replication tasks by sending a GET request to the `_active_tasks` endpoint, this will return a list of all running one-shot and continuous replications for the current Sync Gateway instance.
-
-// The response is a JSON array of active task objects, each object contains the original request parameters for the replication, a unique `replication_id` and some stats for the replication instance.
-// The list of returned stats and their meaning can be found on the API reference of the xref:admin-rest-api.adoc#/server/get\__active_tasks[`_active_tasks`] endpoint.
-
-// [source,javascript]
-// ----
-// [
-//     {
-//         "type":"replication",
-//         "replication_id":"6a4924c24424b635a80f50cd660fb192",
-//         "continuous":true,
-//         "source":"http://example.com:4985/source",
-//         "target":"http://example.com:4985/target",
-//         "docs_read":0,
-//         "docs_written":0,
-//         "doc_write_failures":0,
-//         "end_last_seq":null
-//     },
-//     {
-//         "type":"replication",
-//         "replication_id":"active-to-backup",
-//         "continuous":true,
-//         "source":"http://example2.com:4985/active",
-//         "target":"http://example2.com:4985/backup",
-//         "docs_read":1000,
-//         "docs_written":850,
-//         "doc_write_failures":10,
-//         "end_last_seq":25680
-//     }
-// ]
-// ----
-
-// == Canceling replications
-
-// An active replication task is canceled by sending a POST request to the server endpoint `_replicate`, with a JSON object.
-// The JSON object must contain the `cancel` property set to true and either a valid `replication_id` or the identical source, target and continuous values used to start the replication.
-
-// This will cancel an active replication with a `replication_id` of "my-one-shot-replication", the `replication_id` value can be obtained by sending a request to `_active_tasks`.
-
-// [source,javascript]
-// ----
-// {
-//     "cancel": true,
-//     "replication_id": "my-one-shot-replication"
-// }
-// ----
-
-// This will cancel a replication that was started with same "source" and "target" values as those in the cancel request.
-// By omitting the "continuous" property it's value will default to *false*, a replication must also have been started as a one-shot to match.
-
-// [source,javascript]
-// ----
-// {
-//     "cancel":true,
-//     "source": "db",
-//     "target": "db-copy"
-// }
-// ----
-
-// When an active task is canceled, the response returns the stats of the replication up to the point when it was stopped.
-
-// [source,javascript]
-// ----
-// {
-//     "type":"replication",
-//     "replication_id":"3791d562153505408e0b2730603ed7c1",
-//     "continuous":true,
-//     "source":"http://0.0.0.0:4985/source",
-//     "target":"http://0.0.0.0:4985/target",
-//     "docs_read":12,
-//     "docs_written":12,
-//     "doc_write_failures":0,
-//     "start_last_seq":0,
-//     "end_last_seq":"28"
-// }
-// ----
-
-include::partial$block-related-content-icr.adoc[]
