@@ -9,7 +9,7 @@ For information on replications run in {community} deployments -- see {xref-sgw-
 // end::icr-community-redirect[]
 
 // tag::enterprise-only[]
-Unless otherwise stated this content relates only to {enterprise} deployments.
+NOTE: Unless otherwise stated this content relates only to {enterprise}
 // end::enterprise-only[]
 
 
@@ -19,11 +19,42 @@ Unless otherwise stated this content relates only to replications run using the 
 
 
 // tag::community-only-rep-same-node[]
-With {community} replications always run on the node on which they are configured.
+
+''''
+{community} Only::
+Replications always run on the node on which they are configured.
 Users can only access replications on the node from which they make the request.
+
+''''
 // end::community-only-rep-same-node[]
 
 
 // tag::community-only[]
-Unless otherwise stated this content relates only to {community} deployments.
+NOTE: Unless otherwise stated this content relates only to {community}
 // end::community-only[]
+
+// tag::ee-only[]
+ifndef::param-msg[]
+:param-msg: This content relates only to the {enterprise}
+endif::[]
+
+[NOTE]
+.ENTERPRISE EDITION ONLY
+====
+{param-msg}
+====
+:param-msg!:
+// end::ee-only[]
+
+// tag::ce-only[]
+ifndef::param-msg[]
+:param-msg: This content relates only to the {community}
+endif::[]
+
+[NOTE]
+.COMMUNITY EDITION ONLY
+====
+{param-msg}
+====
+:param-msg!:
+// end::ce-only[]

@@ -75,16 +75,19 @@ endif::xref-pfx-sgw[]
 :sgw-pg-shared-bucket-access: shared-bucket-access.adoc
 :sgw-pg-stats-monitoring: stats-monitoring.adoc
 :sgw-pg-supported-os: prodnotes/pn-supported-os.adoc
-:sgw-pg-sync-function: learn/sync-function.adoc
+:sgw-pg-def-sync-function: learn/defining-sync-functions.adoc
 :sgw-pg-sync-gateway-channels: learn/sync-gateway-channels.adoc
 :sgw-pg-upgrade: upgrade.adoc
 :sgw-pg-users-and-roles: learn/users-and-roles.adoc
 :sgw-pg-write-access: learn/write-access.adoc
 
 
-:xref-sgw-pg-adv-rest-api-client: {xref-pfx-sgw}{sgw-pg-adv-rest-api-client}[Use the REST API]
-:xref-sgw-pg-adv-sgw-cfg-import-filter: {xref-pfx-sgw}{sgw-pg-adv-sgw-cfg-import-filter}[Use Import Filters]
-:xref-sgw-pg-adv-sgw-cfg-sync-function: {xref-pfx-sgw}{sgw-pg-adv-sgw-cfg-sync-function}[Work With Sync Functions]
+:xref-sgw-pg-adv-rest-api-client: {xref-pfx-sgw}{sgw-pg-adv-rest-api-client}[How do I use the REST API?]
+// [Use the REST API?]
+:xref-sgw-pg-adv-sgw-cfg-import-filter: {xref-pfx-sgw}{sgw-pg-adv-sgw-cfg-import-filter}[How do I use Import filters?]
+// [Work With Import Filters]
+:xref-sgw-pg-adv-sgw-cfg-sync-function: {xref-pfx-sgw}{sgw-pg-adv-sgw-cfg-sync-function}[How do I use Sync functions?]
+// [Work With Sync Functions]
 
 
 // BEGIN:: LINKS INTO ADMIN REST API SCHEMA
@@ -112,7 +115,7 @@ endif::xref-pfx-sgw[]
 
 // _replicationStatus GET
 :xref-sgw-ep-admin-api-replication-repstatus: {xref-sgw-pfx-admin-api-replication}/get__db___replicationStatus__replicationID_[_replicationStatus(replicationID)]
-:xref-sgw-ep-admin-api-replication-repstatus-query: {xref-sgw-pfx-admin-api-replication}/get__db___replicationStatus__queryString_[_replicationStatus?{querystring}]
+:xref-sgw-ep-admin-api-replication-repstatus-query: {xref-sgw-pfx-admin-api-replication}/get__db___replicationStatus__queryString_[_replicationStatus]
 
 // _replicationStatus PUT
 :xref-sgw-ep-admin-api-replication-repstatus-set: {xref-sgw-pfx-admin-api-replication}/put__db___replicationStatus__replicationID__action__action_[_replicationStatus(replicationID)?action={action}]
@@ -130,11 +133,21 @@ endif::xref-pfx-sgw[]
 :xref-sgw-pg-concept-fundamentals: {xref-pfx-sgw}{sgw-pg-concept-fundamentals}[Other key learn/concepts ...]
 
 // LINKS INTO CONFIGURATION SCHEMA
-:xref-sgw-pg-config-properties: {xref-pfx-sgw}{sgw-pg-config-properties}[Configuration Schema]
-:xref-sgw-pg-config-properties-db: {xref-pfx-sgw}{sgw-pg-config-properties}#databases
-:xref-sgw-pg-config-properties-databases: {xref-sgw-pg-config-properties-db}[databases]
-:xref-sgw-pfx-config-properties-db-rep: {xref-sgw-pg-config-properties-db}-this_db-replications-this_rep-
-:xref-sgw-pg-config-properties-db-replications: {xref-sgw-pfx-config-properties-db-rep}[replications]
+:xref-sgw-pfx-config-properties: {xref-pfx-sgw}{sgw-pg-config-properties}
+:xref-sgw-pg-config-properties: {xref-sgw-pfx-config-properties}[Configuration Details]
+:xref-sgw-pg-config-properties-schema: {xref-sgw-pfx-config-properties}#configuration-reference[Configuration Schema]
+
+// Databases
+:xref-sgw-pfx-config-properties-db: {xref-pfx-sgw}{sgw-pg-config-properties}#databases
+// :xref-sgw-pg-config-properties-db: {xref-sgw-pfx-config-properties-db}
+:xref-sgw-pg-config-properties-databases: {xref-sgw-pfx-config-properties-db}[databases]
+:xref-sgw-pg-config-properties-databases-sync: {xref-sgw-pfx-config-properties-db}-this_db-sync[sync]
+:xref-sgw-pg-config-properties-databases-sgr-enabled: {xref-sgw-pfx-config-properties-db}-this_db-sgreplicate_enabled[sgreplicate_enabled]
+:xref-sgw-pg-config-properties-databases-delta-sync: {xref-sgw-pfx-config-properties-db}-this_db-delta_sync[delta_sync]
+
+// Replications
+:xref-sgw-pfx-config-properties-db-rep: {xref-sgw-pfx-config-properties-db}-this_db-replications-this_rep-
+:xref-sgw-pg-config-properties-db-replications: {xref-sgw-pfx-config-properties-db}-this_db-replications-this_rep[replications]
 :xref-sgw-pg-config-properties-db-rep-adhoc: {xref-sgw-pfx-config-properties-db-rep}adhoc[adhoc]
 :xref-sgw-pg-config-properties-db-rep-backoff: {xref-sgw-pfx-config-properties-db-rep}max_backoff_time[max_backoff_time]
 :xref-sgw-pg-config-properties-db-rep-batch: {xref-sgw-pfx-config-properties-db-rep}batch_size[batch_size]
@@ -161,31 +174,38 @@ endif::xref-pfx-sgw[]
 :xref-sgw-pg-gs-sgw-prereqs: {xref-pfx-sgw}{sgw-pg-gs-sgw-prereqs}[Before You Start]
 :xref-sgw-pg-gs-sgw-svr-cfg: {xref-pfx-sgw}{sgw-pg-gs-sgw-svr-cfg}[Configure Server for SGW]
 :xref-sgw-pfx-icr-admin: {xref-pfx-sgw}{sgw-pg-icr-admin}
-:xref-sgw-pg-icr-admin: {xref-sgw-pfx-icr-admin}[Replication Admin]
+:xref-sgw-pg-icr-admin: {xref-sgw-pfx-icr-admin}[ICR -- How are replications managed?]
+// [Replication Admin]
 :xref-sgw-pg-icr-admin-getrepdtls: {xref-sgw-pfx-icr-admin}#getting-replication-details
 [Replication Admin]
 :xref-sgw-pg-icr-admin-start: {xref-sgw-pfx-icr-admin}#starting-a-replication[Starting a replication]
 :xref-sgw-pg-icr-behavior: {xref-pfx-sgw}{sgw-pg-icr-behavior}[Replication Behavior]
 :xref-sgw-pfx-icr-conflict-resolution: {xref-pfx-sgw}{sgw-pg-icr-conflict-resolution}
-:xref-sgw-pg-icr-conflict-resolution: {xref-sgw-pfx-icr-conflict-resolution}[Conflict Resolution]
-:xref-sgw-pg-icr-conflict-resolution-auto: {xref-sgw-pfx-icr-conflict-resolution}#automatic-conflict-resolution[Conflict Resolution]
+:xref-sgw-pg-icr-conflict-resolution: {xref-sgw-pfx-icr-conflict-resolution}[ICR -- How are conflicts handled?]
+// [Conflict Resolution]
+:xref-sgw-pg-icr-conflict-resolution-auto: {xref-sgw-pfx-icr-conflict-resolution}#automatic-conflict-resolution[How does Conflict Resolution work?]
+// [Conflict Resolution]
 :xref-sgw-pfx-icr-high-availability: {xref-pfx-sgw}{sgw-pg-icr-high-availability}
-:xref-sgw-pg-icr-high-availability: {xref-sgw-pfx-icr-high-availability}[High-Availability]
+:xref-sgw-pg-icr-high-availability: {xref-sgw-pfx-icr-high-availability}[ICR -- What is High-Availability?]
+// [High-Availability]
 :xref-sgw-pg-icr-high-availability-node-dist: {xref-sgw-pfx-icr-high-availability}#node-distribution[High-Availability]
 :xref-sgw-pg-icr-managing: {xref-pfx-sgw}{sgw-pg-icr-managing}[Replication managing]
 :xref-sgw-pfx-icr-monitoring: {xref-pfx-sgw}{sgw-pg-icr-monitoring}
-:xref-sgw-pg-icr-monitoring: {xref-sgw-pfx-icr-monitoring}[Replication Monitoring]
+:xref-sgw-pg-icr-monitoring: {xref-sgw-pfx-icr-monitoring}[ICR -- What monitoring is available?]
+// [Replication Monitoring]
 :xref-sgw-pg-icr-monitoring-status: {xref-sgw-pfx-icr-monitoring}#retrieving-replication-status-data[Replication Monitoring - Status Information]
 :xref-sgw-pg-icr-monitoring-stats: {xref-sgw-pfx-icr-monitoring}#retrieving-sync-gateway-statistics[Replication Monitoring - Stats]
 :xref-sgw-pfx-icr-sgreplicate: {xref-pfx-sgw}{sgw-pg-icr-sgreplicate}
-:xref-sgw-pg-icr-sgreplicate: {xref-sgw-pfx-icr-sgreplicate}[Inter-cluster Replication]
-:xref-sgw-pg-icr-sgreplicate-init: {xref-sgw-pfx-icr-sgreplicate}#initialization[Introducing Inter-cluster Replication -- Initialization]
-:xref-sgw-pg-icr-sgreplicate-sgr1: {xref-pfx-sgw}{sgw-pg-icr-sgreplicate-sgr1}[ICR with SGR-1]
-:xref-sgw-pg-icr-sgreplicate-sgr2: {xref-pfx-sgw}{sgw-pg-icr-sgreplicate-sgr2}[ICR with SGR-2]
+:xref-sgw-pg-icr-sgreplicate: {xref-sgw-pfx-icr-sgreplicate}[What is inter-cluster replication]
+// [Inter-cluster Replication]
+:xref-sgw-pg-icr-sgreplicate-init: {xref-sgw-pfx-icr-sgreplicate}#initialization[ICR -- What is Initialization]
+:xref-sgw-pg-icr-sgreplicate-sgr1: {xref-pfx-sgw}{sgw-pg-icr-sgreplicate-sgr1}[ICR -- What does SGR-1 provide?]
+:xref-sgw-pg-icr-sgreplicate-sgr2: {xref-pfx-sgw}{sgw-pg-icr-sgreplicate-sgr2}[ICR -- What does SGR-2 provide?]
 // :xref-sgw-pg-icr-overview: {xref-pfx-sgw}{sgw-pg-icr-overview}[Inter-Cluster Replication]
 :xref-sgw-pg-icr-overview: {xref-sgw-pg-icr-sgreplicate}[Inter-Cluster Replication]
 :xref-sgw-pg-icr-overview--intro: {xref-pfx-sgw}{sgw-pg-icr-overview}#introduction[Introducing Inter-Cluster Replication]
-:xref-sgw-pg-icr-running: {xref-pfx-sgw}{sgw-pg-icr-running}[Replication Initialization]
+:xref-sgw-pg-icr-running: {xref-pfx-sgw}{sgw-pg-icr-running}[ICR -- How do I create/run?]
+// [Replication Initialization]
 :xref-sgw-pg-icr-stats: {xref-pfx-sgw}{sgw-pg-icr-stats}[Replication Stats]
 :xref-sgw-pg-icr-replication-types: {xref-pfx-sgw}{sgw-pg-icr-replication-types}[Replication Types]
 // :xref-sgw-pg-icr-running-replications: {xref-pfx-sgw}{sgw-pg-icr-running-replications}[Running Replications]
@@ -197,10 +217,13 @@ endif::xref-pfx-sgw[]
 :xref-sgw-pg-deploy-cluster: {xref-pfx-sgw}{sgw-pg-deploy-cluster}[Deploy SGW Clusters]
 :xref-sgw-pg-manage-cluster: {xref-pfx-sgw}{sgw-pg-manage-cluster}[Manage SGW Clusters]
 :xref-sgw-pg-load-balancer: {xref-pfx-sgw}{sgw-pg-load-balancer}[Load Balancer]
-:xref-sgw-pg-logging: {xref-pfx-sgw}{sgw-pg-logging}[Logging]
+:xref-sgw-pg-logging: {xref-pfx-sgw}{sgw-pg-logging}[How do I manage logs?]
+// [Logging]
 :xref-sgw-pg-managing-tombstones: {xref-pfx-sgw}{sgw-pg-managing-tombstones}[Managing Tombstones]
 :xref-sgw-pg-os-level-tuning: {xref-pfx-sgw}{sgw-pg-os-level-tuning}[OS Level Tuning]
-:xref-sgw-pg-read-access: {xref-pfx-sgw}{sgw-pg-read-access}[Read Access]
+:xref-sgw-pfx-read-access: {xref-pfx-sgw}{sgw-pg-read-access}
+:xref-sgw-pg-read-access: {xref-sgw-pfx-read-access}[Read Access]
+:xref-sgw-pg-read-access-add: {xref-sgw-pfx-read-access}[Read Access -- add access]
 :xref-sgw-pg-refer-sgw-glossary: {xref-pfx-sgw}{sgw-pg-refer-sgw-glossary}[Sync Gateway Glossary]
 :xref-sgw-pg-release-notes-archive: {xref-pfx-sgw}{sgw-pg-release-notes-archive}[Release Notes Archive]
 :xref-sgw-pg-release-notes: {xref-pfx-sgw}{sgw-pg-release-notes}[Release Notes]
@@ -212,17 +235,25 @@ endif::xref-pfx-sgw[]
 // :xref-sgw-pg-running-replications: {xref-pfx-sgw}{sgw-pg-running-replications}[Inter-cluster Replication]
 :xref-sgw-pg-security: {xref-pfx-sgw}{sgw-pg-security}[Security]
 :xref-sgw-pg-server-integration: {xref-pfx-sgw}{sgw-pg-server-integration}[Webhooks and Changes Feed]
-:xref-sgw-pg-sgcollect-info: {xref-pfx-sgw}{sgw-pg-sgcollect-info}[SGCollect Info]
+:xref-sgw-pg-sgcollect-info: {xref-pfx-sgw}{sgw-pg-sgcollect-info}[How to I use SGCollect Info?]
+// [SGCollect Info]
 :xref-sgw-pg-shared-bucket-access: {xref-pfx-sgw}{sgw-pg-shared-bucket-access}[Syncing Mobile and Server]
-:xref-sgw-pg-stats-monitoring: {xref-pfx-sgw}{sgw-pg-stats-monitoring}[Stats and Monitoring]
+:xref-sgw-pg-stats-monitoring: {xref-pfx-sgw}{sgw-pg-stats-monitoring}[How do  I manage Stats and Monitoring?]
+// [Stats and Monitoring?]
 :xref-sgw-pg-supported-os: {xref-pfx-sgw}{sgw-pg-supported-os}[Supported OS]
-:xref-sgw-pg-sync-function: {xref-pfx-sgw}{sgw-pg-sync-function}[Sync Function]
-:xref-sgw-pg-sync-gateway-channels: {xref-pfx-sgw}{sgw-pg-sync-gateway-channels}[Sync Gateway Channels]
+:xref-sgw-pg-def-sync-function: {xref-pfx-sgw}{sgw-pg-def-sync-function}[Defining Sync Functions]
+:xref-sgw-pfx-sync-gateway-channels: {xref-pfx-sgw}{sgw-pg-sync-gateway-channels}
+:xref-sgw-pg-sync-gateway-channels: {xref-sgw-pfx-sync-gateway-channels}[Sync Gateway Channels]
+:xref-sgw-pg-sync-gateway-channels-add: {xref-sgw-pfx-sync-gateway-channels}#add-to-channel[Sync Gateway Channels -- add to channel]
 :xref-sgw-pg-upgrade: {xref-pfx-sgw}{sgw-pg-upgrade}[Upgrade]
 :xref-sgw-pg-users-and-roles: {xref-pfx-sgw}{sgw-pg-users-and-roles}[Users and Roles]
 :xref-sgw-pg-whatsnew: {xref-pfx-sgw}{sgw-pg-whatsnew}[What's New]
-:xref-sgw-pg-write-access: {xref-pfx-sgw}{sgw-pg-write-access}[Write Access]
+:xref-sgw-pfx-write-access: {xref-pfx-sgw}{sgw-pg-write-access}
+:xref-sgw-pg-write-access: {xref-sgw-pfx-write-access}[Write Access]
+:xref-sgw-pg-write-access-data-val: {xref-sgw-pfx-write-access}#data-validation[Write Access -- data validation]
+:xref-sgw-pg-write-access-authchange: {xref-sgw-pfx-write-access}#write-access[Write Access -- authorize the change]
 
+:xref-sgw-pg-write-access-addchan: {xref-sgw-pfx-write-access}#add-to-channel[Write Access -- add to channel]
 // BEGIN::ExitPage
 // Restore saved xref-pfx-sgw content if exists
 ifdef::save-xref-pfx-sgw[]

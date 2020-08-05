@@ -1,7 +1,20 @@
-= Sync Function
+= Defining Sync Functions
+:page-aliases: sync-function-api, sync-function
+:page-layout: article
+:page-status:
+:page-edition:
+:page-role:
+:description: Defining sync functions for effective data access control
 :idprefix:
 :idseparator: -
-:page-aliases: sync-function-api
+
+include::partial$_std-hdr-sgw.adoc[]
+
+:topic-group: {tg-sgw-cfg}
+:param-related: {xref-sgw-pg-config-properties}  |  {xref-sgw-pg-rest-api-admin} |    {xref-sgw-pg-config-properties-databases}  |  {xref-sgw-pg-config-properties-databases-sync}
+:param-abstract: This content provides an overview of sync function definition describing th options and providing a working example.
+include::partial$block-abstract.adoc[]
+
 
 == Sync Function Basics
 include::partial$sync-function-ovw.adoc[]
@@ -53,7 +66,7 @@ function (doc, oldDoc) {
    }
 }
 ----
-Routing changes have no effect until the document is actually saved in the database, so if the sync function first calls `channel()` or `access()`, but then rejects the update, the channel and access changes will not occur.
+Routing changes has no effect until the document is actually saved in the database, so if the sync function first calls `channel()` or `access()`, but then rejects the update, the channel and access changes will not occur.
 
 TIP: As a convenience, it is legal to call `channel` with a `null` or `undefined` argument; it simply does nothing.
 This allows you to do something like `channel(doc.channels)` without having to first check whether `doc.channels` exists.
@@ -256,34 +269,34 @@ The requirements are:
 [source,javascript]
 ----
 function (doc, oldDoc) {
-        if (doc._deleted) {
-                // Only editors with write access can delete documents:
-                requireRole("role:editor");
-                requireUser(oldDoc.writers);
-                // Skip other validation because a deletion has no other properties:
-                return;
-        }
-        // Required properties:
-        if (!doc.title || !doc.creator || !doc.channels || !doc.writers) {
-                throw({forbidden: "Missing required properties"});
-        } else if (doc.writers.length == 0) {
-                throw({forbidden: "No writers"});
-        }
-        if (oldDoc == null) {
-                // Only editors can create documents:
-                requireRole("role:editor");
-                // The 'creator' property must match the user creating the document:
-                requireUser(doc.creator)
-        } else {
-                // Only users in the existing doc's writers list can change a document:
-                requireUser(oldDoc.writers);
-                // The "creator" property is immutable:
-                if (doc.creator != oldDoc.creator) {
-                        throw({forbidden: "Can't change creator"});
-                }
-        }
-        // Finally, assign the document to the channels in the list:
-        channel(doc.channels);
+  if (doc._deleted) {
+    // Only editors with write access can delete documents:
+    requireRole("role:editor");
+    requireUser(oldDoc.writers);
+    // Skip other validation because a deletion has no other properties:
+    return;
+  }
+  // Required properties:
+  if (!doc.title || !doc.creator || !doc.channels || !doc.writers) {
+    throw({forbidden: "Missing required properties"});
+  } else if (doc.writers.length == 0) {
+    throw({forbidden: "No writers"});
+  }
+  if (oldDoc == null) {
+    // Only editors can create documents:
+    requireRole("role:editor");
+    // The 'creator' property must match the user creating the document:
+    requireUser(doc.creator)
+  } else {
+    // Only users in the existing doc's writers list can change a document:
+    requireUser(oldDoc.writers);
+    // The "creator" property is immutable:
+    if (doc.creator != oldDoc.creator) {
+            throw({forbidden: "Can't change creator"});
+    }
+  }
+  // Finally, assign the document to the channels in the list:
+  channel(doc.channels);
 }
 ----
 
@@ -325,3 +338,6 @@ After the update is complete, switch to the main Gateway and bucket.
 In a clustered environment with multiple Sync Gateway instances sharing the load, all the instances need to share the same configuration, so they all need to be taken offline either by stopping the process or taking them offline using the xref:admin-rest-api.adoc#/database/post\__db___offline[+/{db}/_offline+] endpoint.
 After the configuration is updated, *one* instance should be brought up so it can update the database--if more than one is running at this time, they'll conflict with each other.
 After the first instance finishes opening the database, the others can be started.
+
+include::partial$block-related-content-sync.adoc[]
+

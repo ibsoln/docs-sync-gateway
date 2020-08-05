@@ -68,7 +68,7 @@ include::ROOT:partial$_page-index.adoc[]
 ** {xref-sgw-pg-sync-gateway-channels}
 ** {xref-sgw-pg-read-access}
 ** {xref-sgw-pg-write-access}
-** {xref-sgw-pg-sync-function}
+** {xref-sgw-pg-def-sync-function}
 // * {xref-sgw-pg-icr-overview}
 * {xref-sgw-pg-icr-sgreplicate}
 ** {xref-sgw-pg-icr-sgreplicate-sgr2}

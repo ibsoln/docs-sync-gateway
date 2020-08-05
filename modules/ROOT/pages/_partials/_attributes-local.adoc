@@ -15,10 +15,20 @@
 :url-package-downloads: http://packages.couchbase.com/releases/couchbase-sync-gateway
 :url-downloads: https://www.couchbase.com/downloads/?family=mobile
 
-
+// BLOG LINKS
+// conflict-related
 :url-blog-doc-conflicts-auto-resolutions: {url-cb-blog}document-conflicts-couchbase-mobile/[Automatic Conflict Resolution]
 :url-blog-doc-conflicts-demystifying: {url-cb-blog}conflict-resolution-couchbase-mobile/[Demystifying Conflict Resolution]
 :url-blog-cat-conflicts: {url-cb-blog}tag/conflict-resolution/[Conflict Resolution (category)]
+
+
+// sync function-related
+:url-blog-using-roles-in-syncfunc: {url-cb-blog}augment-your-sync-function-with-roles-in-couchbase-sync-gateway/[Using roles in sync functions]
+:url-blog-data-sync-offline-first-apps: {url-cb-blog}data-synchronization-offline-first-apps-couchbase/[Tutorial: Getting Started with Data Synchronization using Couchbase Mobile for Offline-First Apps]
+:url-blog-sync-conflicts: {url-cb-blog}tag/sync-function/[Sync Function (category)]
+
+
+
 
 :example-cfg: example$configuration/sync-gateway-config.json
 :example-restapi: example$configuration/sync-gateway-restapi.adoc
