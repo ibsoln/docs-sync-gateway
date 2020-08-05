@@ -1,6 +1,6 @@
 // include::partial$icr-repl-props-table-sgr2[]
 
-[#replication-properties]
+[[replication-properties]]
 .Replication Definition
 =====
 
