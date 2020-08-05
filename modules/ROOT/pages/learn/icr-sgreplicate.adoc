@@ -1,10 +1,10 @@
-= Inter-Cluster Replication
+= An Introduction to Inter-sync-gateway Replication
 :pge-aliases: running-replications.adoc
 :page-layout: article
 :page-status: {release-status-sgw} -- {release-comments-sgw}
 :page-edition: Under Development
 :page-role:
-:description: Inter-sync-gateway replication (Sync Gateway to Sync Gateway) using SG-Replicate protocol
+:description: Introducing Inter-sync-gateway replication concepts
 
 include::partial$_std-hdr-sgw.adoc[]
 include::partial$block-authors-notes.adoc[tag=wip]
@@ -35,7 +35,6 @@ On the architecture diagram (<<running-replications>>), the replicator on the ac
 .Inter-sync-gateway replication
 // image::running-replications.png[]
 image::inter-sync-gateway-replication-2.svg[Cloud-to-edge replication architecture,{img-max}]
-
 
 == Use Cases
 
@@ -73,15 +72,12 @@ image::icr-active-mobile-sync200713.svg[,600]
 
 --
 
-
-
 == Protocol
 In inter-sync-gateway replication Sync Gateway acts as the {glos-term-active-replicator} in the replication process between Sync Gateway nodes.
 
-The replication is conducted using the SG-Replicate protocol.
-This protocol delivers secure, network resilient replication using basic authentication over HTTP(s) (or optionally Websockets {fn-sgr2}).
+The replication is conducted using a proprietary Couchbase protocol, which delivers secure, network resilient replication using basic authentication over HTTP(s) (or optionally Websockets {fn-sgr2}).
 
-Unlike xref:server:manage:manage-xdcr/xdcr-management-overview.adoc[XDCR] (the API for replication between Server clusters) _SG Replicate_ was designed specifically for _{cbm}_ deployments.
+Unlike xref:server:manage:manage-xdcr/xdcr-management-overview.adoc[XDCR] (the API for replication between Server clusters), _Inter-Sync-Gateway replication(v2)_ was designed specifically for _{cbm}_ deployments.
 It *must* be used for replication between mobile clusters.
 
 == Replication Characteristics
@@ -106,7 +102,7 @@ They can be configured to run in either {glos-term-continuous} or {glos-term-one
 
 // They are initialized by configuring them in the _sync-gateway-config.json file_.
 
-//  SGR2 Only You can also create persistent replications by using the {xref-sgw-pg-rest-api-admin}.
+//  Inter-sync-gateway (v2) Only You can also create persistent replications by using the {xref-sgw-pg-rest-api-admin}.
 --
 
 * Ad hoc
@@ -140,15 +136,12 @@ For more on authentication and security see: {xref-sgw-pg-icr-sgreplicate-sgr1} 
 
 == Availability and Resilience
 
-High availability is provided for by running duplicate (redundant) replications on all available nodes (SGR-1).
-
-More sophisticated options are available in SGR-2.
+Inter-sync-gateway replication version 1, provides for high availability by enabling homogenous replication configurations to be deployed and run on multiple nodes within a cluster. Whilst this leads to some duplicate and redundant processing, it does mean that the replications can survive loss of some of the nodes, providing one remains available.More sophisticated automatic options are available in {enterprise}s at version 2.
 
 For more on availability see: {xref-sgw-pg-icr-sgreplicate-sgr1}  |  {xref-sgw-pg-icr-sgreplicate-sgr2}
 
-
 == Conflict Handling
-Conflict resolution is handled externally in SGR-1, but more extensive automatic and custom conflict handling options are available in SGR2.
+Conflict resolution is handled externally in Inter-sync-gateway (v1), but more extensive automatic and custom conflict handling options are available in Inter-sync-gateway (v2).
 
 For more on conflict resolution see: {xref-sgw-pg-icr-sgreplicate-sgr1}  |  {xref-sgw-pg-icr-sgreplicate-sgr2}
 
