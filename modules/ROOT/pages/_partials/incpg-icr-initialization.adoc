@@ -11,12 +11,12 @@
 
 // Inter-custer replication supports both persistent and ad hoc replication types.
 
-// You can initialize a persistent inter-cluster replication by using either of these methods:
+// You can initialize a persistent inter-sync-gateway replication by using either of these methods:
 
 // * Configuring it in the node's configuration file (`sync-gateway-config.json`)
 // * Using {xref-sgw-pg-rest-api-admin} requests through a utility such as `curl`, or an application such as _Postman_
 
-// You can also initialize ad hoc inter-cluster replications by using the
+// You can also initialize ad hoc inter-sync-gateway replications by using the
 //  {xref-sgw-pg-rest-api-admin}.
 == Introduction
 All replications operate within the context of a local database:

@@ -274,7 +274,7 @@ Depending on the one you choose, there may be additional consideration to keep i
 
 *Potential for unexpected server errors during re-balance:* There is an increased potential to lose in-flight ops during a fail-over.
 
-|Upgrade Using Inter-cluster Replication
+|Upgrade Using Inter-sync-gateway Replication
 |Small amount during switchover
 |High - duplicate entire cluster
 |Using an XDCR (Cross Data Center Replication) approach will have incur some Sync Gateway downtime, but less downtime than other approaches where Sync Gateway is shutdown during the entire Couchbase Server upgrade.

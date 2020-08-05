@@ -26,7 +26,7 @@ Document relevant aspects of _Replication Types_.
 endif::[]
 
 [abstract]
-Sync Gateway inter-cluster replication supports two replication types: _Persistent_ and _Transient_ (or _Adhoc_). Persistent replication survives restarts, whilst adhoc replications run once only, on creation.
+Sync Gateway inter-sync-gateway replication supports two replication types: _Persistent_ and _Transient_ (or _Adhoc_). Persistent replication survives restarts, whilst adhoc replications run once only, on creation.
 
 == Overview
 

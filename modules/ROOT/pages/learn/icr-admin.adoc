@@ -4,14 +4,14 @@
 :page-status: {release-status-sgw} -- {release-comments-sgw}
 :page-edition: Under Development
 :page-role: panes
-:description: This content covers the administration and management of inter-cluster replications
+:description: This content covers the administration and management of inter-sync-gateway replications
 :keywords:
 
 include::partial$_std-hdr-sgw.adoc[]
 // include::partial$block-authors-notes.adoc[tag=wip]
-:topic-group: Inter-cluster Replication
+:topic-group: Inter-sync-gateway Replication
 :param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin}
-:param-abstract: Use it to learn how to manage and monitor inter-cluster replications
+:param-abstract: Use it to learn how to manage and monitor inter-sync-gateway replications
 include::partial$block-abstract.adoc[]
 
 include::partial$incpg-icr-admin.adoc[tags=!in-this-section]

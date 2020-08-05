@@ -4,7 +4,7 @@
 :page-status: {release-status-sgw} -- {release-comments-sgw}
 :page-edition: Under Development
 :page-role:
-:description: Inter-cluster replication (Sync Gateway to Sync Gateway) using SG-Replicate protocol
+:description: Inter-sync-gateway replication (Sync Gateway to Sync Gateway) using SG-Replicate protocol
 
 include::partial$_std-hdr-sgw.adoc[]
 include::partial$block-authors-notes.adoc[tag=wip]
@@ -27,14 +27,14 @@ include::partial$block-abstract.adoc[]
 
 == Introduction
 
-Couchbase Sync Gateway supports {glos-term-inter-cluster-replication} (ICR). This meets an increasingly important enterprise-level requirement to support {glos-term-cloud-to-edge-sync} use cases. These use cases demand data changes be {glos-term-synchronized} between a centralized cloud cluster and multiple edge clusters whilst still enforcing fine grained access control.
+Couchbase Sync Gateway supports {glos-term-inter-sync-gateway-replication} (ICR). This meets an increasingly important enterprise-level requirement to support {glos-term-cloud-to-edge-sync} use cases. These use cases demand data changes be {glos-term-synchronized} between a centralized cloud cluster and multiple edge clusters whilst still enforcing fine grained access control.
 
 On the architecture diagram (<<running-replications>>), the replicator on the active Sync Gateway node ensures that any changes made to documents in either {glos-term-sync-gateway-database} instance are replicated to the other.
 
 [[running-replications]]
-.Inter-cluster replication
+.Inter-sync-gateway replication
 // image::running-replications.png[]
-image::inter-cluster-replication-2.svg[Cloud-to-edge replication architecture,{img-max}]
+image::inter-sync-gateway-replication-2.svg[Cloud-to-edge replication architecture,{img-max}]
 
 
 == Use Cases
@@ -76,7 +76,7 @@ image::icr-active-mobile-sync200713.svg[,600]
 
 
 == Protocol
-In inter-cluster replication Sync Gateway acts as the {glos-term-active-replicator} in the replication process between Sync Gateway nodes.
+In inter-sync-gateway replication Sync Gateway acts as the {glos-term-active-replicator} in the replication process between Sync Gateway nodes.
 
 The replication is conducted using the SG-Replicate protocol.
 This protocol delivers secure, network resilient replication using basic authentication over HTTP(s) (or optionally Websockets {fn-sgr2}).

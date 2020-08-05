@@ -8,7 +8,7 @@
 
 == I
 
-=== Inter-cluster replication
+=== Inter-sync-gateway replication
 
 .How do I cancel an existing replication?
 ====

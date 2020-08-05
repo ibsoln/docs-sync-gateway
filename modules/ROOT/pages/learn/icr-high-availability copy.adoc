@@ -5,14 +5,14 @@
 :page-edition: enterprise
 :page-role:
 :page-content-type: conceptual
-:description: High availability and Inter-cluster replication (Sync Gateway to Sync Gateway)
+:description: High availability and Inter-sync-gateway replication (Sync Gateway to Sync Gateway)
 :keywords: replication edge-to-cloud sync 'high availability' edge nosql api synchronization replication
 
 include::partial$_std-hdr-sgw.adoc[]
 include::partial$block-authors-notes.adoc[tag=wip]
-:topic-group: Inter-cluster Replication
+:topic-group: Inter-sync-gateway Replication
 :param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin}
-:param-abstract: This content provides an overview of Inter-cluster replication high-availability
+:param-abstract: This content provides an overview of Inter-sync-gateway replication high-availability
 include::partial$block-abstract.adoc[]
 
 [CAUTION]
@@ -72,7 +72,7 @@ endif::[]
 == About High-Availability Replication
 
 // tag::overview[]
-Sync Gateway's inter-cluster replications support High Availability (HA).
+Sync Gateway's inter-sync-gateway replications support High Availability (HA).
 
 In {enterprise} SGR-2 automatically provides for high-availability.
 _Node distribution_ ensures all running replications are evenly distributed across all available nodes, regardless of their originating node.

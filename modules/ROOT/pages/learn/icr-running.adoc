@@ -4,14 +4,14 @@
 :page-status: {release-status-sgw} -- {release-comments-sgw}
 :page-edition: Under Development
 :page-role: panes
-:description: This content covers how to initialize and run inter-cluster replication (replication between Sync Gateway clusters)
+:description: This content covers how to initialize and run inter-sync-gateway replication (replication between Sync Gateway clusters)
 :keywords:
 
 include::partial$_std-hdr-sgw.adoc[]
 
 include::partial$block-authors-notes.adoc[tag=wip]
 
-:topic-group: Inter-cluster Replication
+:topic-group: Inter-sync-gateway Replication
 :param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin} | {xref-sgw-pg-icr-admin}
 :param-abstract:
 include::partial$block-abstract.adoc[]
@@ -52,12 +52,12 @@ include::partial$incpg-icr-initialization.adoc[tags=!in-this-section]
 
 // Inter-custer replication supports both persistent and ad hoc replication types.
 
-// You can initialize a persistent inter-cluster replication by using either of these methods:
+// You can initialize a persistent inter-sync-gateway replication by using either of these methods:
 
 // * Configuring it in the node's configuration file (`sync-gateway-config.json`)
 // * Using {xref-sgw-pg-rest-api-admin} requests through a utility such as `curl`, or an application such as _Postman_
 
-// You can also initialize ad hoc inter-cluster replications by using the
+// You can also initialize ad hoc inter-sync-gateway replications by using the
 //  {xref-sgw-pg-rest-api-admin}.
 
 

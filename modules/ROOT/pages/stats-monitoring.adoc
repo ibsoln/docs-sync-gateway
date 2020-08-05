@@ -15,9 +15,9 @@
 
 include::partial$_std-hdr-sgw.adoc[]
 include::partial$block-authors-notes.adoc[tag=wip]
-:topic-group: Inter-cluster Replication
+:topic-group: Inter-sync-gateway Replication
 :param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin}
-:param-abstract: This content covers the monitoring aspects of inter-cluster  replication
+:param-abstract: This content covers the monitoring aspects of inter-sync-gateway  replication
 include::partial$block-abstract.adoc[]
 
 ifeval::["{releaseStatus}" == "gamma"]
