@@ -74,6 +74,7 @@ Context:
 ** <<continuous-replication, Continuous replication>>
 * _SGW Component_: Inter-cluster replication
 * _Read More_: {xref-sgw-pg-icr-overview}
+* _Related Config Elements_: {xref-sgw-pg-config-properties-db-rep-adhoc}  |  {xref-sgw-pg-config-properties-db-rep-continuous}
 // end::sgw-icr-adhoc-replication-full[]
 --
 
@@ -317,9 +318,17 @@ The term, _Synchronization_, refers to the process of replicating the changes ma
 
 [[sync-function]]
 Sync Function::
+// tag::sgw-icr-sync-function-full[]
 // tag::sgw-icr-sync-function[]
-Aliquip cillum aliquip ad sit tempor labore qui non voluptate qui nisi proident. Reprehenderit eu labore non ex ullamco incididunt elit. Minim aliquip dolore laboris non. Et id exercitation et quis duis officia aliquip consequat eu aliqua culpa esse.
+// tag::sgw-icr-sync-function-def[]
+The Sync Function is a JavaScript function whose source code is stored in the Sync Gateway’s database configuration file. It is in charge of data validation, and of authorizing both read and write access to documents.
+// end::sgw-icr-sync-function-def[]
+
+// tag::sgw-icr-sync-function-rel[]
+ {xref-sgw-pg-config-properties-databases}  |  {xref-sgw-pg-config-properties-databases-sync}
+// end::sgw-icr-sync-function-rel[]
 // end::sgw-icr-sync-function[]
+// end::sgw-icr-sync-function-full[]
 
 [[sync-gateway-database]]
 Sync Gateway Database::
