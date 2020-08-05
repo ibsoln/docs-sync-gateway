@@ -66,97 +66,72 @@ image::icr-replication-overview.svg[]
 NOTE: This content covers inter-cluster replication using the SG-Replicate 2.0 protocol (_SGR-2_).
 
 == Replication Characteristics
-_In this section_:  <<context>>  |  <<protocol>>  |  <<types-of-replication>>  |  <<granularity>>  |  <<directionality>>  |  <<security>>
+
 // In _SGR-2_ one Sync Gateway node acts as the _{glos-term-active-replicator}_ in the replication process between local and remote Sync Gateway nodes.
 // This provides the ability to run replications between:
 
 // * Sync Gateway clusters - see <<icr-cloud-to-edge>>
 // * Active mobile clusters - see <<icr-active-mobile>>
 
-=== Context
-Sync Gateway supports the ability to run replications between Sync Gateway clusters using SG-Replicate 2.0 (SGR-2), with the replicator {glos-term-synchronizing} changes between two {glos-term-sync-gateway-databases}.
-
-Replications always involve at least one local database.
-Sync Gateway does not enable replication between two _remote_ nodes, because replications are defined at database level and so at least one database will be local.
-
-Sync Gateway node can opt-out of participating in the replication process using the database-level parameter {xref-sgw-pg-config-properties-databases-sgr-enabled}.
-
-_Related configuration elements_:  {xref-sgw-pg-config-properties-databases}  |  {xref-sgw-pg-config-properties-db-replications}  |  {xref-sgw-pg-config-properties-db-rep-remote} |  {xref-sgw-pg-config-properties-databases-sgr-enabled}
-
 === Protocol
 
+Sync Gateway supports the ability to run replications between two Sync Gateway clusters using SG-Replicate 2.0 (SGR-2).
+
 SGR-2 replications are websocket-based.
+The bi-directional, always on, nature of websocket connections is ideal for applications such as persistent Sync Gateway replication, which is constantly listening-for and synchronizing random change events.
 
-The bi-directional, persistent, nature of websocket connections is ideal for applications such as a _continuous_ Sync Gateway replication, which is constantly waiting-for and synchronizing change events.
-
-// === General Characteristics
+=== General Characteristics
+Replications always involve at least one local database. Sync Gateway does not enable replication between two _remote_ nodes, because replications are defined at database level and so at least one database will be local. With the replicator {glos-term-synchronizing} changes between {glos-term-sync-gateway-database}.
 
 === Types of Replication
 Replications are either: {glos-term-adhoc-replication} (REST API only) or {glos-term-persistent-replication}.
 They can also be configured to run in one of two-modes:
 {glos-term-continuous} or {glos-term-oneshot}.
 
-_Related configuration elements_:  {xref-sgw-pg-config-properties-db-replications}  |  {xref-sgw-pg-config-properties-db-rep-continuous} |  {xref-sgw-pg-config-properties-db-rep-adhoc}
+Related parameters:
 
 === Granularity
 // === Delta Sync
 Replications take place at the document level.
 
-[NOTE]
-.Enterprise Edition Only
-====
-You can also configure replications to use delta-sync, where only the changed data items are transferred.
+You can also configured replications to synchronize at the data item level, transferring only the changed data items.
 
 Do this is by:
 
 * Setting `"enable_delta_sync": true` in the _replication definition_
 * Setting `"delta-sync": { "enabled": true}` on both databases in their respective _database definitions_.
 
-_Related configuration elements_:  {xref-sgw-pg-config-properties-databases}  |  {xref-sgw-pg-config-properties-db-replications}  |
-{xref-sgw-pg-config-properties-databases-delta-sync}  |  {xref-sgw-pg-config-properties-db-rep-delta}
-====
-
 === Directionality
 
-Replications are bi-directional.
-You can push, pull or pushandpull between the two database endpoints.
+Replications are bi-directional. You can push, pull or pushandpull between the two database endpoints.
 
-_Related configuration elements_:  {xref-sgw-pg-config-properties-db-replications}  |  {xref-sgw-pg-config-properties-db-rep-direction}
+Related parameters:
 
+== Security
 
-=== Security
-
-==== Authentication
+=== Authentication
 
 SG-Replicate supports basic authentication using user name and password credentials.
 
-==== Access Control
-
-Sync Gateway ensures effective and consistent access control by passing all document changes through the databases' _{glos-term-sync-function}_.
-
-_Related configuration elements_:  {xref-sgw-pg-config-properties-databases}  |  {xref-sgw-pg-config-properties-databases-sync} +
-_Related how-to_: {xref-sgw-pg-def-sync-function}  |  {xref-sgw-pg-adv-sgw-cfg-sync-function}
+=== Access Control
+Sync Gateway ensures effective and consistent access control by passing all document changes through the databases' _{glos-term-sync-function}_ -- see: {xref-sgw-pg-adv-sgw-cfg-sync-function} for more on using `sync` functions).
 
 == Availability and Resilience
 
-include::partial$incpg-icr-availability.adoc[leveloffset=+1]
+=== High-availability replication
 
+include::page${sgw-pg-icr-high-availability}[tag=overview]
 
+See: /parameter definition/  |  {xref-sgw-pg-icr-high-availability-node-dist}
 
-// === High-availability replication
+=== Network Resilience
 
-// include::page${sgw-pg-icr-high-availability}[tag=overview]
+Network resiliency is built-in for _continuous_ replications, which will restart automatically whenever the node does and will retry lost connections.
 
-// See: /parameter definition/  |  {xref-sgw-pg-icr-high-availability-node-dist}
+When a node fails due to network issues, SGR-2 applies a persistent exponential backoff policy to attempt reconnection  (see max_backoff_time).
+Retries can be configured to stop after a defined period of time.
 
-// === Network Resilience
-
-// Network resiliency is built-in for _continuous_ replications, which will restart automatically whenever the node does and will retry lost connections.
-
-// When a node fails due to network issues, SGR-2 applies a persistent exponential backoff policy to attempt reconnection  (see max_backoff_time).
-// Retries can be configured to stop after a defined period of time.
-
-// NOTE: SGR-2 will not attempt reconnection following network failures for ad hoc replications. The controlling user or application should apply the appropriate corrective action.
+NOTE: SGR-2 will not attempt reconnection following network failures for ad hoc replications. The controlling user or application should apply the appropriate corrective action.
 
 
 // == Feature Summary
@@ -220,64 +195,68 @@ include::partial$incpg-icr-availability.adoc[leveloffset=+1]
 
 
 == Conflict Resolution
+SGR-2 replications incorporate automatic conflict resolution.
 
-include::partial$incpg-icr-conflict.adoc[leveloffset=+1]
+You can opt to resolve conflicts by applying:
 
-// SGR-2 replications incorporate automatic conflict resolution.
+* SGR-2's default automatic strategy
+* One of the built-in resolution strategies
+* A a customized strategy of the your own design.
 
-// You can opt to resolve conflicts by applying:
+See: {xref-sgw-pg-icr-conflict-resolution-auto}
 
-// * SGR-2's default automatic strategy
-// * One of the built-in resolution strategies
-// * A a customized strategy of the your own design.
+/parameter definition/  |  /more information/
 
-// See: {xref-sgw-pg-icr-conflict-resolution-auto}
 
-// /parameter definition/  |  /more information/
+
 
 == Initialization
-// As covered in {xref-sgw-pg-icr-sgreplicate-init}, replications are defined by a {glos-term-replication-definition} in either:
+As covered in {xref-sgw-pg-icr-sgreplicate-init}, replications are defined by a {glos-term-replication-definition} in either:
 
-// * Sync Gateway's configuration file +
-// For persistent replications, whether continuous or one-shot.
-// * The Admin REST API for either:
-// ** Persistent replications, whether continuous or one-shot
-// ** _Ad hoc_ replications (one-shot only).
+* Sync Gateway's configuration file +
+For persistent replications, whether continuous or one-shot.
+* The Admin REST API for either:
+** Persistent replications, whether continuous or one-shot
+** _Ad hoc_ replications (one-shot only).
 
 
 // -- see: <<running-configured-replications>>
 // -- see: <<running-rest-api-initialized-replications>>
 
-include::partial$incpg-icr-initialization.adoc[leveloffset=+1]
+=== Replication Definitions
 
+All replications are 'initialized' by a {glos-term-replication-definition} in the configuration file or Admin REST API.
+For SGR-2, _replication definitions_ are at database level -- see: <<replication-definition-elements>>.
 
-// === Replication Definitions
+include::partial$icr-repl-props-table-sgr2.adoc[]
 
-// All replications are 'initialized' by a {glos-term-replication-definition} in the configuration file or Admin REST API.
-// For SGR-2, _replication definitions_ are at database level -- see: <<replication-definition-elements>>.
+=== Running Replications
 
-// // include::partial$icr-repl-props-table-sgr2.adoc[]
+Sync Gateway nodes can be configured to opt-out of replication.
 
-// === Running Replications
+Running replications are distributed uniformly across all available nodes.
 
-// Sync Gateway nodes can be configured to opt-out of replication.
+include::page${sgw-pg-icr-running}[tag=overview]
 
-// Running replications are distributed uniformly across all available nodes.
-
-// include::page${sgw-pg-icr-running}[tag=overview]
-
-// See: {xref-sgw-pg-icr-running-getrepdtls}
+See: {xref-sgw-pg-icr-running-getrepdtls}
 
 == Replication Administration
 
-include::partial$incpg-icr-admin.adoc[leveloffset=+1]
-// include::page${sgw-pg-icr-admin}[tag=overview]
+include::page${sgw-pg-icr-admin}[tag=overview]
 
-// See: {xref-sgw-pg-icr-admin-getrepdtls}
+See: {xref-sgw-pg-icr-admin-getrepdtls}
 
 == Monitoring Replications
 
-include::partial$incpg-icr-monitoring.adoc[leveloffset=+1, tags=!overview]
+include::page${sgw-pg-icr-monitoring}[tag=overview]
+
+See: {xref-sgw-pg-icr-monitoring-status} | {xref-sgw-pg-icr-monitoring-stats}
+
+// === Replication Stats
+
+// Sync Gateway also compiles a comprehensive set of statistics.
+
+// include::page${sgw-pg-icr-monitoring}[tag=stats]
 
 
 Unsupported::
