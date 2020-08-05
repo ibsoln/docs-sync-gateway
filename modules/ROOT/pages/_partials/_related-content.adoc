@@ -81,7 +81,7 @@ Blog Entries
 // end::concept-std[]
 
 // tag::concept-icr[]
-* {xref-sgw-pg-icr-overview--intro}
+* {xref-sgw-pg-icr-sgreplicate}
 * {xref-sgw-pg-icr-sgreplicate-sgr2}
 * {xref-sgw-pg-icr-sgreplicate-sgr1}
 // end::concept-icr[]

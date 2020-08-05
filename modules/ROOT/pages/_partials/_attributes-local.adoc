@@ -88,7 +88,7 @@
 :tg-sgw-api: Sync Gateway REST API
 :tg-ref-info: Reference Information
 
-:cbm: Couchbase for Mobile
+:cbm: Couchbase for Mobile and Edge
 
 // Page constraints
 :page-width: 1440

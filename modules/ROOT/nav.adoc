@@ -72,7 +72,7 @@ include::ROOT:partial$_page-index.adoc[]
 // * {xref-sgw-pg-icr-overview}
 * {xref-sgw-pg-icr-sgreplicate}
 ** {xref-sgw-pg-icr-sgreplicate-sgr2}
-** {xref-sgw-pg-icr-sgreplicate-sgr1}
+// ** {xref-sgw-pg-icr-sgreplicate-sgr1}
 ** {xref-sgw-pg-icr-running}
 ** {xref-sgw-pg-icr-admin}
 ** {xref-sgw-pg-icr-monitoring}
