@@ -56,7 +56,7 @@ Documentation:  This should be the recommended way of configuring replications i
 +
 Note : This requirement does not apply to  replications configured via REST API
 +
-This behavior is the same as pre-Hydrogen (SG-Replicate 1.0)
+This behavior is the same as pre-Hydrogen (Inter-sync-gateway Replication (v1))
 
 * Users will have the option for configuring
 unidirectional (source-> target (push) or target->source (pull)) or

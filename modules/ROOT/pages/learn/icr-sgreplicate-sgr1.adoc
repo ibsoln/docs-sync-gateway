@@ -20,13 +20,13 @@ include::partial$block-abstract.adoc[]
 :fn-icr-ref: footnote:icr[]
 :fn-arch-ref: footnote:arch[]
 
-CAUTION: This content covers inter-sync-gateway replication using the SG-Replicate 1.0 protocol.
+CAUTION: This content covers inter-sync-gateway replication using the Inter-sync-gateway Replication (v1) protocol.
 
 == Replication Characteristics
 
 = Protocol
 
-Sync Gateway supports the ability to run replications between two Sync Gateway clusters using SG-Replicate 1.0 (SGR-1).
+Sync Gateway supports the ability to run replications between two Sync Gateway clusters using Inter-sync-gateway Replication (v1) (SGR-1).
 
 SGR-1 replications are HTTP(s)-based.
 
@@ -295,9 +295,9 @@ Source database documents will be filtered so that only those tagged with the ch
 
 == Monitoring Replications
 
-* Use `_active_tasks` to monitor SG-Replicate 1.0 replications  (`GET`)
+* Use `_active_tasks` to monitor Inter-sync-gateway Replication (v1) replications  (`GET`)
 +
-The content returned will be the same as that returned by `_replicationStatus` and contains additional content over the SG-Replicate 1.0 version:
+The content returned will be the same as that returned by `_replicationStatus` and contains additional content over the Inter-sync-gateway Replication (v1) version:
 +
 ** direction
 ** is_persistent

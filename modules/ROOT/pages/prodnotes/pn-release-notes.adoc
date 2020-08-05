@@ -61,7 +61,7 @@ This section identifies the changes to the Sync Gateway Configuration Schema for
 include::partial$config-changes.adoc[tag=2-8-0,leveloffset=2]
 === Constraints
 
-* In order to support SG-Replicate 2.0, all active nodes in active cluster must have min release version of Hydrogen.
+* In order to support Inter-sync-gateway Replication (v2), all active nodes in active cluster must have min release version of Hydrogen.
 +
 Documentation: Need to call this out
 * Sync Gateway (Hydrogen) will only  support 2.x versions of SG-Replicate.
@@ -99,13 +99,13 @@ NOTE: Section not yet updated, may become an include from pn-supported-os.adoc
 
 // tag::dnsgw-28[] all deprecations for the release
 // tag::dnsgw-28-001-sgr1[]
-=== DNSGW-2.8/001 SG-Replicate 1.0 replication protocol
+=== DNSGW-2.8/001 Inter-sync-gateway Replication (v1) replication protocol
 // tag::dnsgw-28-001-sgr1-announce[]
-SG-Replicate 1.0 (SGR-1) is deprecated in Sync Gateway versions starting with version {version}. You should plan your transition to SGR-2 now to avoid potential issues when this functionality is removed.
+Inter-sync-gateway Replication (v1) (SGR-1) is deprecated in Sync Gateway versions starting with version {version}. You should plan your transition to SGR-2 now to avoid potential issues when this functionality is removed.
 // end::dnsgw-28-001-sgr1-announce[]
 
 // tag::dnsgw-28-001-sgr1-impact[]
-The functionality of SG-Replicate 1.0 remains unchanged, unless explicitly stated in these release notes and-or in the appropriate documentation section.
+The functionality of Inter-sync-gateway Replication (v1) remains unchanged, unless explicitly stated in these release notes and-or in the appropriate documentation section.
 Specifically, replications are scheduled on the node on which they are created.
 
 Refer to {xref-sgw-pg-upgrade} for more information on moving from SGR-1 to SGR-2.
@@ -154,7 +154,7 @@ SG Replicate 1.0 https://docs.google.com/document/d/13E6JOq8u_AaUd_t8FZEPCAuq7jf
 == Upgrading
 
 .Include notes on upgrading:
-* In order to support SG-Replicate 2.0, all active nodes in active cluster must have min release version of Hydrogen.
+* In order to support Inter-sync-gateway Replication (v2), all active nodes in active cluster must have min release version of Hydrogen.
 +
 Documentation: Need to call this out
 * Sync Gateway (Hydrogen) will only  support 2.x versions of SG-Replicate.
@@ -168,7 +168,7 @@ https://docs.google.com/document/d/13E6JOq8u_AaUd_t8FZEPCAuq7jfkjryecjBQBHE3pG8/
 
 NOTE: Section not yet updated, will likely be an include from compatibility.adoc
 
-In order to support SG-Replicate 2.0, all active nodes in active cluster must  have min release version of Hydrogen.
+In order to support Inter-sync-gateway Replication (v2), all active nodes in active cluster must  have min release version of Hydrogen.
 
 
 

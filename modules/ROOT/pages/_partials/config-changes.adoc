@@ -28,10 +28,10 @@
 
 `_replicate` becomes `database.replication`::
 The replication configuration property `_replicate` is deprecated.
-SG-Replicate 2.0 replications are now defined with the `_replication` property, which is as a member of the `database` property.
+Inter-sync-gateway Replication (v2) replications are now defined with the `_replication` property, which is as a member of the `database` property.
 Note that any given database can still have multiple replications configured.
 
-Constraint: SG-Replicate 2 does not support replication between two remote hosts via a third Sync Gateway.
+Constraint: Inter-sync-gateway Replication (v2) does not support replication between two remote hosts via a third Sync Gateway.
 // end::2-8-0-structuralonly[]
 
 == Removed or Deprecated Properties

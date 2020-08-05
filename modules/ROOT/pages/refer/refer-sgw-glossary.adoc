@@ -158,7 +158,7 @@ The term _inter-sync-gateway replication_ refers to replication between
 two Sync Gateway clusters and-or between Active mobile clusters.
 // tag::sgw-inter-sync-gateway-replication[]
 +
-Inter-sync-gateway replication within Sync Gateway is delivered by the SG-Replicate 2.0 protocol, which enables a Sync Gateway replicator to act as the _{glos-term-active-replicator}_, pulling changes from a data source and pushing them to a target.
+Inter-sync-gateway replication within Sync Gateway is delivered by the Inter-sync-gateway Replication (v2) protocol, which enables a Sync Gateway replicator to act as the _{glos-term-active-replicator}_, pulling changes from a data source and pushing them to a target.
 // tag::sgw-inter-sync-gateway-replication-def[]
 // tag::sgw-inter-sync-gateway-replication-full[]
 

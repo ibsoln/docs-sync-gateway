@@ -3,13 +3,13 @@
 :page-status: {release-status-sgw} -- {release-comments-sgw}
 :page-edition: Under Development
 :page-role:
-:description: Inter-sync-gateway replication (Sync Gateway to Sync Gateway) using SG-Replicate 2.0 protocol
+:description: Inter-sync-gateway replication (Sync Gateway to Sync Gateway) using Inter-sync-gateway Replication (v2) protocol
 
 include::partial$_std-hdr-sgw.adoc[]
 include::partial$block-authors-notes.adoc[tag=wip]
 :topic-group: {tg-rep-icr}
 :param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin}
-:param-abstract: This content provides an overview of Inter-sync-gateway replication, which is replication between Sync Gateway clusters using SG-Replicate 2.0.
+:param-abstract: This content provides an overview of Inter-sync-gateway replication, which is replication between Sync Gateway clusters using Inter-sync-gateway Replication (v2).
 include::partial$block-abstract.adoc[]
 
 // include::shared-mobile::partial$_attributes-shared.adoc[]
@@ -63,7 +63,7 @@ In the architecture diagram (<<icr-architecture>>), any database changes made on
 image::icr-replication-overview.svg[]
 ====
 
-NOTE: This content covers inter-sync-gateway replication using the SG-Replicate 2.0 protocol (_SGR-2_).
+NOTE: This content covers inter-sync-gateway replication using the Inter-sync-gateway Replication (v2) protocol (_SGR-2_).
 
 == Replication Characteristics
 _In this section_:  <<context>>  |  <<protocol>>  |  <<types-of-replication>>  |  <<granularity>>  |  <<directionality>>  |  <<security>>
@@ -74,7 +74,7 @@ _In this section_:  <<context>>  |  <<protocol>>  |  <<types-of-replication>>  |
 // * Active mobile clusters - see <<icr-active-mobile>>
 
 === Context
-Sync Gateway supports the ability to run replications between Sync Gateway clusters using SG-Replicate 2.0 (SGR-2), with the replicator {glos-term-synchronizing} changes between two {glos-term-sync-gateway-databases}.
+Sync Gateway supports the ability to run replications between Sync Gateway clusters using Inter-sync-gateway Replication (v2) (SGR-2), with the replicator {glos-term-synchronizing} changes between two {glos-term-sync-gateway-databases}.
 
 Replications always involve at least one local database.
 Sync Gateway does not enable replication between two _remote_ nodes, because replications are defined at database level and so at least one database will be local.
@@ -216,7 +216,7 @@ include::partial$incpg-icr-availability.adoc[leveloffset=+1]
 
 // == Constraints
 
-// SG-Replicate 2.0 will only replicate Sync Gateway databases hosted on versions of Sync Gateway later than March 7, 2014.
+// Inter-sync-gateway Replication (v2) will only replicate Sync Gateway databases hosted on versions of Sync Gateway later than March 7, 2014.
 
 
 == Conflict Resolution

@@ -16,8 +16,8 @@ include::partial$block-abstract.adoc[]
 
 // Footnotes
 :fn-icr: footnote:icr[As of Sync Gateway version 2.8]
-:fn-sgr1: footnote:sgr1[SG-Replicate 1.0 only]
-:fn-sgr2: footnote:sgr2[SG-Replicate 2.0 only]
+:fn-sgr1: footnote:sgr1[Inter-sync-gateway Replication (v1) only]
+:fn-sgr2: footnote:sgr2[Inter-sync-gateway Replication (v2) only]
 :fn-arch: footnote:arch[This architecture is also known as _ship-to-shore_ or _hub-and-spoke_.]
 :fnref-icr: footnote:icr[]
 :fnref-arch: footnote:arch[]
@@ -44,7 +44,7 @@ Cloud-to-edge synchronization::
 --
 In this multi-cloud deployment mode large numbers of multiple edge clusters sync with one or more clusters in cloud data centers. Each edge can operate autonomously without network connectivity to the cloud data centers {fn-arch}.
 
-// SG-Replicate 2.0 delivers bi-directional sync, which:
+// Inter-sync-gateway Replication (v2) delivers bi-directional sync, which:
 
 // - is scalable
 // - has high availability

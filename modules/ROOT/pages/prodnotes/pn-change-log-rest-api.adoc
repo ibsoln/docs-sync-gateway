@@ -36,14 +36,14 @@
 // tag::2-8-0-structuralonly[]
 
 `_replicate` becomes `replications`::
-The SG-Replicate 1.0 global level `_replicate_` endpoint is deprecated at this release.
+The Inter-sync-gateway Replication (v1) global level `_replicate_` endpoint is deprecated at this release.
 
-SG-Replicate 2.0 replications are now defined with the `replications` endpoint, which operates at the individual database level.
+Inter-sync-gateway Replication (v2) replications are now defined with the `replications` endpoint, which operates at the individual database level.
 Note that any given database can still have multiple replications configured.
 
 == Unsupported Behaviors
 
-SG-Replicate 2.0 does not support replication between two remote hosts via a third Sync Gateway. Replications are now defined at the local database level, meaning at least one database must be local.
+Inter-sync-gateway Replication (v2) does not support replication between two remote hosts via a third Sync Gateway. Replications are now defined at the local database level, meaning at least one database must be local.
 
 // end::2-8-0-structuralonly[]
 
