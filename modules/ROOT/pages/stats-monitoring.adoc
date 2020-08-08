@@ -218,13 +218,35 @@ include::partial$stats-schema-descriptions.adoc[]
 * {sgr_num_docs_failed_to_push}
 * {sgr_num_docs_pushed}
 // tag:sgr-stats-index[]
-* {sgr_delta_pull_replication_count}
-* {sgr_delta_push_doc_count}
-* {sgr_deltas_sent}
+* {sgr_active}
+* {sgr_conflict_resolved_local_count}
+* {sgr_conflict_resolved_merge_count}
+* {sgr_conflict_resolved_remote_count}
+* {sgr_deltas_recv}
 * {sgr_deltas_requested}
-* {sgr_conflict_detected}
-* {sgr_conflict_resolved}
-* {sgw_conflict_skipped_error}
+* {sgr_deltas_sent}
+* {sgr_docs_checked_recv}
+* {sgr_docs_checked_sent}
+* {sgr_num_attachment_bytes_pulled}
+* {sgr_num_attachment_bytes_pushed}
+* {sgr_num_attachment_bytes_transferred}
+* {sgr_num_attachments_pulled}
+* {sgr_num_attachments_pushed}
+* {sgr_num_attachments_transferred}
+* {sgr_num_docs_failed_to_pull}
+* {sgr_num_docs_failed_to_push}
+* {sgr_num_docs_pulled}
+* {sgr_num_docs_purged}
+* {sgr_num_docs_pushed}
+* {sgr_push_conflict_count}
+* {sgr_push_rejected_count}
+// * {sgr_delta_pull_replication_count}
+// * {sgr_delta_push_doc_count}
+// * {sgr_deltas_sent}
+// * {sgr_deltas_requested}
+// * {sgr_conflict_detected}
+// * {sgr_conflict_resolved}
+// * {sgw_conflict_skipped_error}
 // end:sgr-stats-index[]
 * {shared_bucket_import}
 * {skipped_seq_len}

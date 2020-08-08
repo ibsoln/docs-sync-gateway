@@ -1,4 +1,4 @@
-  "{per_db}": {
+  "{per_db}": { [
     "{dbname}": {
       "{cache}": {
         "{abandoned_seqs}":0,
@@ -72,6 +72,7 @@
         "{num_doc_writes}": 0,
         "{num_replications_active}": 0,
         "{num_replications_total}": 0,
+
         "{sequence_assigned_count}": 0,
         "{sequence_get_count}": 0,
         "{sequence_incr_count}":0,
@@ -113,7 +114,7 @@
         "{import_high_seq}": 0,
         "{import_partitions}": 0,
         "{import_processing_time}": 0
-      }
+      },
+include::partial$stats-schema-per-replication.adoc[]
     }
-  },
-  ]
+  ] }

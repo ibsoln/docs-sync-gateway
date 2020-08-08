@@ -1,7 +1,7 @@
 // inclusion
 
 
-//:xref-cb-config: xref:{version}@sync-gateway:ROOT:stats-monitoring.adoc#
+//:xref-cb-config: xref: {version}@sync-gateway:ROOT:stats-monitoring.adoc#
 :xref-cb-config: xref:#
 :url-golang-memstats: https://golang.org/pkg/runtime/#MemStats
 :goto-url-golang-memstats: {url-golang-memstats}[Go memstats]
@@ -145,19 +145,38 @@
 :sgr_active: {xref-cb-config}sgr_active[sgr_active]
 // tag::sgr-replication-stats-all[]
 // tag::sgr1-replication-stats[]
-:sgr_docs_checked_sent: {xref-cb-config}sgr_docs_checked_sent[sgr_docs_checked_sent]
-:sgr_num_attachment_bytes_transferred: {xref-cb-config}sgr_num_attachment_bytes_transferred[sgr_num_attachment_bytes_transferred]
-:sgr_num_attachments_transferred: {xref-cb-config}sgr_num_attachments_transferred[sgr_num_attachments_transferred]
-:sgr_num_docs_failed_to_push: {xref-cb-config}sgr_num_docs_failed_to_push[sgr_num_docs_failed_to_push]
 :sgr_num_docs_pushed: {xref-cb-config}sgr_num_docs_pushed[sgr_num_docs_pushed]
+:sgr_num_docs_failed_to_push: {xref-cb-config}sgr_num_docs_failed_to_push[sgr_num_docs_failed_to_push]
+:sgr_docs_checked_sent: {xref-cb-config}sgr_docs_checked_sent[sgr_docs_checked_sent]
 // end::sgr1-replication-stats[]
+
+// Pre beta values, no longer included and-or renamed
+
+// :sgr_num_attachment_bytes_transferred: {xref-cb-config}sgr_num_attachment_bytes_transferred[sgr_num_attachment_bytes_transferred]
+// :sgr_num_attachments_transferred: {xref-cb-config}sgr_num_attachments_transferred[sgr_num_attachments_transferred]
+// :sgr_delta_pull_replication_count: {xref-cb-config}sgr_delta_pull_replication_count[sgr_delta_pull_replication_count]
+// :sgr_delta_push_doc_count: {xref-cb-config}sgr_delta_push_doc_count[sgr_delta_push_doc_count]
+// :sgr_conflict_detected: {xref-cb-config}sgr_conflict_detected[sgr_conflict_detected]
+// :sgr_conflict_resolved: {xref-cb-config}sgr_conflict_resolved[sgr_conflict_resolved]
+// :sgw_conflict_skipped_error: {xref-cb-config}sgr_conflict_skipped_error[sgr_conflict_skipped_error]
+
 // tag::sgr2-replication-stats[]
-:sgr_delta_pull_replication_count: {xref-cb-config}sgr_delta_pull_replication_count[sgr_delta_pull_replication_count]
-:sgr_delta_push_doc_count: {xref-cb-config}sgr_delta_push_doc_count[sgr_delta_push_doc_count]
+:sgr_num_attachments_pushed: {xref-cb-config}sgr_num_attachments_pushed[sgr_num_attachments_pushed]
+:sgr_num_attachment_bytes_pushed: {xref-cb-config}sgr_num_attachment_bytes_pushed[sgr_num_attachment_bytes_pushed]
+:sgr_num_attachments_pulled: {xref-cb-config}sgr_num_attachments_pulled[sgr_num_attachments_pulled]
+:sgr_num_attachment_bytes_pulled: {xref-cb-config}sgr_num_attachment_bytes_pulled[sgr_num_attachment_bytes_pulled]
+:sgr_num_docs_pulled: {xref-cb-config}sgr_num_docs_pulled[sgr_num_docs_pulled]
+:sgr_num_docs_purged: {xref-cb-config}sgr_num_docs_purged[sgr_num_docs_purged]
+:sgr_num_docs_failed_to_pull: {xref-cb-config}sgr_num_docs_failed_to_pull[sgr_num_docs_failed_to_pull]
+:sgr_push_conflict_count: {xref-cb-config}sgr_push_conflict_count[sgr_push_conflict_count]
+:sgr_push_rejected_count: {xref-cb-config}sgr_push_rejected_count[sgr_push_rejected_count]
+:sgr_docs_checked_recv: {xref-cb-config}sgr_docs_checked_recv[sgr_docs_checked_recv]
+:sgr_deltas_recv: {xref-cb-config}sgr_deltas_recv[sgr_deltas_recv]
 :sgr_deltas_requested: {xref-cb-config}sgr_deltas_requested[sgr_deltas_requested]
 :sgr_deltas_sent: {xref-cb-config}sgr_deltas_sent[sgr_deltas_sent]
-:sgr_conflict_detected: {xref-cb-config}sgr_conflict_detected[sgr_conflict_detected]
-:sgr_conflict_resolved: {xref-cb-config}sgr_conflict_resolved[sgr_conflict_resolved]
-:sgw_conflict_skipped_error: {xref-cb-config}sgr_conflict_skipped_error[sgr_conflict_skipped_error]
+:sgr_conflict_resolved_local_count: {xref-cb-config}sgr_conflict_resolved_local_count[sgr_conflict_resolved_local_count]
+:sgr_conflict_resolved_remote_count: {xref-cb-config}sgr_conflict_resolved_remote_count[sgr_conflict_resolved_remote_count]
+:sgr_conflict_resolved_merge_count: {xref-cb-config}sgr_conflict_resolved_merge_count[sgr_conflict_resolved_merge_count]
 // end::sgr2-replication-stats[]
+
 // end::sgr-replication-stats-all[]

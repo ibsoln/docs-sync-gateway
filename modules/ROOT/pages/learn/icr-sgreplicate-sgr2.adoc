@@ -46,24 +46,26 @@ endif::[]
 // Footnotes
 :fn-icr: footnote:icr[As of Sync Gateway version 2.8]
 :fn-arch: footnote:arch[This architecture is also known as 'ship-to-shore' or 'hub-and-spoke'.]
-:fn-icr-ref: footnote:icr[]
-:fn-arch-ref: footnote:arch[]
+:fnref-icr: footnote:icr[]
+:fnref-arch: footnote:arch[]
+
+include::partial$block-caveats.adoc[tags=sgr2-only]
 
 
-== Overview
+== Introduction
 
-Couchbase Sync Gateway supports _{glos-term-inter-sync-gateway-replication}_, {fn-icr} an increasingly important enterprise-level requirement that
-supports _{glos-term-cloud-to-edge} synchronization_ use cases, where data changes must be synchronized between a centralized cloud cluster and a large number of edge clusters whilst still enforcing fine grained access control.
+include::page$learn/icr-sgreplicate.adoc[tags=intro]
 
-In the architecture diagram (<<icr-architecture>>), any database changes made on either Sync Gateway instance are replicated to the other Sync Gateway instance, in accordance with the replication's configuration -- see {xref-sgw-pg-config-properties-db-replications} for configuration detail.
+
+// // tag::overview[]
+// Couchbase Sync Gateway supports _{glos-term-inter-sync-gateway-replication}_, {fn-icr} an increasingly important enterprise-level requirement that
+// supports _{glos-term-cloud-to-edge} synchronization_ use cases, where data changes must be synchronized between a centralized cloud cluster and a large number of edge clusters whilst still enforcing fine grained access control.
+
+// In the architecture diagram (<<icr-architecture>>), any database changes made on either Sync Gateway instance are replicated to the other Sync Gateway instance, in accordance with the replication's configuration -- see {xref-sgw-pg-config-properties-db-replications} for configuration details.
 
 [[icr-architecture]]
 .Inter-sync-gateway replication architecture
-====
 image::icr-replication-overview.svg[]
-====
-
-NOTE: This content covers inter-sync-gateway replication using the Inter-sync-gateway Replication (v2) protocol (_SGR-2_).
 
 == Replication Characteristics
 _In this section_:  <<context>>  |  <<protocol>>  |  <<types-of-replication>>  |  <<granularity>>  |  <<directionality>>  |  <<security>>
@@ -74,12 +76,12 @@ _In this section_:  <<context>>  |  <<protocol>>  |  <<types-of-replication>>  |
 // * Active mobile clusters - see <<icr-active-mobile>>
 
 === Context
-Sync Gateway supports the ability to run replications between Sync Gateway clusters using Inter-sync-gateway Replication (v2) (SGR-2), with the replicator {glos-term-synchronizing} changes between two {glos-term-sync-gateway-databases}.
+Sync Gateway supports the ability to run replications between Sync Gateway clusters using Inter-sync-gateway Replication (v2), with the {glos-term-active-replicator} {glos-term-synchronizing} changes between two {glos-term-sync-gateway-databases}.
 
 Replications always involve at least one local database.
 Sync Gateway does not enable replication between two _remote_ nodes, because replications are defined at database level and so at least one database will be local.
 
-Sync Gateway node can opt-out of participating in the replication process using the database-level parameter {xref-sgw-pg-config-properties-databases-sgr-enabled}.
+Sync Gateway nodes can opt-out of participating in the replication process using the database-level parameter {xref-sgw-pg-config-properties-databases-sgr-enabled}.
 
 _Related configuration elements_:  {xref-sgw-pg-config-properties-databases}  |  {xref-sgw-pg-config-properties-db-replications}  |  {xref-sgw-pg-config-properties-db-rep-remote} |  {xref-sgw-pg-config-properties-databases-sgr-enabled}
 
@@ -137,7 +139,28 @@ Sync Gateway ensures effective and consistent access control by passing all docu
 _Related configuration elements_:  {xref-sgw-pg-config-properties-databases}  |  {xref-sgw-pg-config-properties-databases-sync} +
 _Related how-to_: {xref-sgw-pg-def-sync-function}  |  {xref-sgw-pg-adv-sgw-cfg-sync-function}
 
-== Availability and Resilience
+
+== Network Resilience
+
+Persistent inter-sync-gateway replications will automatically attempt to restart whenever the node does.
+
+Network resiliency is built-in for _continuous_ replications.
+They respond to network issues such as lost connections, by applying a persistent exponential backoff policy to attempt reconnection  (see max_backoff_time).
+
+Retries can be configured to stop after a defined period of time.
+
+[NOTE]
+.AD HOC Replications
+====
+No automatic reconnection attempts are made following network failures for ad hoc replications. +
+The controlling user or application should apply the appropriate corrective action.
+====
+
+{empty} +
+_Related replication definition elements_:  {xref-sgw-pg-config-properties-db-rep-backoff}  |
+
+
+== High Availability
 
 include::partial$incpg-icr-availability.adoc[leveloffset=+1]
 

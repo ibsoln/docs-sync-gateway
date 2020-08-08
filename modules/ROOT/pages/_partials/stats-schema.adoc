@@ -1,11 +1,4 @@
-
-
 {
-
 include::partial$stats-schema-global.adoc[]
-
 include::partial$stats-schema-per-db.adoc[]
-
-include::partial$stats-schema-per-replication.adoc[]
-
 }

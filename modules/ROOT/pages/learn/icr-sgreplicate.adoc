@@ -1,5 +1,5 @@
 = An Introduction to Inter-sync-gateway Replication
-:pge-aliases: running-replications.adoc
+:page-aliases: icr-architecture.adoc
 :page-layout: article
 :page-status: {release-status-sgw} -- {release-comments-sgw}
 :page-edition: Under Development
@@ -13,7 +13,6 @@ include::partial$block-authors-notes.adoc[tag=wip]
 :param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin}
 include::partial$block-abstract.adoc[]
 
-
 // Footnotes
 :fn-icr: footnote:icr[As of Sync Gateway version 2.8]
 :fn-sgr1: footnote:sgr1[Inter-sync-gateway Replication (v1) only]
@@ -24,19 +23,29 @@ include::partial$block-abstract.adoc[]
 :fnref-sgr1: footnote:sgr1[]
 :fnref-sgr2: footnote:sgr2[]
 
-
 == Introduction
 
-Couchbase Sync Gateway supports {glos-term-inter-sync-gateway-replication} (ICR). This meets an increasingly important enterprise-level requirement to support {glos-term-cloud-to-edge-sync} use cases. These use cases demand data changes be {glos-term-synchronized} between a centralized cloud cluster and multiple edge clusters whilst still enforcing fine grained access control.
+// tag::intro-full[]
+// tag::intro[]
 
-On the architecture diagram (<<running-replications>>), the replicator on the active Sync Gateway node ensures that any changes made to documents in either {glos-term-sync-gateway-database} instance are replicated to the other.
+Couchbase Sync Gateway supports _{glos-term-inter-sync-gateway-replication}_, {fn-icr} an increasingly important enterprise-level requirement that
+supports _{glos-term-cloud-to-edge} synchronization_ use cases, where data changes must be synchronized between a centralized cloud cluster and a large number of edge clusters whilst still enforcing fine grained access control.
 
-[[running-replications]]
+In the architecture diagram (<<icr-architecture>>), the replicator on the active Sync Gateway node ensures that any database changes made to documents in either {glos-term-sync-gateway-database} instance are replicated to the other Sync Gateway instance, in accordance with the replication's configuration -- see {xref-sgw-pg-config-properties-db-replications} for configuration details.
+
+// end::intro[]
+// tag::intro-img[]
+
+[[icr-architecture]]
 .Inter-sync-gateway replication
-// image::running-replications.png[]
 image::inter-sync-gateway-replication-2.svg[Cloud-to-edge replication architecture,{img-max}]
 
+// end::intro-img[]
+// end::intro-full[]
+
 == Use Cases
+
+// tag::use-cases[]
 
 Cloud-to-edge synchronization::
 +
@@ -72,6 +81,8 @@ image::icr-active-mobile-sync200713.svg[,600]
 
 --
 
+// end::use-cases[]
+
 == Protocol
 In inter-sync-gateway replication Sync Gateway acts as the {glos-term-active-replicator} in the replication process between Sync Gateway nodes.
 
@@ -91,6 +102,8 @@ Replications may be manually-assigned a user defined `replication_id`.
 Sync Gateway generates a random UUID if no `replication_id` is defined.
 
 === Types of Replication
+
+// tag::replication-types[]
 
 Sync Gateway supports two replication types
 
@@ -118,25 +131,40 @@ For instance a replication that needs to be to be run only periodically can be c
 // Once created they start in the 'running' state. When they enter 'stopped', or 'error', state they are automatically removed.
 --
 
-
+// end::replication-types[]
 
 == Security
+// tag::security[]
 
 Transport level security is provided by HTTPS or WSS (for websockets{fnref-sgr2}).
 
+// end::security[]
+
 === Authentication
+// tag::authentication[]
+
 Support for Basic Authentication using username and password credentials is provided (optional TLS Certificate authentications is also available {fnref-sgr2}).
 
+// end::authentication[]
+
 === Access Control
+// tag::access-control[]
+
 Data access control is provided by Sync Gateway's {glos-term-sync-function} and the username/password credentials.
 All replicated documents pass through this function ensuring that access permissions are adhered to.
+
+// end::access-control[]
 
 For more on authentication and security see: {xref-sgw-pg-icr-sgreplicate-sgr1}  |  {xref-sgw-pg-icr-sgreplicate-sgr2}
 
 
 == Availability and Resilience
 
-Inter-sync-gateway replication version 1, provides for high availability by enabling homogenous replication configurations to be deployed and run on multiple nodes within a cluster. Whilst this leads to some duplicate and redundant processing, it does mean that the replications can survive loss of some of the nodes, providing one remains available.More sophisticated automatic options are available in {enterprise}s at version 2.
+Inter-sync-gateway replication version 1, provides for high availability by enabling homogenous replication configurations to be deployed and run on multiple nodes within a cluster.
+Whilst this leads to some duplicate and redundant processing, it does mean that the replications can survive loss of some of the nodes, providing one remains available.
+
+More sophisticated automatic options are available in the {enterprise} at version 2.
+These address the issue of redundant processing by uniformly distributing replications across available nodes and ensuring that any given replication runs on only one node at a time.
 
 For more on availability see: {xref-sgw-pg-icr-sgreplicate-sgr1}  |  {xref-sgw-pg-icr-sgreplicate-sgr2}
 
@@ -147,34 +175,43 @@ For more on conflict resolution see: {xref-sgw-pg-icr-sgreplicate-sgr1}  |  {xre
 
 
 == Initialization
-
+// tag::initialization[]
 Replications are initialized by submitting a {glos-term-replication-definition} using either:
 
 * A 'JSON' configuration file (`sync-gateway-config.json`)
-* The Admin REST API's `_replication` endpoint, using a utility such as `curl`, or an application such as _Postman_. Okay
+* The Admin REST API, using a utility such as `curl`, or an application such as _Postman_.
 
-However they are defined the elements of a replication definition are the same, with the exception of these Admin REST API only elements:
+Wherever they are defined, the elements of a replication definition are the same, with the exception of these Admin REST API only elements:
 
 * `adhoc` -- Use this to specify that the replication is ad hoc {fn-restonly-par}.
 * `cancel` -- Use this to cancel on-going replications {fnref-restonly}.
 
-Sync Gateway supports the concurrent running of multiple replications.
+Sync Gateway supports the concurrent running of multiple inter-sync-gateway replications.
 
-Sync Gateway itself does not store anything persistently. Because it is stateless it can be interrupted and-or restarted at anytime without negative side effects.
+Sync Gateway itself does not store anything persistently.
+Because it is stateless it can be interrupted and-or restarted at anytime without negative side effects.
 
 You can use the filers to selectively process specific channels and provide fine-grained routing capabilities.
+// end::initialization[]
 
-For more on initialization see: {xref-sgw-pg-icr-sgreplicate-sgr1}  |  {xref-sgw-pg-icr-sgreplicate-sgr2}
+For more on initializing and running replications -- see: {xref-sgw-pg-icr-sgreplicate-sgr1}  |  {xref-sgw-pg-icr-sgreplicate-sgr2}
 
 
 == Monitoring and Administration
 
+// tag::statistics[]
 Sync Gateway provides a comprehensive set of replication-related statistics using the `_expvars` REST API endpoint.
+// end::statistics[]
 
-There are also REST API endpoints supporting the monitoring and administration of active replication tasks (for example, cancel or start a stopped task).
+// tag::monitor[]
+Admin REST API endpoints support the monitoring inter-sync-gateway replication tasks (for example, get replication definitions, get replication status information).
+// end::monitor[]
 
-For more on administration see: {xref-sgw-pg-icr-sgreplicate-sgr1}  |  {xref-sgw-pg-icr-sgreplicate-sgr2}
+// tag::admin[]
+Admin REST API endpoints support the management and administration of replications (for example: to cancel or start a stopped task; or to update a replication definition).
+// end::admin[]
+
+For more on management and administration see: {xref-sgw-pg-icr-sgreplicate-sgr1}  |  {xref-sgw-pg-icr-sgreplicate-sgr2}
 For more on monitoring and statistics see: {xref-sgw-pg-icr-sgreplicate-sgr1}  |  {xref-sgw-pg-icr-sgreplicate-sgr2}
-
 
 include::partial$block-related-content-icr.adoc[]

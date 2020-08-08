@@ -14,7 +14,7 @@ NOTE: Unless otherwise stated this content relates only to {enterprise}
 
 
 // tag::sgr2-only[]
-Unless otherwise stated this content relates only to replications run using the Inter-sync-gateway Replication (v2) protocol.
+NOTE: Unless otherwise stated, this content relates only to replications run using Inter-sync-gateway Replication (v2).
 // end::sgr2-only[]
 
 
