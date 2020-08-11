@@ -19,13 +19,18 @@
 // You can also initialize ad hoc inter-sync-gateway replications by using the
 //  {xref-sgw-pg-rest-api-admin}.
 == Introduction
-All replications operate within the context of a local database:
+// tag::introduction[]
+Replications are initialized by submitting a {glos-term-replication-definition} using either:
 
-* Configured replications use the `database.{db-name}.replications` property to add a replication definition to a local database.
-* REST API replications specify the local database and replication identity in the API POST/PUT request.
-Providing the replication definition parameters in the request body as a JSON string.
+* A 'JSON' configuration file (`sync-gateway-config.json`)
+* The Admin REST API, using a utility such as `curl`, or an application such as _Postman_.
 
-Both scenarios are covered in <<replication-properties>>, which summarizes their {glos-term-replication-definition} elements{fn-repdef-both}. These are covered in more detail in {xref-sgw-pg-config-properties}.
+Wherever they are defined, the elements of a replication definition are the same, with the exception of these Admin REST API only elements:
+
+* `adhoc` -- Use this to specify that the replication is ad hoc {fn-restonly-par}.
+* `cancel` -- Use this to cancel on-going replications {fnref-restonly}.
+
+// end::introduction[]
 
 [[replication-characteristics-highlights]]
 .Replication Characteristics Highlights
@@ -78,9 +83,15 @@ Running highlights::
 =====
 
 == Replication Definition
+All replications are 'initialized' by a {glos-term-replication-definition} in the configuration file or Admin REST API and operate within the context of a local database.
 
-All replications are 'initialized' by a {glos-term-replication-definition} in the configuration file or Admin REST API.
-For SGR-2, _replication definitions_ are at database level -- see: <<replication-properties>>{fnref-repdef-both}.
+* Configured replications use the `database.{db-name}.replications` property to add a replication definition to a local database.
+* REST API replications specify the local database and replication identity in the API POST/PUT request.
+Providing the replication definition parameters in the request body as a JSON string.
+
+Both scenarios are covered in <<replication-properties>>.
+It summarizes the {glos-term-replication-definition} elements{fn-repdef-both}, which are covered in more detail in {xref-sgw-pg-config-properties}.
+
 
 include::partial$icr-repl-props-table-sgr2.adoc[]
 
@@ -117,8 +128,9 @@ The user running the replication must have read and write access to the data bei
 This is not enforced by the system.
 Use your `sync` function to ensure a consistent approach is applied across all clusters.
 
-Mixing SGR1 and SGR2 replications::
-Both protocols can legitimately be in use at the same time, especially during transition. However, you should avoid initializing identical SGR1 and SGR2 replications.
+Mixing Inter-Sync-Gateway Replication Versions::
+Both version 1 and version 2 can legitimately be in use at the same time, especially during transition.
+However, you should avoid initializing identical version 1 and version 2 replications.
 
 == Running Configured Replications
 

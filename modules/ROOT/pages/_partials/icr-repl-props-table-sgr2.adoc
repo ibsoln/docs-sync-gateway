@@ -78,7 +78,7 @@ It creates a replication with the replication_ID of `db1-rep-id1-pull-oneshot` o
 include::{example-cfg}[tag=icr-rep-sample-create-pull, indent=0]
 ----
 
-include::{example-cfg}[tag=icr-rep-sample-create-pull-callouts, indent=0]
+include::{example-cfg}[tag=icr-rep-sample-create-pull-callouts-full, indent=0]
 
 --
 

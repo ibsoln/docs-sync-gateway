@@ -929,7 +929,14 @@ Because it is also persistent, it will start automatically following Sync Gatewa
 
 
 // tag::icr-rep-sample-create-pull[]
-      "db1-rep-id1-pull-oneshot":
+"databases": {
+ " db1": {                                                // <.>
+    "bucket":"db1",
+    "server": "couchbase://cb-server",
+    // ... other DB config ..
+    "sgreplicate_enabled": true,                          // <.>
+    "replications":
+      "db1-rep-id1-pull-oneshot":                         // <.>
   // tag::icr-rep-sample-create-pull-body[]
         "direction": "pull",                              // <.>
         "remote": "https://example.com:4984/remote_db1",
@@ -946,9 +953,15 @@ Because it is also persistent, it will start automatically following Sync Gatewa
         "purge_on_removal": false                         // <.>
         "state": "running"                                // <.>
   // end::icr-rep-sample-create-pull-body[]
- // end::icr-rep-sample-create-pull[]
+    }
+  }
+   // end::icr-rep-sample-create-pull[]
 
- // tag::icr-rep-sample-create-pull-callouts[]
+// tag::icr-rep-sample-create-pull-callouts-full[]
+<.> All replications are defined at database level within the context of a local database (e.g. `DB1`)
+<.> Opt in to replication
+<.> Define the `replication_id`
+// tag::icr-rep-sample-create-pull-callouts[]
 <.> Pull changes from the `remote` database at the specified url. +
 <.> Authenticate with the provided credentials. This user must have read and write access to both the local and remote databases. +
 <.> Batch together up to 1000 revisions at a time. This improve replication performance but consumes more memory resources. +
@@ -962,4 +975,50 @@ Because it is also persistent, it will start automatically following Sync Gatewa
 <.> Don't purge following removal of a channel; the default behavior. +
 <.> Start the replicator immediately and on Sync Gateway node re(start);. We could also have omitted this parameter as this is the default behavior.
 // end::icr-rep-sample-create-pull-callouts[]
+// end::icr-rep-sample-create-pull-callouts-full[]
 
+
+// tag::icr-conflict-resolver-structure[]
+
+"custom_conflict_resolver": "`function(conflict) { // <.>
+  //  . . .
+  //  . . . application logic to determine winner
+  //  . . .
+  return conflict.LocalDocument;  // <.>
+}`" // <.>
+
+// end::icr-conflict-resolver-structure[]
+
+// tag::icr-conflict-resolver-structure-callouts[]
+<.> The `conflict` structure comprises both conflicting documents.
++
+--
+[source, json]
+----
+type Conflict struct {
+	LocalDocument  Body `json:"LocalDocument"`
+	RemoteDocument Body `json:"RemoteDocument"`
+}
+----
+
+LocalDocument::
+This LocalDocument object encapsulates the body and metadata of the local conflicting document revision being replicated. Its content matches the JSON stored at the local Sync Gateway.
+
+RemoteDocument::
+The RemoteDocument object, encapsulates the body and metadata of the remote conflicting document revision being replicated. Its content matches the JSON stored at the remote Sync Gateway.
+
+--
+
+<.> You should return one of:
++
+--
+* conflict.LocalDocument
+* conflict.RemoteDocument
+* a new document body comprising the merged local and remote documents
+* a *nil* body, which will be resolved as a *delete*
+
+--
+
+<.> The sync function is enclosed by backticks (````)
+
+// end::icr-conflict-resolver-structure-callouts[]

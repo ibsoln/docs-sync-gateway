@@ -43,6 +43,7 @@ endif::xref-pfx-sgw[]
 :sgw-pg-icr-admin: learn/icr-admin.adoc
 :sgw-pg-icr-behavior: learn/icr-behavior.adoc
 :sgw-pg-icr-conflict-resolution: learn/icr-conflict-resolution.adoc
+:sgw-pg-icr-conflict-resolution-build: learn/icr-conflict-resolution-build-custom.adoc
 :sgw-pg-icr-delta-sync: learn/icr-delta-sync.adoc
 :sgw-pg-icr-high-availability: learn/icr-high-availability.adoc
 :sgw-pg-icr-managing: learn/icr-managing.adoc
@@ -98,6 +99,10 @@ endif::xref-pfx-sgw[]
 :xref-sgw-ep-admin-api: {xref-pfx-sgw}{sgw-pg-admin-rest-api}
 :xref-sgw-pfx-admin-api-replication: {xref-sgw-ep-admin-api}#/replication
 :xref-sgw-ep-admin-api-replication: {xref-sgw-pfx-admin-api-replication}
+:xref-sgw-pfx-admin-api-server: {xref-sgw-ep-admin-api}#/server
+
+//  Server _expvar
+:xref-sgw-ep-admin-api-server-expvar: {xref-sgw-pfx-admin-api-server}/get__expvar[GET _expvar]
 
 [_replication]
 // _replication POST
@@ -119,6 +124,7 @@ endif::xref-pfx-sgw[]
 // _replicationStatus PUT
 :xref-sgw-ep-admin-api-replication-repstatus-set: {xref-sgw-pfx-admin-api-replication}/put__db___replicationStatus__replicationID__action__action_[_replicationStatus(replicationID)?action={action}]
 
+
 // END ADMIN REST API
 
 :xref-sgw-pg-admin-rest-api: {xref-pfx-sgw}{sgw-pg-admin-rest-api}[Admin REST API]
@@ -134,6 +140,9 @@ endif::xref-pfx-sgw[]
 // LINKS INTO CONFIGURATION SCHEMA
 :xref-sgw-pfx-config-properties: {xref-pfx-sgw}{sgw-pg-config-properties}
 :xref-sgw-pg-config-properties: {xref-sgw-pfx-config-properties}[Configuration Details]
+:xref-sgw-adv-vw-config-properties: {xref-sgw-pfx-config-properties}[... view Configuration reference]
+:xref-sgw-lrn-vw-config-properties: {xref-sgw-pfx-config-properties}[... view Configuration reference]
+
 :xref-sgw-pg-config-properties-schema: {xref-sgw-pfx-config-properties}#configuration-reference[Configuration Schema]
 
 // Databases
@@ -179,14 +188,16 @@ endif::xref-pfx-sgw[]
 [Replication Admin]
 :xref-sgw-pg-icr-admin-start: {xref-sgw-pfx-icr-admin}#starting-a-replication[Starting a replication]
 :xref-sgw-pg-icr-behavior: {xref-pfx-sgw}{sgw-pg-icr-behavior}[Replication Behavior]
+// [Conflict Resolution]
 :xref-sgw-pfx-icr-conflict-resolution: {xref-pfx-sgw}{sgw-pg-icr-conflict-resolution}
 :xref-sgw-pg-icr-conflict-resolution: {xref-sgw-pfx-icr-conflict-resolution}[Conflicts in Inter-sync-gateway replication]
-// [Conflict Resolution]
 :xref-sgw-pg-icr-conflict-resolution-auto: {xref-sgw-pfx-icr-conflict-resolution}#automatic-conflict-resolution[Conflicts in Inter-sync-gateway replication]
-// [Conflict Resolution]
+// [Conflict Resolution-Build]
+:xref-sgw-pfx-icr-conflict-resolution-build: {xref-pfx-sgw}{sgw-pg-icr-conflict-resolution-build}
+:xref-sgw-pg-icr-conflict-resolution-build: {xref-sgw-pfx-icr-conflict-resolution-build}[Build a Custom Conflict Resolver]
+// [High-Availability]
 :xref-sgw-pfx-icr-high-availability: {xref-pfx-sgw}{sgw-pg-icr-high-availability}
 :xref-sgw-pg-icr-high-availability: {xref-sgw-pfx-icr-high-availability}[High-Availability for Inter-sync-gateway replication]
-// [High-Availability]
 :xref-sgw-pg-icr-high-availability-node-dist: {xref-sgw-pfx-icr-high-availability}#node-distribution[High-Availability]
 :xref-sgw-pg-icr-managing: {xref-pfx-sgw}{sgw-pg-icr-managing}[Replication managing]
 :xref-sgw-pfx-icr-monitoring: {xref-pfx-sgw}{sgw-pg-icr-monitoring}
@@ -196,14 +207,24 @@ endif::xref-pfx-sgw[]
 :xref-sgw-pg-icr-monitoring-stats: {xref-sgw-pfx-icr-monitoring}#retrieving-sync-gateway-statistics[Replication Monitoring - Stats]
 :xref-sgw-pfx-icr-sgreplicate: {xref-pfx-sgw}{sgw-pg-icr-sgreplicate}
 :xref-sgw-pg-icr-sgreplicate: {xref-sgw-pfx-icr-sgreplicate}[Inter-sync-gateway replication]
+
+// Cloud to Edge
+
 // [Inter-sync-gateway Replication]
-:xref-sgw-pg-icr-sgreplicate-init: {xref-sgw-pfx-icr-sgreplicate}#initialization[Initialization of Inter-sync-gateway replications]
+:xref-sgw-pg-icr-sgreplicate-init: {xref-sgw-pfx-icr-sgreplicate}#initialization[[Inter Sync Gateway Replication]]
 :xref-sgw-pg-icr-sgreplicate-sgr1: {xref-pfx-sgw}{sgw-pg-icr-sgreplicate-sgr1}[Inter-sync-gateway replication vn:1]
-:xref-sgw-pg-icr-sgreplicate-sgr2: {xref-pfx-sgw}{sgw-pg-icr-sgreplicate-sgr2}[Inter-sync-gateway replication vn:2]
+:xref-sgw-pg-icr-sgreplicate-sgr2: {xref-pfx-sgw}{sgw-pg-icr-sgreplicate-sgr2}[Inter-sync-gateway Replication vn:2]
 // :xref-sgw-pg-icr-overview: {xref-pfx-sgw}{sgw-pg-icr-overview}[Inter-sync-gateway Replication]
-:xref-sgw-pg-icr-overview: {xref-sgw-pg-icr-sgreplicate}[Inter-sync-gateway Replication]
+:xref-sgw-pfx-icr-overview: {xref-sgw-pg-icr-sgreplicate}
+:xref-sgw-pg-icr-overview: {xref-sgw-pfx-icr-overview}[Inter-sync-gateway Replication]
+:xref-sgw-adv-vw-icr-overview: {xref-sgw-pfx-icr-sgreplicate}[... view the Concept]
+:xref-sgw-ref-vw-icr-overview: {xref-sgw-pfx-icr-sgreplicate}[... view the Concept]
 :xref-sgw-pg-icr-overview--intro: {xref-pfx-sgw}{sgw-pg-icr-overview}#introduction[Introducing Inter-sync-gateway Replication]
 :xref-sgw-pg-icr-running: {xref-pfx-sgw}{sgw-pg-icr-running}[Initialize Inter-sync-gateway replications]
+:xref-sgw-pfx-icr-initialize: {xref-pfx-sgw}{sgw-pg-icr-running}
+:xref-sgw-pg-icr-initialize: {xref-sgw-pfx-icr-initialize}[Initialize Inter-sync-gateway Replication]
+:xref-sgw-lrn-vw-icr-initialize: {xref-sgw-pfx-icr-initialize}[... view the How-to]
+:xref-sgw-ref-vw-icr-initialize: {xref-sgw-pfx-icr-initialize}[... view the How-to]
 // [Replication Initialization]
 :xref-sgw-pg-icr-stats: {xref-pfx-sgw}{sgw-pg-icr-stats}[Replication Stats]
 :xref-sgw-pg-icr-replication-types: {xref-pfx-sgw}{sgw-pg-icr-replication-types}[Replication Types]
@@ -236,8 +257,8 @@ endif::xref-pfx-sgw[]
 :xref-sgw-pg-server-integration: {xref-pfx-sgw}{sgw-pg-server-integration}[Webhooks and Changes Feed]
 :xref-sgw-pg-sgcollect-info: {xref-pfx-sgw}{sgw-pg-sgcollect-info}[Collect Node Statistics]
 // [SGCollect Info]
-:xref-sgw-pg-shared-bucket-access: {xref-pfx-sgw}{sgw-pg-shared-bucket-access}[Syncing Mobile and Server]
-:xref-sgw-pg-stats-monitoring: {xref-pfx-sgw}{sgw-pg-stats-monitoring}[Use Sync Gateway Statistics]
+:xref-sgw-pg-shared-bucket-access: {xref-pfx-sgw}{sgw-pg-shared-bucket-access}[Mobile-Server Replication Concept]
+:xref-sgw-pg-stats-monitoring: {xref-pfx-sgw}{sgw-pg-stats-monitoring}[View Statistics and Metrics]
 // [Stats and Monitoring?]
 :xref-sgw-pg-supported-os: {xref-pfx-sgw}{sgw-pg-supported-os}[Supported OS]
 :xref-sgw-pg-def-sync-function: {xref-pfx-sgw}{sgw-pg-def-sync-function}[Defining Sync Functions]

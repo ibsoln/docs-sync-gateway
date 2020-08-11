@@ -1,23 +1,23 @@
-= Monitoring
+= View Statistics and Metrics
 :page-layout: article
 :page-partial:
 :page-role: panes
 :page-status: {releaseStatus} -- {releaseComments}
 :page-content: conceptual
+:description: This content covers the statistics and metrics collected and made available by Sync Gateway
 // https://issues.couchbase.com/browse/DOC-6499
 // https://docs.google.com/document/d/13E6JOq8u_AaUd_t8FZEPCAuq7jfkjryecjBQBHE3pG8/edit?ts=5e77c903#heading=h.k97tmr4fpwci
 
-
 // include::partial$_attributes-local.adoc[]
 // :xref-cb-config: xref:{version}@sync-gateway:ROOT:stats-monitoring.adoc#
-// :gotoIndex: <<Alphabetic Index, Back to Index Start>>
 
+:gotoIndex: <<Alphabetic Index, Back to Index Start>>
 
 include::partial$_std-hdr-sgw.adoc[]
 include::partial$block-authors-notes.adoc[tag=wip]
 :topic-group: Inter-sync-gateway Replication
 :param-related: {xref-sgw-pg-config-properties} | {xref-sgw-pg-rest-api-admin}
-:param-abstract: This content covers the monitoring aspects of inter-sync-gateway  replication
+:param-abstract:  Sync Gateway's statistics and metrics provide under-the-hood data on the performance, resource utilization and health of it nodes. This is increasingly important as deployments scale to support a large numbers of connected mobile and edge components.
 include::partial$block-abstract.adoc[]
 
 ifeval::["{releaseStatus}" == "gamma"]
@@ -37,19 +37,21 @@ endif::[]
 
 // [abstract]
 // Sync Gateway 2.5 includes a number of new metrics available through the Admin REST API (`/_expvars`).
-// Those new metrics cover performance, resource utilization and health checks of the Sync Gateway nodes which are increasingly important as deployments scale to support a large number of connected Couchbase Lite clients.
 
 include::partial$_stats-item-names.adoc[]
 
-== Introducing Sync Gateway Stats
+== Introduction
 
-Deployments are increasingly scaling to support large numbers of connected Couchbase Lite clients. This places added emphasis on the effective  monitoring of the health and performance of Sync Gateway nodes.
+Deployments are increasingly scaling to support large numbers of connected mobile and edge clients.
+This places added emphasis on the effective  monitoring of the health and performance of Sync Gateway nodes.
 
 Sync Gateway's _Admin REST API_ facilitates the process of gathering this essential data by providing access to node metrics covering:
 
 * Performance
 * Resource utilization
 * Health
+
+== Access the Data
 
 Use the _Admin REST API's_, *_expvars_* method to request these metrics, as shown in this `curl` command:
 
@@ -264,3 +266,6 @@ include::partial$stats-schema-descriptions.adoc[]
 * {write_processing_time}
 
 {gotoIndex}
+
+
+include::partial$block-related-content-api.adoc[]

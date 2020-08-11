@@ -747,29 +747,28 @@ The total number of import partitions.
 Description::
 The total time taken to process a document import.
 
-== Metrics by replication
 
-=== Per_replication
+=== Metrics by replication
+
+The metrics collated and reported here relate **only** to replications run using the inter-sync-gateway replication version 2.
+
+NOTE: These metrics refer to Sync Gateway replications only; Couchbase Lite replications are not included.
+
+// tag::per-replication-sgr2[]
+==== Per_replication
+(inter-sync-gateway v2)
 
 This {per_replication} group header encompasses all the stats for each inter-sync-gateway replication involving its owning database.
 
 It comprises an array of one or more {replname} objects, each of which represents the statistics collected and recorded against the specified $replname (`replication_id`).
 
-NOTE: These metrics refer to Sync Gateway replications only; Couchbase Lite replications are not included.
 
-// tag::per-replication[]
-
-=== $replname
+==== $replname
 
 This object comprises the stats collected and recorded for the inter-sync-gateway replication named $replname (which equates to a `replication_id`).
 The same structure is used to return statistics from inter-sync-gateway replications versions 1 and 2, but not all items are populated by each version.
 
-=== sgr_active
-Description::
-Whether the replication is active at this time.
-**Deprecated @ 2.8**: used only by inter-sync-gateway replications version 1.
-
-=== sgr_docs_checked_sent
+===== sgr_docs_checked_sent
 Description::
 The total number of documents checked for changes since replication started.
 This represents the number of potential change notifications pushed by Sync Gateway.
@@ -790,6 +789,146 @@ The value is true for the duration of the replication, and then false when it ha
 Use Case::
 This metric can be useful when analyzing replication history, and to filter by active replications.
 
+
+===== sgr_num_docs_failed_to_push
+Description::
+The total number of documents that failed to be pushed since replication started.
+
+Used by versions 1 and 2.
+
+===== sgr_num_docs_pushed
+Description::
+The total number of documents that were pushed since replication started.
+
+Used by versions 1 and 2.
+
+===== sgr_num_attachments_pushed
+Description::
+The total number of attachments that were pushed since replication started.
+
+===== sgr_num_attachment_bytes_pushed
+Description::
+The total number of bytes in all the attachments that were pushed since replication started.
+
+===== sgr_num_attachments_pulled
+Description::
+The total number of attachments that were pulled since replication started.
+
+===== sgr_num_attachment_bytes_pulled
+Description::
+The total number of bytes in all the attachments that were pulled since replication started.
+
+===== sgr_num_docs_pulled
+Description::
+The total number of documents that were pulled since replication started.
+
+===== sgr_num_docs_purged
+Description::
+The total number of documents that were purged since replication started.
+
+===== sgr_num_docs_failed_to_pull
+Description::
+The total number of document pulls that failed since replication started.
+
+===== sgr_push_conflict_count
+Description::
+The total number of pushed documents that conflicted since replication started.
+
+===== sgr_push_rejected_count
+Description::
+The total number of pushed documents that were rejected since replication started.
+
+===== sgr_docs_checked_recv
+Description::
+The total number of documents that were purged since replication started.
+
+===== sgr_deltas_recv
+Description::
+The total number of documents that were purged since replication started.
+
+
+// ===== sgr_delta_pull_replication_count
+// Description::
+// The total number documents with deltas pulled
+
+// ===== sgr_delta_push_doc_count
+// Description::
+// The total number of documents with deltas pushed
+
+===== sgr_deltas_requested
+Description::
+The total number of deltas requested
+
+===== sgr_deltas_sent
+Description::
+The total number of deltas sent
+
+
+// ===== sgr_conflict_detected
+// Description::
+// The total number of documents where conflicts were detected
+
+// ===== sgr_conflict_resolved
+// Description::
+// The total number of conflicting documents that were resolved successfully (by the active node)
+
+
+===== sgr_conflict_resolved_local_count
+Description::
+The total number of conflicting documents that were resolved successfully locally (by the active replicator)
+
+
+===== sgr_conflict_resolved_remote_count
+Description::
+The total number of conflicting documents that were resolved successfully remotely (by the active replicator)
+
+
+===== sgr_conflict_resolved_merge_count
+Description::
+The total number of conflicting documents that were resolved successfully by a merge action (by the active replicator)
+
+===== sgw_conflict_skipped_error
+Description::
+The total number of documents that were skipped during sync because of an error in conflict resolution
+
+
+// end::per-replication-sgr2[]
+
+
+
+
+
+
+// tag::per-replication-sgr1[]
+
+== Metrics by replication ( ***deprecated** )
+
+This structure and its associated metrics is deprecated at version 2.8.
+The metrics collated and reported here relate **only** to replications run using the inter-sync-gateway replication version 1.
+For metrics relating to replications run using inter-sync-gateway replication version 2 see: <<per_replication>>.
+
+=== Per_replication (inter-sync-gateway v1)
+
+This {per_replication} group header encompasses all the stats for each inter-sync-gateway replication involving its owning database.
+
+It comprises an array of one or more {replname} objects, each of which represents the statistics collected and recorded against the specified $replname (`replication_id`).
+
+NOTE: These metrics refer to Sync Gateway replications only; Couchbase Lite replications are not included.
+
+
+=== $replname
+
+This object comprises the stats collected and recorded for the inter-sync-gateway replication named $replname (which equates to a `replication_id`).
+The same structure is used to return statistics from inter-sync-gateway replications versions 1 and 2, but not all items are populated by each version.
+
+==== sgr_active
+Description::
+Whether the replication is active at this time.
+**Deprecated @ 2.8**: used only by inter-sync-gateway replications version 1.
+
+==== sgr_docs_checked_sent (sgr1)
+See: <<sgr_docs_checked_sent>>
+
 === sgr_num_attachments_transferred
 Description::
 The total number of attachments transferred since replication started.
@@ -800,48 +939,10 @@ Description::
 The total number of attachment bytes transferred since replication started.
 **Deprecated @ 2.8**: used only by inter-sync-gateway replications version 1.
 
-=== sgr_num_docs_failed_to_push
-Description::
-The total number of documents that failed to be pushed since replication started.
+=== sgr_num_docs_failed_to_push (sgr1)
+See: <<sgr_num_docs_failed_to_push>>
 
-Used by versions 1 and 2.
+=== sgr_num_docs_pushed (sgr1)
+See: <<sgr_num_docs_pushed>>
 
-=== sgr_num_docs_pushed
-Description::
-The total number of documents that were pushed since replication started.
-
-Used by versions 1 and 2.
-
-// tag}}sgr2-replication-stats[]
-
-=== sgr_delta_pull_replication_count
-Description::
-The total number documents with deltas pulled
-
-=== sgr_delta_push_doc_count
-Description::
-The total number of documents with deltas pushed
-
-=== sgr_deltas_sent
-Description::
-The total number of deltas sent
-
-=== sgr_deltas_requested
-Description::
-The total number of deltas requested
-
-
-=== sgr_conflict_detected
-Description::
-The total number of documents where conflicts were detected
-
-=== sgr_conflict_resolved
-Description::
-The total number of conflicting documents that were resolved successfully (by the active node)
-
-=== sgw_conflict_skipped_error
-Description::
-The total number of documents that were skipped during sync because of an error in conflict resolution
-// end::per-replication[]
-
-// end::sgr2-replication-stats[]
+// end::per-replication-sgr1[]

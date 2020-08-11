@@ -1,6 +1,6 @@
 // inclusion directing user to SGR1 content
 // tag::icr-sgr1-redirect[]
-For information on replications run using SG_Replicate 1.0 -- see {xref-sgw-pg-icr-sgreplicate1}.
+For information on replications run using older versions of Inter-Sync-Gateway Replication -- see {xref-sgw-pg-icr-sgreplicate-sgr1}.
 // end::icr-sgr1-redirect[]
 
 // tag::icr-community-redirect[]
@@ -14,7 +14,7 @@ NOTE: Unless otherwise stated this content relates only to {enterprise}
 
 
 // tag::sgr2-only[]
-NOTE: Unless otherwise stated, this content relates only to replications run using Inter-sync-gateway Replication (v2).
+NOTE: This content relates only to replications run using the latest version of Inter-sync-gateway Replication (i.e. v2).
 // end::sgr2-only[]
 
 

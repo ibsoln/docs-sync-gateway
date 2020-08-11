@@ -78,20 +78,70 @@ Context:
 // end::sgw-icr-adhoc-replication-full[]
 --
 
-
-
-
 [[auto-conflict-resolution]]
 Automatic conflict resolution::
-// tag::sgw-conf-res-auto-resolution[]
-The process by which conflicts are automatically resolved by the system.
-Optional feature in xref:couchbase-lite::swift.adoc#handling-conflicts[Couchbase Lite 2.0 and above].
-// end::sgw-conf-res-auto-resolution[]
++
+--
+include::{concepts}rep-auto-conflict-resolution.adoc[]
+--
+
+[[auto-conflict-resolution-policy]]
+Automatic conflict resolution policy::
++
+--
+include::{concepts}rep-auto-conflict-resolution-policy.adoc[]
+--
 
 {goto-index}
 
 == C
 
+// tag::conflict-resolver-policies-full[]
+[[conflict-resolver-policies]]
+Conflict Resolver Policies::
+// tag::conflict-resolver-policies-summary[]
+Inter-Sync-gateway Replications provides several predefined conflict resolver policies, which you can choose to apply.
+These include: `default; `localWins`, `remoteWins`; and `custom`.
+// end::conflict-resolver-policies-summary[]
++
+--
+// tag::conflict-resolver-policies-body[]
+Each conflict resolver policy applies a different strategy:
+
+Default::
+* Always applies Sync Gateway's <<auto-conflict-resolution-policy>>
+* Configured using: `"conflict_resolution_type": "default"`
+
+Local Wins::
+* Always considers the local change the winner.
+* Configured using: `"conflict_resolution_type": "localWins"`
+
+Remote Wins::
+* Always considers the remote change the winner.
+* Configured using: `"conflict_resolution_type": "remoteWins"`
+
+Custom::
++
+NOTE: {enterprise} Only
+
+--
+* Applies the policy defined in the function provided by the `custom_conflict_resolution` parameter
+* Configured using:
++
+[source: json]
+----
+"conflict_resolution_type": "custom",
+"custom_conflict_resolution": `function (local, remote) { //
+  return { //
+    body: winner.body,
+    meta: winner.meta
+  }; // Return winning revision
+}`
+----
+--
+// end::conflict-resolver-policies-body[]
+--
+// end::conflict-resolver-policies-full[]
 
 [[continuous]]
 [[rep-continuous]]
@@ -142,9 +192,14 @@ The number of edges can range from a few hundred to several thousand.
 
 {goto-index}
 
-//== D
+// == D
 
-//{goto-index}
+// [[document]]
+
+
+
+
+// {goto-index}
 
 == I
 
@@ -235,6 +290,13 @@ Context
 // end::sgw-icr-passive-replicator-context[]
 // end::sgw-icr-passive-replicator-full[]
 --
+
+
+[[persistent-exponential-backoff]]
+Persistent Exponential Backoff::
+The wait time between retry attempts is exponentially increased at each attempt, until it reaches a predetermined maximum limit.
+Subsequent retries may be made after the maximum limit time period has elapsed.
+
 
 [[persistent-replication]]
 Persistent Replication::
@@ -341,9 +403,14 @@ The term _Sync Gateway database_ refers to what you may consider a namespace for
 [[tombstone-revision]]
 Tombstone revision::
 // tag::sgw-conf-res-tombstone[]
-A Tombstone Revision is a document revision that contains only the document ID, a revision ID and the `_deleted: true` key value pair. It acts as the record of a deleted item.
-+
-Tombstone revisions are created to allow all devices to see that a document has been deleted - particularly in the case of devices that may not be online continuously and therefore not syncing regularly.
+A tombstone revision is essentially a marker indicating that a document has been deleted.
+
+Each Tombstone Revision comprises: document ID, revision ID and a _deleted flag (value=true).
+They are created to allow all devices to see that a document has been deleted - particularly in the case of devices that may not be online continuously and therefore not syncing regularly.
+
+Every update -- including deletes -- creates a document revision.
+Deleted revisions are also known as _Tombstone_ revisions.
+They have the '“_deleted”: true' property, are replicated, but are not returned if you do a query using, for example, Couchbase Lite.
 +
 [source,json]
 ----

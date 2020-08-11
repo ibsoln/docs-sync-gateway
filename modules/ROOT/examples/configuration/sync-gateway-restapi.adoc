@@ -508,14 +508,14 @@ curl --location --request POST 'http://localhost:4985/local_db1/_replication/' \
 
 // tag::icr-rep-sample-create-pull[]
 // tag::icr-rep-sample-create-pull-curl[]
-curl --location --request POST 'http://localhost:4985/db1-local/_replication/db1-rep-id1-pull-oneshot' \
+curl --location --request POST 'http://localhost:4985/db1-local/_replication/db1-rep-id1-pull-oneshot' \ // <.>
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic ZGVtbzpwYXNzd29yZA==' \
 --dataraw '{
 // end::icr-rep-sample-create-pull-curl[]
 // tag::icr-rep-sample-create-pull-body[]
-"replication_id": "db1-rep-id1-pull-oneshot"
+"replication_id": "db1-rep-id1-pull-oneshot" // <.>
 include::{example-cfg}[tags=icr-rep-sample-create-pull-body]
   "adhoc": false, // <.>
   "cancel": false // <.>
@@ -525,6 +525,8 @@ include::{example-cfg}[tags=icr-rep-sample-create-pull-body]
 
 
 // tag::icr-rep-sample-create-pull-callouts[]
+<.> All replications take place at database level and in the context of a local database. Here we are setting the replication in the context of `db1-local`
+<.> Define the `replication_id`
 include::{example-cfg}[tags=icr-rep-sample-create-pull-callouts]
 <.> Setting `adhoc=false` marks this as a persistent replication. The definition will survive Sync Gateway node restarts. This the default behaviour if this parameter is omitted.+
 <.> Set `cancel=true` to cancel an initialized replication; otherwise you can omit this parameter.

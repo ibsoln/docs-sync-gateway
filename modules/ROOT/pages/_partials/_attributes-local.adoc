@@ -1,5 +1,7 @@
 // BEGIN
 
+:concepts: partial$/core-concepts/
+
 // SGW Common url links
 :url-cb-jira: https://issues.couchbase.com/browse
 :url-cb-issues-sync: https://github.com/couchbase/sync_gateway/issues

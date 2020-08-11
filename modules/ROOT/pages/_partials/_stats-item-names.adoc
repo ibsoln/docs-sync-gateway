@@ -13,6 +13,7 @@
 :admin_net_bytes_recv: {xref-cb-config}admin_net_bytes_recv[admin_net_bytes_recv]
 :admin_net_bytes_sent: {xref-cb-config}admin_net_bytes_sent[admin_net_bytes_sent]
 :error_count: {xref-cb-config}error_count[error_count]
+:memory_allocater_stats: {xref-cb-config}memory_allocater_stats[memory_allocater_stats]
 :go_memstats_heapalloc: {xref-cb-config}go_memstats_heapalloc[go_memstats_heapalloc]
 :go_memstats_heapidle: {xref-cb-config}go_memstats_heapidle[go_memstats_heapidle]
 :go_memstats_heapinuse: {xref-cb-config}go_memstats_heapinuse[go_memstats_heapinuse]
