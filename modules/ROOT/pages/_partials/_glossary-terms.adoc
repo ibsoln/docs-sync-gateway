@@ -25,7 +25,7 @@ Use `custom_conflict_resolver` to provide the Javascript function used to resolv
 // end::glos-cfg-rep-resolver-def[]
 
 // tag::glos-cfg-rep-direction-def[]
-Use `direction` to specify the replication is *push*, *pull* or *push_and_pull* relative to this node.
+Use `direction` to specify the replication is *push*, *pull* or *pushAndPull* relative to this node.
 // end::glos-cfg-rep-direction-def[]
 
 // tag::glos-cfg-rep-delta-def[]

@@ -116,7 +116,7 @@ To use another database hosted on this Sync Gateway, specify its full Sync Gatew
 // tag::direction[]
 direction::
 The _direction_ property indicates whether the replication is pushed or pulled by this node.
-Valid values are: push, pull, and push_and_pull.
+Valid values are: push, pull, and pushAndPull.
 // end::direction[]
 
 // tag::conflict-resolution-type[]

@@ -920,7 +920,7 @@ properties:
                     description: |+
                       **About**
 
-                      Use `direction` to specify the replication is *push*, *pull* or *push_and_pull* relative to this node.
+                      Use `direction` to specify the replication is *push*, *pull* or *pushAndPull* relative to this node.
 
                       **Behavior**
 
@@ -928,7 +928,7 @@ properties:
 
                       - `pull` -- changes are pulled from the `remote` database
                       - `push` -- changes are pushed to the `remote` database
-                      - `push_and_pull` -- changes are both pushed-to and pulled-from the `remote` database
+                      - `pushAndPull` -- changes are both pushed-to and pulled-from the `remote` database
 
                       **Constraints**
 
@@ -1085,14 +1085,14 @@ properties:
                       **Behavior**
 
                       The `remote` property represents a database endpoint for the remote Sync Gateway cluster.
-                      That is, it identifies the remote cluster that is the subject of this replication's *push*, *pull* or *push_and_pull action*.
+                      That is, it identifies the remote cluster that is the subject of this replication's *push*, *pull* or *pushAndPull action*.
 
                       Dependent upon the setting of the [direction](./../refer/config-properties.html#databases-this_db-replications-direction) configuration property.
 
                       If direction is :
                       - `direction=pull`, then `remote` defines the remote cluster *from* which data is pulled
                       - `direction=push`, then `remote` defines the remote cluster *to* which data is pushed
-                      - `direction=push_and_pull`, then `remote` defines the remote cluster *to* which data is pushed.
+                      - `direction=pushAndPull`, then `remote` defines the remote cluster *to* which data is pushed.
 
                       **Example**
 

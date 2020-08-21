@@ -361,7 +361,7 @@ parameters:
           description: |+
             **About**
 
-            The mandatory `direction` property specifies whether the replication is *push*, *pull* or *push_and_pull* relative to this node.
+            The mandatory `direction` property specifies whether the replication is *push*, *pull* or *pushAndPull* relative to this node.
 
             The property value is referenced by the [remote](rest-api-admin.html#database-this_db-replications-remote) property.
 
@@ -369,7 +369,7 @@ parameters:
 
             - `pull` -- changes are pulled from the `remote` database
             - `push` -- changes are pushed to the `remote` database
-            - `push_and_pull` -- changes are both pushed-to and pulled-from the `remote` database
+            - `pushAndPull` -- changes are both pushed-to and pulled-from the `remote` database
 
             **Constraints**
 
@@ -509,7 +509,7 @@ parameters:
             **About**
 
             The **remote** property represents the endpoint of s database for the remote Sync Gateway.
-            That is, it identifies the remote Sync Gateway database that is the subject of this replication's push, pull or push_and_pull action.
+            That is, it identifies the remote Sync Gateway database that is the subject of this replication's push, pull or pushAndPull action.
 
             Typically the endpoint will include URI, Port and Database name elements.
 
@@ -525,7 +525,7 @@ parameters:
               If **direction** is :
               - *pull*, 'remote' defines the remote cluster *from* which data is pulled
               - *push*, 'remote' defines the remote cluster *to* which data is pushed
-              - *push_and_pull*, 'remote' defines the *push* configuration.
+              - *pushAndPull*, 'remote' defines the *push* configuration.
 
             For example --
 
@@ -3375,7 +3375,7 @@ definitions:
 #          valid values are
 #            - push
 #            - pull
-#            - push_and_pull
+#            - pushAndPull
       # source:
       #   type: string
       #   description: |
@@ -3646,7 +3646,7 @@ definitions:
             description: |+
               **About**
 
-              The mandatory `direction` property indicates whether the replication is *push*, *pull* or *push_and_pull*.
+              The mandatory `direction` property indicates whether the replication is *push*, *pull* or *pushAndPull*.
 
               The property value is referenced by the **remote** property.
 
@@ -3797,14 +3797,14 @@ definitions:
               **About**
 
               The **remote** property represents a database URL for the remote Sync Gateway.
-              That is, it identifies the remote Sync Gateway database that is the subject of this replication's push, pull or push_and_pull action.
+              That is, it identifies the remote Sync Gateway database that is the subject of this replication's push, pull or pushAndPull action.
 
               **Behavior**
 
               Dependent upon setting of **direction**. If **direction** is :
               - *pull*, this is the cluster *from* which data is pulled
               - *push*, this is the cluster *to* which data is pushed
-              - *push_and_pull*, this is the cluste from which data is pushed.
+              - *pushAndPull*, this is the cluste from which data is pushed.
 
               **Constraints**
 
