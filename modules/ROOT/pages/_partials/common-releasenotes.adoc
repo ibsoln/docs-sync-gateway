@@ -90,6 +90,9 @@ h|Issue|Summary
 
 |https://issues.couchbase.com/browse/CBG-1276[CBG-1276]
 |https://issues.couchbase.com/browse/CBG-1276[Implement network connstr flag for cbdatasource alt address shims]
+
+|https://issues.couchbase.com/browse/CBG-1313[CBG-1313]
+|https://issues.couchbase.com/browse/CBG-1313[2.8.1 Backport --  Expose metrics API on 127.0.0.1:4986 by default]
 |===
 
 // end::enhancements-281[]
@@ -114,6 +117,9 @@ h|Summary
 |https://issues.couchbase.com/browse/CBG-798[CBG-798]
 |https://issues.couchbase.com/browse/CBG-798[Sync Gateway requires Couchbase Server nodes to use the same SSL memcached port]
 
+|https://issues.couchbase.com/browse/CBG-1127[CBG-1127]
+|https://issues.couchbase.com/browse/CBG-1127[Treat resurrected tombstones as non-conflict when no shared history]
+
 |===
 
 // end::known-281[]
@@ -132,6 +138,12 @@ h|Summary
 |https://issues.couchbase.com/browse/CBG-1203[CBG-1203]
 |https://issues.couchbase.com/browse/CBG-1203[2.8.1 Backport CBG-1194 - sgcollect_info not collecting system information]
 
+|https://issues.couchbase.com/browse/CBG-1214[CBG-1214]
+|https://issues.couchbase.com/browse/CBG-1214[2.8.1 Backport Calling DELETE on non-existent document creates non-tombstone]
+
+|https://issues.couchbase.com/browse/CBG-1221[CBG-1221]
+|https://issues.couchbase.com/browse/CBG-1221[2.8.1 Backport -- Include wanted node defs when building heartbeat node set]
+
 |https://issues.couchbase.com/browse/CBG-1234[CBG-1234]
 |https://issues.couchbase.com/browse/CBG-1234[2.8.1 Backport --  CBG-1231 - Prevent import cfg startup races]
 
@@ -146,7 +158,6 @@ h|Summary
 
 |https://issues.couchbase.com/browse/CBG-1311[CBG-1311]
 |https://issues.couchbase.com/browse/CBG-1311[2.8.1 Backport ISGR: Pull replications incompatible with active-side allow_conflicts=false]
-
 
 |===
 // end::fixed-281[]
