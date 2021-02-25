@@ -1,0 +1,80 @@
+= Sync Gateway Service
+:page-aliases: setup-sgw-service.adoc
+
+== Introduction
+
+Sync Gateway's service install shell script creates an init service to run a sync_gateway instance.
+
+The script `sync_gateway_service_install.sh` will install `sync_gateway` as a service on _Ubuntu 12/14_, _RedHat/CentOS 6/7_ and _MAC OS X 10.9_ and later.
+The installation script is not available for MS Windows.
+
+== Prerequisites
+
+Before running the install script:
+
+* The user `sync_gateway` must already exist on the system.
+* The shell script must be run using the root account or using `sudo` from a non privileged account.
+
+== Process Overview
+The script determines the type of system it is running on, then copies one of the service templates in `script_templates` to the appropriate service directory.
+The template is also populated with system specific configuration properties.
+
+If you run the shell script without any parameters -- see: <<ex-run>> -- it will create a service called: +
+_sync_gateway_.
+
+[#ex-run]
+.Run Service Installation Shell Script
+====
+[source, bash]
+----
+sync_gateway_service_install.sh
+----
+====
+
+By default the created sync_gateway service points to an example Sync Gateway configuration file called `/home/sync_gateway/sync_gateway.json`.
+
+== Parameters
+
+Arguments can be passed to the shell script if the default configuration is not suitable.
+For example, if you want to create multiple service instances, or need to use non-standard paths.
+To see the list of the current parameters -- see: <<tbl-pars>> -- use:
+
+.List Current Shell Script Parameters
+====
+[source, bash]
+----
+sync_gateway_service_install.sh --help
+----
+====
+
+.Shell Script Parameters
+[#tbl-pars,cols="2m,3,5m"]
+|===
+
+h|Arg
+h|Description
+h|Default
+
+|--runas
+|The user account to run sync_gateway as
+|sync_gateway
+
+|--runbase
+|The directory to run sync_gateway from
+|/home/sync_gateway
+
+|--sgpath
+|The path to the sync_gateway executable
+|/opt/couchbase-sync-gateway/bin/sync_gateway
+
+|--cfgpath
+|The path to the sync_gateway JSON config file
+|/home/sync_gateway/sync_gateway.json
+
+|--logsdir
+|The path to the log file directory
+|/home/sync_gateway/logs
+|===
+
+
+
