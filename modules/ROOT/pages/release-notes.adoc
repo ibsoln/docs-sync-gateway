@@ -6,15 +6,33 @@
 :page-role: Reference
 :description: Couchbase Sync Gateway
 :keywords: edge nosql api synchronization replication
-// End of Page Definition Statements
-// include::shared-mobile::partial$_attributes-shared.adoc[]
-// include::ROOT:partial$_attributes-local.adoc[]
-// include::ROOT:partial$_page-index.adoc[]
+// End of Page Attribute Statements
+
+// BEGIN -- PAGE DEFINITION -- modules/ROOT/pages/release-notes.adoc
+//  Purpose:
+//    Presentation page for release-notes content
+//  Parameters:
+//    None
+//  INCLUSION USAGE --
+//    This module uses attributes from:
+//    - None
+//    This module uses these inclusions:
+//    - /modules/ROOT/pages/_partials/_std-hdr-sgw.adoc (std attr. and links)
+//    - /modules/ROOT/pages/_partials/common-releasenotes.adoc
+//  INCLUSION USAGE
+// END -- PAGE DEFINITION -- modules/ROOT/pages/_partials/common-releasenotes.adoc
+
 include::ROOT:partial$_std-hdr-sgw.adoc[]
 
 :ns-this: {ns} for this release
 :fn-icr: footnote:icr[As of Sync Gateway version 2.8]
 
+Release Note from Previous Releases::
+xref:2.8@sync-gateway::release-notes.adoc[2.8] |
+xref:2.7@sync-gateway::release-notes.adoc[2.7] |
+xref:2.6@sync-gateway::release-notes.adoc[2.6] |
+xref:2.5@sync-gateway::release-notes.adoc[2.5] |
+xref:2.1@sync-gateway::release-notes.adoc[2.1] |
+xref:2.0@sync-gateway::release-notes.adoc[2.0]
 
 include::partial$common-releasenotes.adoc[]
-
