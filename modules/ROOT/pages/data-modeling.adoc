@@ -1,8 +1,8 @@
 = Data Modelling
 :description: Couchbase Sync Gateway - data model for synchronization
 
-:xref-sdk-nodejs-pg-start: xref:nodejs-sdk:hello-world:start-using-sdk.adoc[Node.js Server SDK]
-:xref-sdk-java-encryption: xref:java-sdk:concept-docs:encryption.adoc#format[field encryption format]
+:xref-sdk-nodejs-pg-start: xref:nodejs-sdk:hello-world:start-using-sdk.adoc[Node.js Server SDK^]
+:xref-sdk-java-encryption: xref:java-sdk:concept-docs:encryption.adoc#format[field encryption format^]
 
 include::partial$_std-hdr-sgw.adoc[]
 
@@ -57,6 +57,9 @@ You should change any top-level user properties that have a key with a leading u
 
 // == Buckets and Databases
 
+== Reserved Property Keys
+
+Use of the reserved keys `Id`, `_rev` and `_deleted` when saving any document, will result in an exception  (error code 5 -- `CorruptRevision`).
 
 
 == Document Structure
