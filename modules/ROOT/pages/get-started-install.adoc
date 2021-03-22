@@ -62,10 +62,10 @@ That way you can provide a path to the required config file as a parameter.
 * Change the service to use the required configuration file path. +
 Instructions on how to do this are given in the _Install_ section for each of the platforms as they differ lightly.
 
-You should refer to {configuration-schema--xref} for details on the configuration options.
-The install itself contains example configuration files -- see the appropriate install section for details on their location.
+You should refer to the {configuration-overview--xref} for more on the configuration process and to the  {configuration-schema--xref} for details on the configuration options.
+We also discuss more on the initial configuration in the next Getting Started section -- see: {get-started-verify-install--xref}.
+Also, the installation package itself contains example configuration files -- see the appropriate install platform section for details on their location.
 
-To stop/start the `sync_gateway` service, use the following.
 
 == Install for Linux
 In this Section::
