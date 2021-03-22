@@ -10,13 +10,16 @@
 include::partial$_std-hdr-sgw.adoc[]
 // include::partial$block-authors-notes.adoc[tag=wip]
 :topic-group: Sync Gateway Concepts
-:param-related: {xref-sgw-pg-shared-bucket-access}  | {xref-sgw-pg-users}  |  {legacy-configuration-properties--xref}  |  {rest-api--xref}  |  {rest-api-admin--xref} | <<related-content,More ...>>
+:param-related: {xref-sgw-pg-shared-bucket-access}  | {xref-sgw-pg-users}  |  {configuration-schema--xref}  |  {rest-api--xref}  |  {rest-api-admin--xref} | <<related-content,More ...>>
 // :param-abstract: inter-Sync Gateway replication conflict resolution policies and behaviors.
 include::partial$block-abstract.adoc[]
 
 
-// include::partial$_attributes-local.adoc[]
-// :xref--pfx: {sgw--xref}:
+:param-page: {page-relative-src-path}
+include::partial$_get-started-topic-group.adoc[]
+
+This topic is the first step of Sync Gateway's Getting Started topic group.
+
 // tag::intro[]
 Sync Gateway is the synchronization server in a Couchbase for Mobile and Edge deployment.
 It is designed to provide data synchronization for large-scale interactive web, mobile, and IoT applications
@@ -26,6 +29,7 @@ It is designed to provide data synchronization for large-scale interactive web, 
 [#mobile-server]
 .Couchbase Mobile -- Couchbase Server Deployment Architecture
 image::cbm-architecture.png[]
+
 
 You can read more about the Data Synchronization process in {xref-sgw-pg-shared-bucket-access}.
 Amongst its most important and commonly used features is secure **Access Control**.
