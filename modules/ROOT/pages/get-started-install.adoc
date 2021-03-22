@@ -28,7 +28,7 @@ include::partial$_std-hdr-sgw.adoc[]
 
 :common-text-stop-sgw: You can stop Sync Gateway instances started in this way by using kbd:[Ctrl+C]. +
 There is no specific shutdown procedure and it is safe to stop it at any time. +
-For other command-line options -- see {command-line-options-xref}
+For other command-line options -- see {command-line-options--xref}
 
 
 :topic-group: Start Here!
@@ -62,7 +62,7 @@ That way you can provide a path to the required config file as a parameter.
 * Change the service to use the required configuration file path. +
 Instructions on how to do this are given in the _Install_ section for each of the platforms as they differ lightly.
 
-You should refer to {configuration-properties-xref} for details on the configuration options.
+You should refer to {configuration-schema--xref} for details on the configuration options.
 The install itself contains example configuration files -- see the appropriate install section for details on their location.
 
 To stop/start the `sync_gateway` service, use the following.
@@ -629,16 +629,16 @@ To check Sync Gateway started successfully, you can now connect to it from a bro
 You should receive a response in the browser such as: +
 `{"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.8"},"version":"Couchbase Sync Gateway/2.8.0(145;e3f46be) EE"}`
 
-If you do encounter issues in getting an operational install of Sync Gateway, you can find some useful information in the log files. Refer to the {logging-xref} page for how to configure different logging levels to aid troubleshooting.
+If you do encounter issues in getting an operational install of Sync Gateway, you can find some useful information in the log files. Refer to the {logging--xref} page for how to configure different logging levels to aid troubleshooting.
 
 == Next Steps
 Now that you have a working version of Sync Gateway, which you can connect a console to using either the Public or Admin REST API, you can:
 
-* Verify and explore the sync functionality using -- {get-started-verify-install-xref}
+* Verify and explore the sync functionality using -- {get-started-verify-install--xref}
 * Learn more about building Couchbase Mobile applications using the {url-tutorial-mobile-workshop} tutorial
 * Learn more about the sync process
-** {sync-with-couchbase-server-xref}
-** {configuration-properties-xref}
+** {sync-with-couchbase-server--xref}
+** {configuration-schema--xref}
 
 
 
