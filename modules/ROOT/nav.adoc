@@ -111,7 +111,7 @@ include::ROOT:partial$_page-index.adoc[]
 ** {stats-prometheus--xref}
 ** {indexing--xref}
 
-* {sgw--xref}{ing--page}[Upgrade]
+* {sgw--xref}{upgrading--page}[Upgrade]
 
 * Use Kubernetes
 ** {sgw--xref}{deploy-cluster--page}[Deploy]
