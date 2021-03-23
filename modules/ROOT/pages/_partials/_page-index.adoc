@@ -112,6 +112,10 @@ endif::xref-pfx-sgw[]
 :import-filter-xref: {xref-pfx-sgw}{import-filter-page}[Import filter]
 :legacy-sg-replicate-page: legacy-sg-replicate.adoc
 :legacy-sg-replicate-xref: {xref-pfx-sgw}{legacy-sg-replicate-page}[SG-Replicate]
+:logging-page: logging.adoc
+:logging-xref: {xref-pfx-sgw}{logging-page}[Logging]
+
+
 :quickstart-page: quickstart.adoc
 :quickstart-xref: {xref-sgw-pfx}{quickstart-page}[Quick Start]
 :rest-api-admin-page: rest-api-admin.adoc
@@ -173,6 +177,8 @@ endif::xref-pfx-sgw[]
 :sgw-pg-server-integration: server-integration.adoc
 :sgw-pg-sgcollect-info: sgcollect-info.adoc
 :sgw-pg-shared-bucket-access: shared-bucket-access.adoc
+:sync-with-couchbase-server-page: sync-with-couchbase-server.adoc
+:sync-with-couchbase-server-xref: {xref-pfx-sgw}{sync-with-couchbase-server-page}[Sync with Couchbase Server]
 :sgw-pg-stats-monitoring: stats-monitoring.adoc
 :sgw-pg-stats-prometheus: stats-prometheus.adoc
 :sgw-pg-supported-os: pn-supported-os.adoc
