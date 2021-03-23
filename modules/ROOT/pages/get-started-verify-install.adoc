@@ -17,6 +17,7 @@ include::partial$block-abstract.adoc[]
 .Preparatory Steps
 NOTE: Before following the steps in this topic you must have read, and acted-upon, the information and steps in {get-started-prepare-xref} and {get-started-install-xref}.
 
+
 == Step 1: Create a configuration file
 
 To configure Sync Gateway to connect to a Couchbase Server instance, create a new file called *sync-gateway-config.json* and add the content shown in <<sample-cfg>>.
@@ -39,6 +40,7 @@ Configuration Properties::
 Here we set general diagnostic console logs on.
 ====
 
+
 == Step 2: Start Sync Gateway
 
 Start Sync Gateway from the command line -- see {command-line-options-xref}, or if Sync Gateway is running in a service replace the configuration file and restart the service.
@@ -54,6 +56,7 @@ Start Sync Gateway from the command line -- see {command-line-options-xref}, or 
 <.> If you are using a Couchbase Lite application, then run this command where that is installed.
 
 ====
+
 
 == Step 3: Connect to Sync Gateway
 TIP: You can use {xref-sgw-bmk-logging-console} to aid diagnosis of connection issues
@@ -79,6 +82,7 @@ Where necessary you can redirect console output to a file -- see: {xref-sgw-bmk-
 
 TIP: If Sync Gateway is behind a load balancer then check the websockets configuration -- see {xref-sgw-pg-load-balancer}.
 
+
 == Step 4: Sync Changes
 To verify that documents have been replicated, you can:
 
@@ -86,5 +90,19 @@ To verify that documents have been replicated, you can:
 The sequence number increments for every change that happens on the Sync Gateway database.
 * Query a document by ID on the Sync Gateway REST API (xref:{rest-api-page}#/document/get\__db___doc_[GET /{tkn-db}/{id}]) -- see: {get-started-access-rest-api-xref}
 * Query a document from the Query Workbench on the Couchbase Server Console.
+
+
+== Next Steps
+Now that you have a working version of Sync Gateway, which you can connect a console to using either the Public or Admin REST API and which successfully synchronizes changes, you can:
+
+* Learn more about building Couchbase Mobile applications using the {couchbase-mobile-workshop-tutorial--xref} tutorial
+
+* Learn more about the sync process
+** {sync-with-couchbase-server--xref}
+** {configuration-properties--xref}
+
+
+
+
 
 include::partial$block-related-content-deploy.adoc[]

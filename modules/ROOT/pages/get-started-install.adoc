@@ -4,12 +4,22 @@
 :page-type: procedural
 
 include::partial$_std-hdr-sgw.adoc[]
+
 :xref-pfx: {xref-pfx-sgw}:
 
 :sg_download_link: {url-package-downloads}/{version-full}/
 :sg_package_name: couchbase-sync-gateway-community_{version-full}_x86_64
 :sg_package_name_ee: couchbase-sync-gateway-enterprise_{version-full}_x86_64
 :sg_accel_package_name: couchbase-sync-gateway-enterprise_{version-full}_x86_64
+
+:install-location: /opt/couchbase-sync-gateway/
+:install-location-win: C:\Program Files\Couchbase\Sync Gateway\
+:home-location: /users/sync_gateway/
+:home-location-win: {install-location-win}
+:logs-location: {home-location}logs
+:logs-location-win: {home-location-win}var\lib\couchbase\logs
+:snippet-header: source, bash, subs="noirmal, +attributes, +macros"
+
 
 :topic-group: Start Here!
 :param-related: {get-started-prepare-xref}  |  {get-started-verify-install-xref}
@@ -20,176 +30,147 @@ include::partial$block-abstract.adoc[]
 .Preparatory Steps
 NOTE: Before starting the install, please ensure you have read, and acted-upon, the information in {get-started-prepare-xref}.
 
-Install Sync Gateway on the operating system of your choice:
+== Introduction
+You can install Sync Gateway on any of the supported operating systems.
 
-== Enterprise Edition
+By default the installation process deploys the Sync Gateway package then defines and starts an example instance of Sync Gateway running as a service -- see the table in <<lbl-key-locns>> for the deployment locations.
+
+By default Sync Gateway bases its initial setup on an example configuration filed `serviceconfig.json`.
+This initial configuration has limited functionality.
+It is intended primarily to verify the success of the installation by proving a connection to Sync Gateway can be made.
+
+TIP: You can also run the *sync_gateway* binary directly from a terminal command line -- see: <<lbl-cmdln>>
+
+
+== Download
+
+Download the required edition of Sync Gateway from the {url-downloads}#couchbase-mobile[Couchbase downloads page].
+
+
+.Alternatively, for Linux or Mac OS
+--
+[source,bash,subs="+attributes,+macros"]
+----
+wget {sg_download_link}<package-name>.<package-suffix> // <.> <.>
+----
+
+<.> Where <package-name> is one of:
+
+* Enterprise Edition -- `{sg_package_name_ee}`
+* Community Edition -- `{sg_package_name}`
+
+<.> Where <package-suffix> is one of:
+
+* Ubuntu -- `deb`
+* Debian -- `deb`
+* Red Hat / CentOS -- `rpm`
+* Mac OS -- `tar.gz`
+
+--
+
+
+== Install
+
+By default the installation process deploys the Sync Gateway package then defines and starts an example instance of Sync Gateway running as a service -- see the table in <<lbl-key-locns>> for the deployment locations.
+
+If you want to provide your own configuration at this stage, or to change the default path to the configuration file that the service will use, you will need to edit the service installation script -- see: <<lbl-own-config>>
+
 
 [{tabs}]
 ====
 Ubuntu::
 +
 --
-Download Sync Gateway from the {url-downloads}#couchbase-mobile[Couchbase downloads page] or using `wget`.
-
-[source,bash,subs="attributes"]
-----
-wget {sg_download_link}{sg_package_name_ee}.deb
-----
-
-Install sync_gateway with the dpkg package manager e.g:
-
-[source,bash,subs="attributes"]
+. Install sync_gateway with the dpkg package manager e.g:
++
+[{snippet-header}]
 ----
 dpkg -i {sg_package_name_ee}.deb
 ----
++
+When the installation is complete Sync Gateway will be running as a service `sync_gateway`.
++
+. To stop/start the `sync_gateway` service, use the methods show in <<ex-start-stop>>.
 
-When the installation is complete sync_gateway will be running as a service.
-
-To stop/start the `sync_gateway` service, use the following.
-
-[source,bash]
-----
-sudo service sync_gateway start
-sudo service sync_gateway stop
-----
-
-The config file and logs are located in `/home/sync_gateway`.
-
-You can also run the *sync_gateway* binary directly from the command line.
-The binary is installed at `/opt/couchbase-sync-gateway/bin/sync_gateway`.
+=====
 --
 
 Red Hat/CentOS::
 +
 --
-Download Sync Gateway from the {url-downloads}#couchbase-mobile[Couchbase downloads page] or using the `wget`.
-
-[source,bash,subs="attributes"]
-----
-wget {sg_download_link}{sg_package_name_ee}.rpm
-----
-
-Install sync_gateway with the rpm package manager e.g:
-
-[source,bash,subs="attributes"]
+. Install sync_gateway with the rpm package manager e.g:
++
+[{snippet-header}]
 ----
 rpm -i {sg_package_name_ee}.rpm
 ----
-
++
 When the installation is complete sync_gateway will be running as a service.
 
-On CentOS 5:
+. To stop/start the `sync_gateway` service, use the methods show in <<ex-start-stop>>.
 
-[source,bash]
-----
-service sync_gateway start
-service sync_gateway stop
-----
-
-On CentOS 6:
-
-[source,bash]
-----
-initctl start sync_gateway
-initctl stop sync_gateway
-----
-
-The `initctl restart sync_gateway` command does not work in CentOS 6.
-To restart Sync Gateway, the stop/start commands can be used instead.
-
-On CentOS 7:
-
-[source,bash]
-----
-systemctl start sync_gateway
-systemctl stop sync_gateway
-----
-
-The config file and logs are located in `/home/sync_gateway`.
 --
 
 Debian::
 +
 --
-Download Sync Gateway from the {url-downloads}#couchbase-mobile[Couchbase downloads page] or using the `wget`.
-
-[source,bash,subs="attributes"]
-----
-wget {sg_download_link}{sg_package_name_ee}.deb
-----
-
-Install sync_gateway with the dpkg package manager e.g:
-
-[source,bash,subs="attributes"]
+. Install sync_gateway with the dpkg package manager e.g:
++
+[{snippet-header}]
 ----
 dpkg -i {sg_package_name_ee}.deb
 ----
++
+When the installation is complete Sync Gateway will be running as a service `sync_gateway`.
 
-When the installation is complete sync_gateway will be running as a service.
+. To stop/start the `sync_gateway` service, use the methods show in <<ex-start-stop>>.
 
-[source,bash]
-----
-systemctl start sync_gateway
-systemctl stop sync_gateway
-----
-
-The config file and logs are located in `/home/sync_gateway`.
 --
 
 Windows::
 +
 --
+. Open the installer and follow the instructions. +
+If the installation was successful you will see the following:
++
+image::windows-installation-complete.png[]
 
-include::partial$winstall-sgw.adoc[]
++
+When the installation is complete Sync Gateway will be running as a service `SyncGateway`.
++
+. To stop/start the `SyncGateway` service, use the methods show in <<ex-start-stop>>.
 
 --
 
 macOS::
 +
 --
-macOS is supported only for development and test environments (see xref:supported-os.adoc#supported-versions[Supported OS]).
-
-Download Sync Gateway from the {url-downloads}#couchbase-mobile[Couchbase downloads page] or using the `wget`.
-
-[source,bash,subs="attributes"]
-----
-wget {sg_download_link}{sg_package_name_ee}.tar.gz
-----
-
-From here, there are two installation options.
-
-*Option 1:* Start Sync Gateway from the Command Line
-
-. Unpack the tar.gz installer.
-+
-[source,bash,subs="attributes"]
-----
-sudo tar -zxvf {sg_package_name_ee}.tar.gz
-----
-. Launch the `sync_gateway` program from the command line.
-+
-[source,console]
-----
-~/Downloads/couchbase-sync-gateway/bin/sync_gateway
-----
-
-*Option 2:* Run Sync Gateway as a service
 
 . Unpack the tar.gz installer to the */opt* directory.
 +
-[source,bash,subs="attributes"]
+[{snippet-header}]
 ----
 sudo tar -zxvf {sg_package_name_ee}.tar.gz --directory /opt
 ----
-. Create a new macOS user.
+
+. (Optionally) -- Start Sync Gateway from the Command Line
 +
-[source,console]
+[{snippet-header}]
+----
+{install-location}bin/sync_gateway
+----
+
+. (Optionally) -- Set Up Sync Gateway as a Service
+
+.. Create a new macOS user.
++
+[{snippet-header}]
 ----
 sudo sysadminctl -addUser sync_gateway
 ----
 If the operation is successful, you will get the following output.
 +
-[source,console]
+[{snippet-header}]
 ----
 sysadminctl ----------------------------
 sysadminctl No clear text password or interactive option was specified (adduser, change/reset password will not allow user to use FDE) !
@@ -198,237 +179,309 @@ sysadminctl Creating user record…
 sysadminctl Assigning UID: 505
 sysadminctl Creating home directory at /Users/sync_gateway
 ----
-. Create a new group and add the `sync_gateway` user to that group.
+.. Create a new group and add the `sync_gateway` user to that group.
 +
-[source,console]
+[{snippet-header}]
 ----
 sudo dseditgroup -o create sync_gateway
 sudo dseditgroup -o edit -a sync_gateway -t user sync_gateway
 ----
-. Run Sync Gateway as a service with the following.
+
+.. Define the Sync Gateway Service
 +
-[source,bash]
+[{snippet-header}]
 ----
-cd /opt/couchbase-sync-gateway/service
+cd {install-location}
 sudo ./sync_gateway_service_install.sh
 ----
++
 Other scripts in that directory are available to update or uninstall the service.
-. Sync Gateway is now reachable on http://0.0.0.0:4984[0.0.0.0:4984].
-The configuration file and logs are located in `/Users/sync_gateway`.
---
++
+You can, optionally, provide a Sync Gateway configuration file path, which will be used instead of the default path whenever the service starts.
+Do this by using the `--cfgpath` parameter.
+For example: +
+`sudo ./sync_gateway_service_install.sh --cfgpath sync-gateway-config.json`
+
+.. To stop/start the `sync_gateway` service, use the methods show in <<ex-start-stop>>:
+
 ====
 
-== Community Edition
+== Check
+To check Sync Gateway started successfully, you can now connect to it from a browser by using either:
 
+* http://localhost:4984[http://localhost:4984] for the Public API
+* http://localhost:4985[http://localhost:4985] for the Admin API
+
+You should receive a response in the browser such as: +
+`{"couchdb":"Welcome","vendor":{"name":"Couchbase Sync Gateway","version":"2.8"},"version":"Couchbase Sync Gateway/2.8.0(145;e3f46be) EE"}`
+
+
+== Running
+
+=== Services
+
+[#ex-start-stop]
+.Starting and Stopping the Service
+====
 [{tabs}]
-====
-Ubuntu::
+=====
+Linux (systemd)::
 +
 --
-Download Sync Gateway from the {url-downloads}#couchbase-mobile[Couchbase downloads page] or using `wget`.
 
-[source,bash,subs="attributes"]
+[{snippet-header}]
 ----
-wget {sg_download_link}{sg_package_name}.deb
+systemctl start sync_gateway
+systemctl stop sync_gateway
 ----
-
-Install sync_gateway with the dpkg package manager e.g:
-
-[source,bash,subs="attributes"]
-----
-dpkg -i {sg_package_name}.deb
-----
-
-When the installation is complete sync_gateway will be running as a service.
-
-To stop/start the `sync_gateway` service, use the following.
-
-[source,bash]
-----
-sudo service sync_gateway start
-sudo service sync_gateway stop
-----
-
-The config file and logs are located in `/home/sync_gateway`.
-
-You can also run the *sync_gateway* binary directly from the command line.
-The binary is installed at `/opt/couchbase-sync-gateway/bin/sync_gateway`.
 --
-
-Red Hat/CentOS::
++
+Linux (init)::
 +
 --
-Download Sync Gateway from the {url-downloads}#couchbase-mobile[Couchbase downloads page] or using the `wget`.
-
-[source,bash,subs="attributes"]
-----
-wget {sg_download_link}{sg_package_name}.rpm
-----
-
-Install sync_gateway with the rpm package manager e.g:
-
-[source,bash,subs="attributes"]
-----
-rpm -i {sg_package_name}.rpm
-----
-
-When the installation is complete sync_gateway will be running as a service.
-
-On CentOS 5:
-
-[source,bash]
+[{snippet-header}]
 ----
 service sync_gateway start
 service sync_gateway stop
 ----
-
-On CentOS 6:
-
-[source,bash]
-----
-initctl start sync_gateway
-initctl stop sync_gateway
-----
-
-The `initctl restart sync_gateway` command does not work in CentOS 6.
-To restart Sync Gateway, the stop/start commands can be used instead.
-
-On CentOS 7:
-
-[source,bash]
-----
-systemctl start sync_gateway
-systemctl stop sync_gateway
-----
-
-The config file and logs are located in `/home/sync_gateway`.
 --
-
-Debian::
++
+Mac OS::
 +
 --
-Download Sync Gateway from the {url-downloads}#couchbase-mobile[Couchbase downloads page] or using the `wget`.
-
-[source,bash,subs="attributes"]
+[{snippet-header}]
 ----
-wget {sg_download_link}{sg_package_name}.deb
-----
+sudo launchctl load -w /Library/LaunchDaemons/com.couchbase.mobile.sync_gateway.plist <.>
 
-Install sync_gateway with the dpkg package manager e.g:
-
-[source,bash,subs="attributes"]
+sudo launchctl unload -w /Library/LaunchDaemons/com.couchbase.mobile.sync_gateway.plist <.>
 ----
-dpkg -i {sg_package_name}.deb
-----
+<.> Here we load, and automatically start, the default sync_gateway service
+<.> Here we unload the default sync_gateway service.
+Note that it is not sufficient to `stop` the service.
+It is configured to automatically restart.
 
-When the installation is complete sync_gateway will be running as a service.
 
-[source,bash]
-----
-systemctl start sync_gateway
-systemctl stop sync_gateway
-----
+--
++
+Windows::
++
+--
+Use one of the following methods:
 
-The config file and logs are located in `/home/sync_gateway`.
+* Windows' Services application +
+.. From the Start Menu, *Control Panel -> Admin Tools -> Services*
+.. Within the Service panel, locate and kbd:[Right-Click] the service
+.. From the Options Menu, select *Start* (or Stop) kbd:[Enter]
+
+* Windows' command line utility `sc.exe`:
++
+.Start Sync Gateway Service
+[{snippet-header}]
+----
+c:\> sc start SyncGateway
+----
++
+This will result in a response such as:
++
+[{snippet-header}]
+----
+SERVICE_NAME: SyncGateway
+        TYPE               : 10  WIN32_OWN_PROCESS
+        STATE              : 2  START_PENDING
+                                (NOT_STOPPABLE, NOT_PAUSABLE, IGNORES_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x7d0
+        PID                : 7420
+        FLAGS              :
+----
++
+.Stop Sync Gateway Service
+[{snippet-header}]
+----
+c:\> sc stop SyncGateway
+----
++
+This will result in a response such as:
++
+[{snippet-header}]
+----
+SERVICE_NAME: SyncGateway
+        TYPE               : 10  WIN32_OWN_PROCESS
+        STATE              : 4  RUNNING
+                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+----
+--
+
+====
+
+[#lbl-cmdln]
+=== Command Line
+You can also start and stop Sync Gateway from a terminal command line using
+the methods show in <<ex-cmd-start>>:
+
+TIP: For other command-line options -- see {command-line-options-xref}
+
+[#ex-cmd-start]
+.Starting and Stopping at the Command Line]
+====
+
+[tabs]
+=====
+Linux  / MacOS Platforms::
++
+--
+[source,console, subs="+attributes, +macros"]
+----
+// <.>
+{install-location}bin/sync_gateway <path-to-configuration-file> // <.>
+----
+<.> Where `{install-location}` is the location into which you deployed the Sync Gateway package.
+<.> Where <path-to-configuration-file> resolves to a JSON format file containing the Sync Gateway configuration, for example, `{home-location}sync-gateway-config.json`
+
+--
+
+Windows Platforms::
++
+--
+[{snippet-header}]
+----
+c:\PROGRA~1\COUCHB~1\SYNCGA~1\SYNC_G~1.EXE <path-to-configuration-file> // <.>
+----
+<.> Where:
+* The path to the executable uses Windows' short name notation
+* <path-to-configuration-file> resolves to a JSON format file containing the Sync Gateway configuration, for example, `{home-location}sync-gateway-config.json`
+
+--
+=====
+
+You can stop Sync Gateway instances started in this way by using kbd:[Ctrl+C].
+There is no specific shutdown procedure and it is safe to stop it at any time.
+
+====
+
+[#lbl-key-locns]
+== Key Locations
+
+[tabs]
+=====
+.Default Sync Gateway File Locations:
+
+Linux / Mac OS Platforms::
++
+--
+[#tbl-locns,cols="4,8,8a"]
+|===
+
+h|Content
+h|Location
+h|Example
+
+|Configuration files
+a|The `sync_gateway` user's home directory
+|{home-location}
+
+|Log files
+|The `sync_gateway` user's home directory
+|{home-location}logs/
+
+|Binaries
+|The installation directory
+|{install-location}bin/
+
+|===
+--
+
+Windows Platforms::
++
+--
+
+[#tbl-locns,cols="2,8a"]
+|===
+
+h|Content
+h|Location
+
+|Configuration files
+|{home-location-win}
+
+|Log files
+|{logs-location-win}
+
+|Binaries
+|{install-location-win}
+
+|===
+--
+=====
+
+[#lbl-own-config]
+== Using Your Own Config
+
+By default the Sync Gateway service is set up to look for its config in a file named `sync_gateway.json` (or `serviceconfig.json` on Windows) -- see<<lbl-key-locns>> for its location.
+
+To edit the configuration and use it in Sync Gateway, you can either:
+
+* Continue to provide your config in this file.
+You will need to restart Sync Gateway after each change.
+* Run Sync Gateway from a command-line.
+That way you can provide a path to the required config file as a parameter.
+* Change the service to have the required path to the configuration file
+
+.Change the Service's Configuration File Path
+====
+[tabs]
+=====
+
+Linux / Mac OS Platforms::
++
+--
+The Sync Gateway package contains a set of scripts to install, remove and upgrade Sync gateway services. They are located in the `{install-location}services` directory
+
+
 --
 
 Windows::
 +
 --
+You can edit the `binpath` for the Sync Gateway service using Windows' command line utility `SC.exe`.
 
-include::partial$winstall-sgw.adoc[]
+The format for the command you will use is:
+[{snippet-header}]
+----
+sc <server> config SyncGateway binpath= "[path-to-sg-windows.exe] start [path-to-sync_gateway.exe] [path-to-config-file] [path-to-error-logs]" <.> <.>
+----
+<.> The <server> parameter is optional
+<.> The rules for formatting the `binpath` value are quite complex:
+.. The entire value must be in quotes
+.. There must be one space (only) following the equals sign
+.. Each of the [path-to ...] elements must be enclosed in quotes; these inner quotes must be escaped (for example `\"` ... `\"`)
 
-// . Download Sync Gateway from the {url-downloads}#couchbase-mobile[Couchbase downloads page].
-// . Open the installer and follow the instructions. +
-// If the installation was successful you will see the following.
-// +
-// image::windows-installation-complete.png[]
+This example changes the configuration file name from `serviceconfig.json` to `sync-gateway-config.json`
 
-// . Check you can Start and Stop Sync Gateway +
-// +
-// You can start Sync Gateway from the command line -- see: {command-line-options-xref} or run it as a service.
-// Either way, once it starts running you can access the REST API on:
+[{snippet-header}]
+----
+sc config SyncGateway binpath= “\”C:\Program Files\Couchbase\Sync Gateway\sg-windows.exe\” start \”C:\Program Files\Couchbase\Sync Gateway\sync_gateway.exe\” \”C:\Program Files\Couchbase\Sync Gateway\sync-gateway-config.json\” \”C:\Program Files\Couchbase\Sync Gateway\var\lib\couchbase\logs\sync_gateway_error.log\”"
 
-// * `+http://localhost:4984+` -- public API
-// * `+http://localhost:4985+` -- admin API
-
-// +
-// To stop/start the service, you can use the Services application (*Control Panel -> Admin Tools -> Services*).
-
-// * The configuration file is located under `C:\Program Files\Couchbase\Sync Gateway\serviceconfig.json`.
-// * Logs are located under `C:\Program Files\Couchbase\Sync Gateway\var\lib\couchbase\logs`.
+----
 --
-
-macOS::
-+
---
-Download Sync Gateway from the {url-downloads}#couchbase-mobile[Couchbase downloads page] or using the `wget`.
-
-[source,bash,subs="attributes"]
-----
-wget {sg_download_link}{sg_package_name}.tar.gz
-----
-
-From here, there are two installation options.
-
-*Option 1:* Start Sync Gateway from the Command Line
-
-. Unpack the tar.gz installer.
-+
-[source,bash,subs="attributes"]
-----
-sudo tar -zxvf {sg_package_name}.tar.gz
-----
-. Launch the `sync_gateway` program from the command line.
-+
-[source,console]
-----
-~/Downloads/couchbase-sync-gateway/bin/sync_gateway
-----
-
-*Option 2:* Run Sync Gateway as a service
-
-. Unpack the tar.gz installer to the */opt* directory.
-+
-[source,bash,subs="attributes"]
-----
-sudo tar -zxvf {sg_package_name}.tar.gz --directory /opt
-----
-. Create a new macOS user.
-+
-[source,console]
-----
-sudo sysadminctl -addUser sync_gateway
-----
-If the operation is successful, you will get the following output.
-+
-[source,console]
-----
-sysadminctl ----------------------------
-sysadminctl No clear text password or interactive option was specified (adduser, change/reset password will not allow user to use FDE) !
-sysadminctl ----------------------------
-sysadminctl Creating user record…
-sysadminctl Assigning UID: 505
-sysadminctl Creating home directory at /Users/sync_gateway
-----
-. Create a new group and add the `sync_gateway` user to that group.
-+
-[source,console]
-----
-sudo dseditgroup -o create sync_gateway
-sudo dseditgroup -o edit -a sync_gateway -t user sync_gateway
-----
-. Run Sync Gateway as a service with the following.
-+
-[source,bash]
-----
-cd /opt/couchbase-sync-gateway/service
-sudo ./sync_gateway_service_install.sh
-----
-Other scripts in that directory are available to update or uninstall the service.
-. Sync Gateway is now reachable on http://0.0.0.0:4984[0.0.0.0:4984].
-The configuration file and logs are located in `/Users/sync_gateway`.
---
+=====
 ====
+
+== Next Steps
+Now that you have a working version of Sync Gateway, which you can connect a console to using either the Publi or Admin REST API, you can:
+
+* Verify and explore the sync functionality using -- {get-started-verify-install--xref}
+* Learn more about building Couchbase Mobile applications using the {couchbase-mobile-workshop-tutorial--xref} tutorial -- {}
+* Learn more about the sync process
+** {sync-with-couchbase-server--xref}
+** {configuration-properties--xref}
+
+
 
 include::partial$block-related-content-deploy.adoc[]
