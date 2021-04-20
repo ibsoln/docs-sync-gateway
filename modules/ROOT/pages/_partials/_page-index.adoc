@@ -30,6 +30,10 @@ endif::xref--pfx-sgw[]
 :page-role: -toc
 
 
+// BEGIN SERVER PAGES ACCESSED BY SYNC GATEWAY PAGES
+
+:svr--xref: xref:server:
+
 :server-eventing--page: eventing/eventing-overview.adoc
 :server-eventing--xref: {svr--xref}{server-eventing--page}[Couchbase Eventing Service]
 :server-collections--page: learn/data/scopes-and-collections.adoc
@@ -38,12 +42,6 @@ endif::xref--pfx-sgw[]
 :server-transactions--xref: {svr--xref}{server-transactions--page}[Couchbase Transactions]
 :server-xdcr--page: learn/clusters-and-availability/xdcr-overview.adoc
 :server-xdcr--xref: {svr--xref}{server-xdcr--page}[Couchbase Server Cross Data Center Replication]
-
-
-
-
-// BEGIN SERVER PAGES ACCESSED BY SYNC GATEWAY PAGES
-:svr--xref: xref:server:
 
 :server-xdcr--page: learn/clusters-and-availability/xdcr-overview.adoc
 :server-xdcr--xref: {svr--xref}{server-xdcr--page}[Couchbase Server Cross Data Center Replication]
