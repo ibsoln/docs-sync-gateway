@@ -61,12 +61,13 @@ As stated in <<lbl-isgr-rsns>>, inter-Sync Gateway Replication is specifically d
 
 However, there are use-case categories where it makes sense to use XDCR to replicate Couchbase Mobile clusters, for example:
 
-* Data provisioning from a central to a regional data center -- <<lbl-prov-data>>
+* Data provisioning from a central to a regional data center -- <<fig-prov-data>>
 +
 --
 In this use-case, unidirectional XDCR (typically with a filter) is used to push data from a central/master data center to regional data centers, where the data is subsequently pulled by downstream clients.
 There are no updates coming in from regional data centers.
 
+[#fig-prov-data]
 .Using XDCR in Data Provisioning Scenarios
 image::data-provisioning-xdcr.png[,600]
 --
@@ -85,7 +86,7 @@ It can lead to sequence issues on the target cluster.
 [#lbl-prov-drc]
 == Using XDCR in Disaster Recovery Scenarios
 
-Her XDCR serves an important role in supporting Disaster Recovery (DR) and Data Migration, even though Sync Gateway is the operational replicator of choice for mobile data.
+Here XDCR serves an important role in supporting Disaster Recovery and Data Migration, even though Sync Gateway is the operational replicator of choice for mobile data.
 
 
 === Clusters in Same Region
