@@ -1,0 +1,48 @@
+= Transactions -- Server Compatibility
+:idprefix:
+:idseparator: -
+:description: How Sync Gateway work with transactions
+
+
+include::partial$_std-hdr-sgw.adoc[]
+
+
+:url-api-method-database-in-batch: http://docs.couchbase.com/mobile/{version-full}/couchbase-lite-swift/Classes/Database.html#/s:18CouchbaseLiteSwift8DatabaseC7inBatch5usingyyyKXE_tKF[Database.inBatch()]
+
+
+:topic-group: compatibility
+:param-related: {server-compatibility-xdcr--xref}  |  {server-compatibility-eventing--xref}  |   {server-compatibility-transactions--xref}  |   {server-compatibility-collections--xref}  | {compatibility--xref}
+include::partial$block-abstract.adoc[]
+
+
+== Introduction
+
+Couchbase Server provides the backing data store for Sync Gateway and it is compatible -- see: {compatibility--xref}.
+However, there are considerations you needs to be aware of when using some Couchbase Server features with Sync Gateway.
+One of those instances concerns the use of Couchbase Server Transactions.
+
+
+== Local Transactions
+
+Within the Couchbase Mobile cluster all transactions are local, either to the Couchbase Server or to the Couchbase Lite database:
+
+* Couchbase Server supports server side transactions -- see: {server-transactions--xref}. +
+Changes made on the server within a transaction block are guaranteed to be imported by the Sync Gateway only after all the changes in a transaction are committed.
+
+* Similarly, Couchbase Lite supports transactions that are local to the Couchbase Lite database -- see: {url-api-method-database-in-batch}. +
+Only committed transactions will ever reach Sync Gateway.
+
+
+== Constraints
+
+Sync Gateway itself is not _transaction-aware_.
+So, Couchbase provides no support for end-to-end transactions between Couchbase Server and Couchbase Lite clients.
+
+There is no guarantee that a series of updates made within a transaction block -- on either the server or Couchbase Lite client side -- will be ACID compliant when it syncs to the other end.
+With clients potentially partitioned off due to network disruptions, efficiently providing such ACID guarantees in a distributed, disconnected environment has challenges.
+
+If there is a need for end-to-end transactions, you would implement it within the application layer.
+Perhaps by having a separate _control document_ of transaction log entries, which must be synced from the clients that capture the list of related changes.
+
+
+include::partial$block-related-content-sync.adoc[]
