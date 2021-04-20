@@ -1,0 +1,47 @@
+= Eventing -- Server Compatibility
+:page-edition: enterprise
+:idprefix:
+:idseparator: -
+:description: How Sync Gateway works with Eventing
+
+include::partial$_std-hdr-sgw.adoc[]
+
+:topic-group: compatibility
+:param-related: {server-compatibility-xdcr--xref}  |  {server-compatibility-eventing--xref}  |   {server-compatibility-transactions--xref}  |   {server-compatibility-collections--xref}  | {compatibility--xref}
+include::partial$block-abstract.adoc[]
+
+include::partial$block-caveats.adoc[tags=ee-only-feature]
+
+
+== Introduction
+
+Couchbase Server provides the backing data store for Sync Gateway and it is compatible -- see: {compatibility--xref}.
+However, there are considerations you needs to be aware of when using some Couchbase Server features with Sync Gateway.
+
+One of those instances concerns the use of {server-eventing--xref}.
+This service provides a framework to operate on changes to data in real time.
+In this context, events are changes to data in the Couchbase Mobile cluster.
+
+
+== Using Eventing
+
+You can use Eventing and Sync Gateway connected to the same bucket, when Eventing operates in *read only* mode.
+
+To do this, you also need to write your Eventing function to be *idempotent* -- that is, to behave correctly when the same mutation is seen more than once.
+
+This is necessary because:
+
+* When Sync Gateway executes a single document update, it appears over DCP as multiple mutations for the same document update; some modifying the document body and others modifying its metadata (XATTRs).
+
+* Eventing detects these mutations and invokes its `OnUpdate` *for each*; whether it is for the modified body of the document, XATTRs, or both.
+It is here that you need to code the function to apply the update once only.
+
+
+== Constraints
+
+Note that you *cannot* use the Eventing service and Sync Gateway operating on the same bucket in *read-write* mode (for example, an Eventing function listening to bucket change events cannot make updates to the same bucket.
+In fact Eventing treats this as an error, returning a warning: +
+`SyncGateway is enabled on: <bucket-name>, deployment of source bucket mutating handler will cause Intra Bucket Recursion`
+
+
+include::partial$block-related-content-sync.adoc[]
