@@ -54,6 +54,6 @@ If you're running a single Couchbase Server node for development purposes the `n
 <5> Only import documents which have a `type` property equal to `mobile`.
 
 
+include::partial$block-related-content-sync.adoc[]
 
-include::partial$block-related-content.adoc[]
 // END -- PAGE -- import-filter.adoc

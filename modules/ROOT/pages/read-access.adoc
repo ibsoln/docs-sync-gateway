@@ -19,6 +19,7 @@
 // END PAGE DEFINITION
 = Read Access
 :page-aliases: learn/read-access.adoc
+:description: How to handle read-access
 
 include::partial$_std-hdr-sgw.adoc[]
 
@@ -64,11 +65,11 @@ Because anonymous requests are authenticated as the user "GUEST", you can make a
 
 === Configuration File
 
-A user can be granted access to a channel through the {configuration-properties-pfx}#databases-this_db-users-this_user-admin_channels[admin_channels] property in the configuration file.
+A user can be granted access to a channel through the {configuration-properties--pfx}#databases-this_db-users-this_user-admin_channels[admin_channels] property in the configuration file.
 
 === Admin REST API
 
-A user can be granted access to a channel through the `admin_channels` property on the {rest-api-admin-pfx}#/user/put\__db___user__name_[/+\{db}+/user/+{name}+] admin REST API endpoint.
+A user can be granted access to a channel through the `admin_channels` property on the {rest-api-admin--pfx}#/user/put\__db___user__name_[/+{db}+/user/+{name}+] admin REST API endpoint.
 
 == Revoke Access
 
@@ -85,7 +86,7 @@ This is a design limitation of Sync Gateway that may be resolved in the future.
 == Inspect Read Access
 
 You can use the admin REST API to see what channels a user has access to.
-Issue an {rest-api-admin-pfx}#/database/get
+Issue an {rest-api-admin--pfx}#/database/get
 \__db___all_docs[+/\{tkn-db}/_user/\{name}+] request.
 Here's an example of the response.
 The output shows that the user `pupshaw` has access to channels `all` and `hoopy`.
@@ -129,6 +130,6 @@ Client apps can use this ability to intelligently sync with a subset of the avai
 :param-bookmark: channels
 include::partial$blocklinks-cbl.adoc[]
 
-include::partial$block-related-content-api.adoc[]
+include::partial$block-related-content-sync.adoc[]
 
 // END -- PAGE -- read-access.adoc
