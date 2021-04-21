@@ -101,7 +101,7 @@ include::ROOT:partial$_page-index.adoc[]
 ** {sgw--xref}{sgw-pg-integrating-external-stores}[External Stores]
 ** {sgw--xref}{sgw-pg-stats-prometheus}[Prometheus Feed]
 ** {xref-sgw-pg-indexing}
-** {deploy-read-only-dr-cluster--xref}
+** {setting-up-dr-cluster--xref}
 
 * {sgw--xref}{sgw-pg-upgrade}[Upgrade]
 
