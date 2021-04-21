@@ -1,16 +1,22 @@
 = XDCR -- Server Compatibility
 :idprefix:
 :idseparator: -
-:description: How Sync Gateway works with Couchbase Server's Cross Data Center Replication
+:description: pass:q[How Sync Gateway works with Couchbase Server's _Cross Data Center Replication_ (_XDCR_).]
 :keywords: high-availability, disaster recovery, sync, replicate, edge, cloud, dr, ha, sync gateway cluster, mobile cluster, data migration. data provisioning, active standby, lift-and-shift, in hybrid cloud
 
 
 include::partial$_std-hdr-sgw.adoc[]
 
 
+// BEGIN -- Page Attributes
+:image-data-provisioning-xdcr: data-provisioning-xdcr.png
+:image-icr-active-mobile-sync: icr-active-mobile-sync.png
+// END -- Page Attributes
+
+
 :topic-group: compatibility
 :param-related: {server-compatibility-xdcr--xref}  |  {server-compatibility-eventing--xref}  |   {server-compatibility-transactions--xref}  |   {server-compatibility-collections--xref}  | {compatibility--xref}
-:param-abstract: Sync Gateway is specifically designed for mobile synchronization, but it can work alongside Couchbase Servers Cross Data Centre Replication (XDCR) to provide a comprehensive solution.
+:param-abstract: Sync Gateway is specifically designed for mobile synchronization, but there are use-cases where it can usefully be used alongside XDCR to provide a comprehensive solution.
 include::partial$block-abstract.adoc[]
 
 
@@ -33,7 +39,7 @@ A typical architecture for this use case is shown in <<icr-active-mobile>>
 
 [[icr-active-mobile]]
 .Active-to-active mobile synchronization
-image::icr-active-mobile-sync200713.svg[,600]
+image::{image-icr-active-mobile-sync}[,std-image-size]
 
 
 [#lbl-isgr-rsns]
@@ -69,7 +75,7 @@ There are no updates coming in from regional data centers.
 
 [#fig-prov-data]
 .Using XDCR in Data Provisioning Scenarios
-image::data-provisioning-xdcr.png[,600]
+image::{image-data-provisioning-xdcr}[,std-image-size]
 --
 
 * In a Disaster Recovery scenario where you need to setup target mobile clusters.
@@ -91,12 +97,14 @@ Here XDCR serves an important role in supporting Disaster Recovery and Data Migr
 
 === Clusters in Same Region
 
-include::deploy-dr-cluster.adoc[tags=clusters-in-same-region]
+include::setting-up-dr-cluster.adoc[tags=page-attributes]
+
+include::setting-up-dr-cluster.adoc[tags=clusters-in-same-region]
 
 
 === Clusters in Different Regions
 
-include::deploy-dr-cluster.adoc[tags=clusters-in-diff-region]
+include::setting-up-dr-cluster.adoc[tags=clusters-in-diff-region]
 
 
 include::partial$block-related-content-sync.adoc[]
