@@ -22,8 +22,8 @@ include::partial$_std-hdr-sgw.adoc[]
 // END Page Attributes
 
 // BEGIN Page Header
-:topic-group: deploy
-:param-related: {get-started-verify-install--xref} | {rest-api-admin--xref} | {rest-api--xref} | {rest-api-client-app--xref}
+:topic-group!:
+:param-related!:
 include::partial$block-abstract.adoc[]
 
 // END Page Header
@@ -95,7 +95,7 @@ image::{image-sgw-xdcr-dr-diff-regn-setup}[,{std-image-size}]
 
 
 .Activation
-When you are ready to switch to Disaster Recovery operations -- see: <<fig-dr-diff-regn--in-recovery>>:
+When you are ready to switch to Disaster Recovery operations -- see: <<fig-dr-diff-regn-in-recovery>>:
 
 . Stop Sync Gateway on the Primary cluster
 . Stop the replication (XDCR) from the Primary cluster to the Disaster Recovery cluster.
@@ -105,7 +105,7 @@ When you are ready to switch to Disaster Recovery operations -- see: <<fig-dr-di
 . Flush all buckets in the *new* Primary cluster; this prevents any writes coming into the Primary cluster that had not been replicated when XDCR was stopped.
 . Reverse the original XDCR to replicate from the newly promoted Primary to the old Primary, to set up a new Backup.
 
-[#fig-dr-diff-regn--in-recovery]
+[#fig-dr-diff-regn-in-recovery]
 .DR In-Recovery (clusters in different regions)
 image::{image-sgw-xdcr-dr-diff-regn-in-recovery}[,{std-image-size}]
 
