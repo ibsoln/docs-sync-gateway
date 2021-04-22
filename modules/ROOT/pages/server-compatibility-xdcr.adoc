@@ -32,7 +32,7 @@ Here we show how you can combine the two, maximizing the strengths of both, whis
 [#lbl-isgr]
 == Inter Sync Gateway Replication
 
-If you need to sync mobile clusters, you should use Inter-Sync Gateway replication -- see: {sync-inter-sync-gateway-overview--xref}.
+If you need to sync mobile clusters, you should use Inter-Sync Gateway replication -- see: {sync-inter-syncgateway-overview--xref}.
 It was designed to keep mobile clusters in different data centers in sync.
 The ideal use-case being the need to replicate edge clusters containing active Sync{nbsp}Gateway nodes between geographically separate cloud-based Sync Gateway deployments.
 A typical architecture for this use case is shown in <<icr-active-mobile>>
