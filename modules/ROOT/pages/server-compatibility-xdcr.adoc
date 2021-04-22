@@ -1,8 +1,8 @@
 = XDCR -- Server Compatibility
-:idprefix:
-:idseparator: -
 :description: pass:q[How Sync Gateway works with Couchbase Server's _Cross Data Center Replication_ (_XDCR_).]
 :keywords: high-availability, disaster recovery, sync, replicate, edge, cloud, dr, ha, sync gateway cluster, mobile cluster, data migration. data provisioning, active standby, lift-and-shift, in hybrid cloud
+:idprefix:
+:idseparator: -
 
 
 include::partial$_std-hdr-sgw.adoc[]
@@ -14,10 +14,12 @@ include::partial$_std-hdr-sgw.adoc[]
 // END -- Page Attributes
 
 
+// BEGIN -- Page Heading
 :topic-group: compatibility
 :param-related: {server-compatibility-xdcr--xref}  |  {server-compatibility-eventing--xref}  |   {server-compatibility-transactions--xref}  |   {server-compatibility-collections--xref}  | {compatibility--xref}
 :param-abstract: Sync Gateway is specifically designed for mobile synchronization, but there are use-cases where it can usefully be used alongside XDCR to provide a comprehensive solution.
 include::partial$block-abstract.adoc[]
+// END -- Page Heading
 
 
 == Introduction
@@ -35,37 +37,30 @@ Here we show how you can combine the two, maximizing the strengths of both, whis
 If you need to sync mobile clusters, you should use Inter-Sync Gateway replication -- see: {sync-inter-syncgateway-overview--xref}.
 It was designed to keep mobile clusters in different data centers in sync.
 The ideal use-case being the need to replicate edge clusters containing active Sync{nbsp}Gateway nodes between geographically separate cloud-based Sync Gateway deployments.
-A typical architecture for this use case is shown in <<icr-active-mobile>>
+A typical architecture for this use case is shown in <<icr-active-mobile>>.
+
+Inter-Sync Gateway replication ensures that:
+
+* Cluster specific security is observed; by invoking the appropriate Sync Function.
+* The integrity of security history is maintained.
+Historical access rules are held and maintained in the Sync Gateway metadata.
+This history is necessary to consistently handle the revocation of access grants.
+* A consistent Revision Id is used across all clusters, allowing clients to identify a revision regardless of the cluster it is on.
+* Cluster-specific _sync documents are not replicated to other mobile clusters
 
 [[icr-active-mobile]]
 .Active-to-active mobile synchronization
 image::{image-icr-active-mobile-sync}[,std-image-size]
 
 
-[#lbl-isgr-rsns]
-.Reasons to Use Inter-Sync Gateway
-
-Currently, XDCR replicates all of Sync Gateway’s metadata (_sync xattr) along with associated documents.
-This can overwrite existing metadata on the target cluster.
-
-In contrast, using Inter-Sync Gateway replication ensures that:
-
-* Cluster specific security is observed, since the appropriate Sync Function is invoked.
-* The integrity of security history is maintained. Historical access rules are help and maintained in the Sync Gateway metadata. This history is necessary to consistently handle the revocation of access grants.
-* A consistent Revision Id is used across all clusters, allowing clients to identify a revision regardless of the cluster it is on.
-* Cluster-specific _sync documents are not replicated to other mobile clusters
-
-
-
 [#lbl-xdcr]
 == Cross Data Center Replication
 
 Like inter-Sync Gateway Replication, Couchbase Server's Cross Data Center Replication (xref:server:manage:manage-xdcr/xdcr-management-overview.adoc[XDCR]) can be used to replicate between Couchbase Mobile clusters.
+XDCR replicates all of Sync Gateway’s metadata (_sync xattr) along with associated documents.
 
-Your default preference should always be to use inter-Sync{nbsp}Gateway replication for replication between mobile clusters.
-As stated in <<lbl-isgr-rsns>>, inter-Sync Gateway Replication is specifically designed for that purpose.
-
-However, there are use-case categories where it makes sense to use XDCR to replicate Couchbase Mobile clusters, for example:
+Your default preference for the replication of Couchbase Mobile changes should always be to use inter-Sync{nbsp}Gateway replication.
+However, there are use-case categories where it can make sense to use XDCR to replicate Couchbase Mobile clusters, for example:
 
 * Data provisioning from a central to a regional data center -- <<fig-prov-data>>
 +
