@@ -18,8 +18,8 @@
 :param-related: {xref-sgw-pg-whatsnew}  |  {xref-sgw-pg-compatibility} | {xref-sgw-pg-supported-os}
 include::{root-partials}block-abstract.adoc[]
 
-:xref-sgw-bmk-cfg-dbsvr: xref:{sgw-pg-config-properties}#databases-this_db-server[Couchbase Server Connection String]
-:xref-sgw-bmk-cfg-hideprodvn: xref:{sgw-pg-config-properties}#hide_product_version[Hide Product Version in Headers]
+:xref-sgw-bmk-cfg-dbsvr: xref:{configuration-properties--pfx}#databases-this_db-server[Couchbase Server Connection String]
+:xref-sgw-bmk-cfg-hideprodvn: xref:{configuration-properties--pfx}#hide_product_version[Hide Product Version in Headers]
 
 // END DO NOT REMOVE
 

@@ -58,7 +58,7 @@ https://blog.couchbase.com/store-sync-binary-data-attachments-blobs-couchbase-mo
 .Couchbase Lite Apps
 Couchbase Lite apps seamlessly handle blobs and attachments, see the appropriate platform examples here:
 
-:param-path: learn
+:param-path!:
 :param-page: blob
 include::partial$blocklinks-cbl.adoc[]
 // * xref:couchbase-lite:swift:blob.adoc[Swift]
