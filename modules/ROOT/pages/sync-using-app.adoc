@@ -35,8 +35,8 @@ This is the process by which clients running Couchbase Lite upload database chan
 For more on how to build applications using Sync Gateway replication see the Couchbase Lite documentation set for the appropriate language:
 
 [#cbl-content]
-:param-path: learn
-:param--page: replication
+:param-path!:
+:param-page: replication
 :param-bookmark: starting-a-replication
 include::partial$blocklinks-cbl.adoc[]
 
