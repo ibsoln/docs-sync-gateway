@@ -2,7 +2,10 @@
 :idprefix:
 :idseparator: -
 
-:xref-sgw-bmk-gs-sgw-prereqs-cfg-svr: xref:sync-gateway::gs-sgw-svr-cfg.adoc[Configure Server for Sync Gateway]
+include::partial$/_attributes-local.adoc[]
+
+:xref-pfx: {xref-pfx-sgw}:
+:xref-sgw-bmk-gs-sgw-prereqs-cfg-svr: {xref-pfx}gs-sgw-svr-cfg.adoc[Configure Server for Sync Gateway]
 
 This page documents various implementation details and functionalities to consider when performing an upgrade to Sync Gateway {page-component-version}.
 
