@@ -16,7 +16,7 @@
 :topic-1: {configuration-overview--page}
 :topic-2: {configuration-javascript-functions--page}
 :topic-3: {configuration-environment-variables--page}
-:topic-4: {configuration-schema--page}
+:topic-4: {configuration-schema-bootstrap--page}
 :topic-5: {configuration-rest-api--page}
 
 :topic-1--xref: {sgw--xref}{topic-1}[{title-1}]

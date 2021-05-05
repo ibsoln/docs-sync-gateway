@@ -86,8 +86,12 @@ endif::xref--pfx-sgw[]
 :configuration-overview--xref: {sgw--xref}{configuration-overview--page}[Configuration Overview]
 :configuration-rest-api--page: configuration-rest-api.adoc
 :configuration-rest-api--xref: {sgw--xref}{configuration-rest-api--page}[Configuration REST API]
-:configuration-schema--page: configuration-schema.adoc
-:configuration-schema--xref: {sgw--xref}{configuration-schema--page}[Configuration Schema]
+:configuration-schema-bootstrap--page: configuration-schema-bootstrap.adoc
+:configuration-schema-bootstrap--xref: {sgw--xref}{configuration-schema-bootstrap--page}[Bootstrap Configuration]
+:configuration-schema-database--page: configuration-schema-database.adoc
+:configuration-schema-database--xref: {sgw--xref}{configuration-schema-database--page}[Database Configuration]
+:configuration-schema-database--xref-enable-shared-bucket-access: {sgw--xref}{configuration-schema-database--page}#databases-this_db-user_xattr_key[enable_shared_bucket_access]
+:configuration-schema-database--xref-user-xattr-key: {sgw--xref}{configuration-schema-database--page}#databases-this_db-user_xattr_key[user_xattr_key]
 :conflict-resolution--page:  conflict-resolution.adoc
 :conflict-resolution--xref: {sgw--xref}{conflict-resolution--page}[Conflict Resolution]
 :couchbase-mobile-index--page:  couchbase-mobile-index.adoc

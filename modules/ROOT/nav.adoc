@@ -52,7 +52,8 @@ include::ROOT:partial$_page-index.adoc[]
 
 * Configuration
 ** {sgw--xref}{configuration-overview--page}[Overview]
-** {sgw--xref}{configuration-schema--page}[Schema]
+** {configuration-schema-bootstrap--xref}
+** {configuration-schema-database--xref}
 ** {sgw--xref}{configuration-javascript-functions--page}[Javascript Functions]
 ** {sgw--xref}{configuration-environment-variables--page}[Environment Variables]
 ** {sgw--xref}{configuration-rest-api--page}[REST API]

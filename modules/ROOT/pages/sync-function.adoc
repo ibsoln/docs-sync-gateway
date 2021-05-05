@@ -40,6 +40,8 @@ include::partial$block-abstract.adoc[]
 
 == Sync Function Basics
 
+<<introduction>> | <<operation>> | <<provision>> | <<arguments>>
+
 === Introduction
 *The sync function is crucial to the security of your application.*
 It is in charge of data validation, and of authorizing both read and write access to documents.
@@ -78,7 +80,7 @@ You can learn more about this property ($db.sync) in the Configuration Schema Re
 include::partial$common-cfg-ext-javascript.adoc[tag=config-full]
 
 
-== Arguments
+=== Arguments
 The sync function arguments are:
 
 `doc`::
@@ -99,6 +101,8 @@ If you don't supply a sync function, Sync Gateway uses the {legacy-configuration
 `meta`::
 This object references the access grant xattr identifying the channel (or channels) we should route the current document to.
 You can see a simple example of its use in <<ex-xattr-access-grant>>.
++
+NOTE: This is only available if the following configuration settings are in place: {configuration-schema-database--xref-enable-shared-bucket-access} is `true` and {configuration-schema-database--xref-user-xattr-key} is set to a valid xattr name.
 
 [#ex-xattr-access-grant]
 .Access Grants using Xattr
@@ -118,8 +122,8 @@ function (doc, oldDoc, meta) {
 We use it to set the channel(s) we need to route this document to.
 ====
 
-// == An Example Sync Function
-// This section shows a simple Sync Function definitions which could be included in your `sync-gateway-config.json` -- see <<sync-example>>
+== An Example Sync Function
+This section shows a simple Sync Function definitions which could be included in your `sync-gateway-config.json` -- see <<sync-example>>
 
 [#sync-example]
 .A Simple Sync Function
