@@ -38,7 +38,7 @@ sync_gateway sync-gateway-bootstrap.json
 ----
 
 [#lbl-schema]
-== Bootstrap Configuration Reference
+== Database Configuration Reference
 
 .Configuration Schema
 --
