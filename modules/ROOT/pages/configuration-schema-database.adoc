@@ -1,9 +1,13 @@
-= Configuration File
+= Database Configuration
 :page-layout: article
 :page-status:
 :page-content: reference
 :description: This content describes Sync Gateway's configuration schema. It provides parameter explanations and examples of use
 :keywords:
+
+
+include::partial$_std-hdr-sgw.adoc[]
+
 
 :param-abstract!:
 :param-topic-group: configuration
@@ -13,7 +17,7 @@ include::partial$block-abstract.adoc[]
 
 == Introduction
 
-Sync Gateway's bootstrap configuration is provisioned in a JSON format file, which defines its runtime behavior - see <<Configuration Reference>> for more details on the file content.
+Sync Gateway's bootstrap configuration is provisioned in a JSON format file, which defines its runtime behavior - see <<lbl-schema>> for more details on the file content.
 
 Sync Gateway will look for the following configuration file unless you direct it otherwise: +
 `/home/sync_gateway/sync_gateway.json`
@@ -33,7 +37,7 @@ Use the following command to run Sync Gateway with a configuration file:
 sync_gateway sync-gateway-bootstrap.json
 ----
 
-
+[#lbl-schema]
 == Bootstrap Configuration Reference
 
 .Configuration Schema

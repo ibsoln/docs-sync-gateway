@@ -744,7 +744,20 @@ properties:
             description: |+
               The ```user_xattr_key``` identifies the user xattr used to hold the channel access grants for documents in this database.
               If it is not specified or its value is spaces or null then no `user_xattr_key` will be used.
-              The `user_xattr_key` feature also requires that `enable_shared_bucket_access` be = `true`
+
+              This feature is not enabled by default.
+
+              If you change the value of this key, no existing grant assignments will be changed until a document mutation is triggered.
+              This can be done in a number of ways:
+              - a mutation to the document which we’ll see via DCP
+              - an on-demand import either through write or get
+              - by using the resync function.
+
+
+              *Dependencies:*
+                The `user_xattr_key` feature requires that --
+                - `enable_shared_bucket_access` be = `true`
+                - xattrs be supported on the connected Couchbase Server
           username:
             type: string
             description: The RBAC user's username for authenticating to Couchbase Server. There is no default.

@@ -90,7 +90,7 @@ endif::xref--pfx-sgw[]
 :configuration-schema-bootstrap--xref: {sgw--xref}{configuration-schema-bootstrap--page}[Bootstrap Configuration]
 :configuration-schema-database--page: configuration-schema-database.adoc
 :configuration-schema-database--xref: {sgw--xref}{configuration-schema-database--page}[Database Configuration]
-:configuration-schema-database--xref-enable-shared-bucket-access: {sgw--xref}{configuration-schema-database--page}#databases-this_db-user_xattr_key[enable_shared_bucket_access]
+:configuration-schema-database--xref-enable-shared-bucket-access: {sgw--xref}{configuration-schema-database--page}#databases-this_db-enable_shared_bucket_access[enable_shared_bucket_access]
 :configuration-schema-database--xref-user-xattr-key: {sgw--xref}{configuration-schema-database--page}#databases-this_db-user_xattr_key[user_xattr_key]
 :conflict-resolution--page:  conflict-resolution.adoc
 :conflict-resolution--xref: {sgw--xref}{conflict-resolution--page}[Conflict Resolution]

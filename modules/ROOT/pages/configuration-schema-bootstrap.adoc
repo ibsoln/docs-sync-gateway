@@ -1,9 +1,13 @@
-= Configuration File
+= Bootstrap Configuration
 :page-layout: article
 :page-status:
 :page-content: reference
 :description: This content describes Sync Gateway's configuration schema. It provides parameter explanations and examples of use
 :keywords:
+
+
+include::partial$_std-hdr-sgw.adoc[]
+
 
 :param-abstract!:
 :param-topic-group: configuration
