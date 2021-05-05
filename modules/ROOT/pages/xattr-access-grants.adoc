@@ -1,0 +1,38 @@
+= Xattr Access Grants
+:description: pass:q[How to set access grants using xattrs (extended attributes).]
+
+
+include::partial$_std-hdr-sgw.adoc[]
+
+
+
+// BEGIN -- Page Attributes
+:SGW: pass:q[_Sync Gateway_]
+// END -- Page Attributes
+
+
+//  BEGIN -- Page Heading
+:topic-group: concept
+:param-abstract: pass:q[Here we introduce the concept of _xattrs_ for access grants and their role in assuring secure access control within _Sync Gateway_.]
+:param-related: {channels--xref}  |  {revisions--xref}  |  {roles--xref}  |  {what-are-tombstones--xref}
+include::partial$block-abstract.adoc[]
+//  END -- Page Heading
+
+
+== Introduction
+
+Access Grants are one of the cornerstone concepts behind {sgw}'s access control feature.
+
+You can grant users access to specific documents and channels based on the contents of the document being processed by the Sync Function.
+Alternatively, as an added level of security, you can instead nominate a specific xattr to determine the access grants.
+
+
+== Main Topic
+
+=== h3 Topic
+
+
+
+// BEGIN -- Page Footer
+include::partial$block-related-content-data.adoc[]
+// END -- Page Footer

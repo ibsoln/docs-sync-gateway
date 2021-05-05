@@ -39,6 +39,7 @@ include::partial$block-abstract.adoc[]
 
 
 == Sync Function Basics
+
 === Introduction
 *The sync function is crucial to the security of your application.*
 It is in charge of data validation, and of authorizing both read and write access to documents.
@@ -86,6 +87,7 @@ It matches the JSON saved by the Couchbase Lite and replicated to Sync Gateway.
 * The `_id` property contains the document ID
 * The `_rev` property is the new revision ID.
 * If the document is being deleted, there will be a `_deleted` property with the value true.
+
 `oldDoc`::
 If the document has been saved before, the revision that is being replaced is available in this argument.
 Otherwise it's `null`.
@@ -94,8 +96,30 @@ Your implementation of the sync function can omit the `oldDoc` parameter if you 
 
 If you don't supply a sync function, Sync Gateway uses the {legacy-configuration-properties-pfx}#databases-this_db-sync[default Sync Function].
 
-== An Example Sync Function
-This section shows a simple Sync Function definitions which could be included in your `sync-gateway-config.json` -- see <<sync-example>>
+`meta`::
+This object references the access grant xattr identifying the channel (or channels) we should route the current document to.
+You can see a simple example of its use in <<ex-xattr-access-grant>>.
+
+[#ex-xattr-access-grant]
+.Access Grants using Xattr
+====
+[source, javascript]
+----
+function (doc, oldDoc, meta) {
+  // Additional processing as required
+
+  // Route the document
+    channel(meta.xattrs.myxattr.channels); // <.>
+
+  // Additional processing as required
+}
+----
+<.> Here we reference 'myattr', the xattr defined in the database configuration as being the key for the access-grant xattr field.
+We use it to set the channel(s) we need to route this document to.
+====
+
+// == An Example Sync Function
+// This section shows a simple Sync Function definitions which could be included in your `sync-gateway-config.json` -- see <<sync-example>>
 
 [#sync-example]
 .A Simple Sync Function
