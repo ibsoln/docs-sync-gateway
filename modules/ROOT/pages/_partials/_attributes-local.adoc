@@ -13,7 +13,9 @@
 :is-initialized:
 // Set global switches
 
-:concepts: partial$/core-concepts/
+:concepts: partial$/concepts/
+:howto: partial$/howto/how-to-
+
 
 // Sync Gateway Common url links
 :url-cb--pfx: https://www.couchbase.com/

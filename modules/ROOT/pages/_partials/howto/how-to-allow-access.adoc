@@ -1,0 +1,109 @@
+// BEGIN how-to -- HOW-TO ALLOW ACCESS
+// Parameters -- use-topic-header -- to show the topic heading (optional)
+
+Related Concepts::
+{access--xref} | {access-model--xref}
+
+== Purpose
+
+You allow roles and-or users access to channels using:
+
+* Configuration -- using the appropriate `admin_channels` property in the {configuration-schema-static--xref}.
+
+* Admin Rest API -- alternatively provide that same `admin_channels` property using the admin REST API endpoint ({rest-api-admin-user-put--xref}).
+
+* Programmatically in theSync Function -- using the exposed helper function `access()` -- see reference information in {sync-function--xref}.
+
+== Context
+
+You will often use the document content itself to govern access and routing.
+The data to drive this can be secured in metadata, providing an additional level of security -- see <<lbl-xattrs>>.
+
+== Process
+
+.Allow Access
+[{tabs}]
+====
+
+Admin REST API::
++
+--
+Add a channel to an existing user by sending a PUT request to the Admin Rest API `_role` endpoint ({rest-api-admin-role-put--xref} ).
+
+Specify the roles to be assigned in the `admin_channels` array.
+
+[source,bash]
+----
+$ curl -vX PUT "http://localhost:4985/mydatabase/_user/{user}" -H //<.>
+"accept: application/json" -H "Content-Type: application/json" -d
+'{ "admin_channels": ["Channel1","Channel3]}' // <.>
+----
+
+<.> {user} is the user name to be updated, e.g. "Edge1User"
+
+<.> Here we add _Channel1_ and _Channel3_ to the user
+
+--
+
+Configuration::
++
+--
+Add a channel to a user in the configuration file.
+This method is convenient for testing and to get started.
+Use the *Admin REST API* for production systems.
+
+[source,json]
+----
+{
+  "databases": {
+    "mydatabase": {
+      "users": {
+        "GUEST": {"disabled": true},
+        "Edge1User": {"password": "pass", "admin_roles": ["Edge1"],
+              "admin_channels": ["Channel1","Channel3","RandomChannel"]} // <.>
+      },
+      "roles": {
+        "Edge1": {"admin_channels": ["channel1", "channel3"]},
+        "Edge2": {"admin_channels": ["Channel2","Channel3","SkyChannel"]} // <.>
+      }
+    }
+  }
+}
+----
+
+<.> Here we have added the channel _RandomChannel_ to the user _Edge1User_ {configuration-schema-static--pfx}#databases-this_db-users-this_user-admin_channels[databases.$db.users.$user.admin_channel]
+
+<.> Here we have added the channel _SkyChannel_ to the role _Edge2_ {configuration-schema-static--pfx}#databases-this_db-roles-this_role-admin_channels[databases.$db.users.$user.admin_channel]
+
+--
+
+Sync Function::
++
+--
+You can also use the Sync Function's `access(username, channelname)` function to allow channel access to roles and-or users programmatically.
+
+[source, javascript]
+----
+
+function (doc, olddoc) {
+
+  // user logic
+    access ("Edge1User", "RandomChannel"); // <.>
+    access ("role:Edge2", "SkyChannel"); // <.>
+
+  // user logic
+}
+----
+
+<.> Here we add access to channel _RandomChannel_ to the user _Edge1User_
+
+<.> The `access()` function can also operate on roles.
+If a user name string begins with `role:` then the remainder of the string is interpreted as a role name.
+There's no ambiguity here, because ":" is an illegal character in a user or role name.
+Here we allow access to the channel _Sky1Channel_  for the role _Edge2_
+
+--
+
+====
+
+// END how-to -- ALLOW ACCESS

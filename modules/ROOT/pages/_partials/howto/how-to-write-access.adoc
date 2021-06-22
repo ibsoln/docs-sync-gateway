@@ -1,0 +1,85 @@
+// BEGIN how-to -- HOW-TO WRITE ACCESS
+// Parameters -- use-topic-header -- to show the topic heading (optional)
+
+Related Concepts::
+{access--xref} | {access-model--xref}
+
+== Purpose
+
+// include::{concept}access.adoc[tag=summary]
+
+Use the Sync Function's helper functions to control the users allowed to make document updates and deletions.
+
+
+== Process
+
+Build user validation into your Sync Function.
+You can require that the user making the change has a specific name, role or channel access -- as shown in <<ex-check-write-access>> -- by using any combination  of:
+
+* {sync-function-api-require-user-cmd--xref}
+* {sync-function-api-require-role-cmd--xref}
+* {sync-function-api-require-channel}
+
+This <<ex-check-write-access, example>> allows only the document owner to make changes.
+It does so by *requiring* that the current user is the one recorded as an owner on the old document.
+
+Note the example makes use of metadata to store channel data; this is optional and the value could be stored in the normal document content. See: {sgw--xref}{access-control-how--page}[Using extended attributes] for more on using metadata XATTRS in this way.
+
+[#ex-check-write-access]
+====
+[source, javascript]
+----
+function (doc, oldDoc, meta) {
+  if (oldDoc) {
+    requireUser(oldDoc.owner); // <.>
+  }
+  if (meta.xattr.channelxattr) {
+    requireAccess(meta.xattr.channelxattr); // <.>
+  } else
+    {
+      throw("No channel access granted")
+    }
+}
+----
+<.> If the user making the change is not an owner of the pre-change document, an exception is thrown and the update is rejected with an error.
+<.> Here we check the designated XATTR for the document channel(s) and require the user making the change to have access to on or more of the channels.
+If the XATTR is not set we throw an exception.
+
+
+====
+
+See <<ex-helpers>> for more helper function examples.
+
+NOTE: When sending a change to Sync Gateway through the {rest-api-admin--xref}, the Sync Function executes with _admin privileges_. Calls to `requireUser`, `requireAccess` and `requireRole` will be no-ops, and will always appear successful.
+
+
+[#ex-helpers]
+.Helper Function examples
+====
+This example shows how to use some of the helper functions:
+
+[source,javascript]
+----
+
+requireUser("snej") // <.>
+
+requireUser(["snej", "jchris", "tleyden"]) // <.>
+
+requireRole("admin") // <.>
+
+requireRole(["admin", "old-timer"]) // <.>
+
+requireAccess("events") // <.>
+
+requireAccess(["events", "messages"]) // <.>
+----
+<.> throw an error if username is not "snej"
+<.> throw if username is not in the list
+<.> throw an error unless the user has the "admin" role
+<.> throw an error unless the user has one of those roles
+<.> throw an error unless the user has access to read the "events" channel
+<.> throw an error unless the can read one of these channels
+====
+
+
+// END how-to -- HOW-TO WRITE ACCESS

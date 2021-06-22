@@ -59,7 +59,7 @@ You can explicitly implement write access controls within your Sync Function; pe
 [#lbl-sync-function]
 == Sync Function
 
-Calling {sync-function--xref-access-cmd} grants a user access to a channel.
+Calling {sync-function-api-access-cmd--xref} grants a user access to a channel.
 
 So, for example, this would allow a document to act as a membership, or access-control, list.
 
@@ -164,9 +164,9 @@ Use the Sync Function's helper functions to control who or what can make documen
 
 So can require that the user making the change has a specific name, role or channel access -- as shown in <<ex-check-write-access>> -- by using any combination  of:
 
-* {sync-function--xref-require-user}
-* {sync-function--xref-require-role}
-* {sync-function--xref-require-channel}
+* {sync-function-api-require-user-cmd--xref}
+* {sync-function-api-require-role-cmd--xref}
+* {sync-function-api-require-channel}
 
 
 

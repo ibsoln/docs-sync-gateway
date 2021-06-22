@@ -1,0 +1,27 @@
+// -- concept -- Roles
+// tag::full[]
+// tag::summary[]
+
+Roles are named collections of {channels--xref}.
+They enable the grouping togethers of {Users--xref} with similar characteristics, which makes the management of large user populations easier.
+
+// end::summary[]
+// tag::body[]
+Roles are granted access to channels.
+Any user assigned a role can access any channels (and documents within those channels) the role has been granted access to.
+
+As an entity roles comprises a name and a list of channels.
+
+Any user associated with a role inherits the right to access any of the channels in the role's list.
+This provides a convenient way to associate multiple channels with multiple users.
+
+TIP: Roles have a separate namespace from users, so it's possible to have a user and a role with the same name.
+
+You can add and remove roles from users using either the {rest-api-admin--xref} or {configuration-schema-static--xref}.
+
+Note that removing a role effectively revokes access to the channel that role is associated with and may mean users will lose access to required documents.
+
+// For how to create and manage roles -- see <<tbd>>.
+
+// end::body[]
+// end::full[]

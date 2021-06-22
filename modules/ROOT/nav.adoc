@@ -68,17 +68,31 @@ include::ROOT:partial$_page-index.adoc[]
 ** {authentication-users--xref}
 ** {authentication-certs--xref}
 
-* Access Control
-** {access-control-overview--xref}
-** {access-grants--xref}
-** {sync-function--xref}
-// *** {read-access--xref}
-// *** {write-access--xref}
-** {users--xref}
-** {roles--xref}
-** {channels--xref}
-** {using-xattr-access-grants--xref}
-
+* Data Access
+** {sgw--xref}{access-control-concepts--page}[Concepts]
+*** {sgw--xref}{access--page}[Access]
+*** {sgw--xref}{access-model--page}[Access Model]
+*** {sgw--xref}{channels--page}[Channels]
+*** {sgw--xref}{roles--page}[Roles]
+*** {sync-function--xref}
+*** {sgw--xref}{users--page}[Users]
+** {sgw--xref}{access-control-how--page}[How-To]
+*** {access-control-how-create-users--xref}
+*** {access-control-how-create-roles--xref}
+*** {access-control-how-add-roles-to-users--xref}
+*** {access-control-how-allow-access--xref}
+*** {access-control-how-inspect-access--xref}
+*** {access-control-how-write-access--xref}
+** {sgw--xref}{sync-function-api--page}[Sync Function API]
+*** {sync-function-api-access-cmd--xref}
+*** {sync-function-api-channel-cmd--xref}
+*** {sync-function-api-expiry-cmd--xref}
+*** {sync-function-api-require-access-cmd--xref}
+*** {sync-function-api-require-admin-cmd--xref}
+*** {sync-function-api-require-role-cmd--xref}
+*** {sync-function-api-require-user-cmd--xref}
+*** {sync-function-api-role-cmd--xref}
+*** {sync-function-api-throw-cmd--xref}
 * Sync
 ** {sync-with-couchbase-server--xref}
 ** {sync-using-app--xref}
@@ -88,6 +102,7 @@ include::ROOT:partial$_page-index.adoc[]
 *** {sgw--xref}{sync-inter-syncgateway-manage--page}[Manage]
 *** {sgw--xref}{sync-inter-syncgateway-monitor--page}[Monitor]
 *** {sgw-xref}{sync-inter-syncgateway-conflict-resolution--page}[Conflict Resolution]
+** {sgw--xref}sync-function-from-sync-nav.adoc[Sync Function]
 ** {revisions--xref}
 ** {what-are-tombstones--xref}
 ** {managing-tombstones--xref}

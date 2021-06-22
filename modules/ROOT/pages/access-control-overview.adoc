@@ -93,13 +93,13 @@ image::channels-example-all.png[,600]
 
 == Controlling Assignments and Grants
 
-image:label-1-group.png[,50] Documents are assigned to channel using the Sync Function's {sync-function--xref-channel-cmd} API.
+image:label-1-group.png[,50] Documents are assigned to channel using the Sync Function's {sync-function-api-channel-cmd--xref} API.
 
 image:label-2-group.png[,50] User are granted access to channel:
 +
 * Statically using the Sync Gateway Configuration File's {configuration-schema-static--xref--databases-user-admin-channels} setting
-* At the time of user creation with Admin REST Endpoint  {rest-api-admin-user--xref} using `admin_channel`
-* Using the Sync Function's {sync-function--xref-access-cmd}.
+* At the time of user creation with Admin REST Endpoint  {rest-api-admin-user-post--xref} using `admin_channel`
+* Using the Sync Function's {sync-function-api-access-cmd--xref}.
 
 image::channel-access-grant-all.png[,600]
 
