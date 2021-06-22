@@ -1,0 +1,22 @@
+// concept -- ACCESS MODEL
+// tag::full[]
+// tag::summary[]
+In the Couchbase Mobile ecosystem access to documents is governed by three key entities (_users_, _roles_ and _channels_) and controlled by configuration, Rest API or customer logic provisioned in the _Sync Function_.
+
+// end::summary
+// tag::body[]
+[#img-access-control-model]
+
+[.right.text-center]
+.Access Control Model
+image:access-control-triangle.png[Access,400]
+
+Every {user--xref} and {role--xref} is granted access to zero, one or more {channels--xref}.
+It is this channels list that determines the documents users can access -- as illustrated in <<img-access-control-model>>
+
+A user can only read documents that are in at least one of their assigned channels; whether directly or as part of an assigned role.
+
+NOTE: All users can implicitly access any document in the {channels--xref-public-channel}
+
+// end::body
+// end::full

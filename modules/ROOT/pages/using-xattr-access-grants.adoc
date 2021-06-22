@@ -6,6 +6,7 @@
 include::partial$_std-hdr-sgw.adoc[]
 
 
+
 // BEGIN -- Page Attributes
 :sgw: pass:q[_Sync Gateway_]
 :fn-3x0: footnote:fn-3x0[From release 3.0]
@@ -36,7 +37,7 @@ This approach has the benefit of:
 Sync Gateway exposes a single user-definable XATTR for this purpose.
 
 
-== Configuration
+=== Configuration
 
 Name the XATTR
 (see: {configuration-schema-database--xref-user-xattr-key}) to be used for channel routing by defining it using the Admin Rest API's {rest-api-admin-database--xref} -- see: <<ex-config>>.
@@ -91,7 +92,7 @@ Content-Length: 999
 <.> Here _channelXattr_ is set as the name of the XATTR designated to hold channel routing information.
 ====
 
-== Setting
+=== Setting
 
 You can set and maintain the value of the XATTR using a Couchbase Server SDK API.
 You cannot set it using the {sgw} REST API.
@@ -154,7 +155,7 @@ For more on Couchbase Server metadata and extended attributes -- see Couchbase S
 
 
 
-== Sync Function
+=== Sync Function
 
 The designated XATTR is exposed to the {sync-function--xref} as an additional argument `meta.xattrs.<xattr name>`
 
@@ -173,6 +174,6 @@ include::{examples-code-js}[tags="sync-function-using-xattr-notation"]
 
 See: {sync-function--xref} topic for more information.
 
-// BEGIN -- Page Footer
 include::partial$block-related-content-data.adoc[]
+// BEGIN -- Page Footer
 // END -- Page Footer

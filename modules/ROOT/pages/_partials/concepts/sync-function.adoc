@@ -1,0 +1,147 @@
+// -- concept -- Sync Function
+//
+// tag::summary[]
+
+*The sync function is crucial to the security of your application.*
+It is in charge of data validation, access control and routing.
+The function executes every time a new revision/update is made to a document.
+
+TIP: The sync function should be a focus of any security review of your application.
+
+// end::summary[]
+// tag::body[]
+
+
+== Context
+Any changes to {channels--xref} and {access--xref} made by the sync function are _tied to that revision_.
+If the document is later updated, the sync function is called again on the new revision, and the new channel assignments and user/channel access _replace_ those from the first call.
+
+[#lbl-document-conflicts]
+=== Conflicts
+
+If a document is in conflict there will be multiple current revisions.
+The default, "winning" one is the one whose channel assignments and access grants take effect.
+
+
+[#lbl-handling-deletions]
+=== Deletions
+
+Validation checks often need to treat deletions specially, because a deletion is just a revision with a `"_deleted": true` property and usually nothing else.
+Many types of validations won't work on a deletion because of the missing properties -- for example, a check for a required property, or a check that a property value doesn't change.
+You'll need to skip such checks if `doc._deleted` is true.
+
+
+== Use
+The Sync Function exposes a number of helper functions to control access -- see reference information in {sync-function-api--xref}.
+For example, to grant a user access to a channel use the {sync-function-api-access-cmd--xref} helper function in the Sync Function.
+
+The `access()` function can also operate on roles.
+If a user name string begins with `role:` then the remainder of the string is interpreted as a role name.
+There's no ambiguity here, because ":" is an illegal character in a user or role name.
+
+TIP: Because anonymous requests are authenticated as the user "GUEST", you can make a channel and its documents public by calling `access` with a username of `GUEST`.
+
+
+== Get Started
+
+When you come to build your Sync Function you will need to decide the access control and document distribution requirements:
+
+* The document types it will process
+* The users it will serve
+* Which users need to access which document types
+* What constraints are to be be placed on creating, updating and-or deleting documents
+
+
+[#lbl-practical-example]
+====
+In this example we will build a complete Sync Function that validates and authorizes both new and updated documents.
+
+Our requirements for this purpose are:
+
+<1> That all documents have the following properties: +
+_creator_, _writers_, _title_  _channels_
+
+<2> That we allow only create and-or delete access to users with the role `editor`
+
+<3> That we only allow changes, including deletions, to be made by users identified in the document's _writers_ property
+
+<4> That the _creator_ is immutable
+
+<5> That we will assign the document to the channel(s) identified in its _channels_ property
+
+<6> That we provide the Sync Function Javascript code embedded in our Configuration file -- see {configuration-schema-static--xref--databases-sync}. +
+
+<7> NOTE -- The sync function is enclosed in backticks.
+
+
+[source,json]
+----
+{
+  //  ... may be preceded by additional configuration data as required by the user ...
+  "databases": { // <6>
+    "getting-started-db": {
+      "server": "http://localhost:8091",
+      "bucket": "getting-started-bucket",
+      "username": "sync_gateway",
+      "password": "password",
+      "enable_shared_bucket_access": true,
+      "import_docs": true,
+      "num_index_replicas": 0,
+      "users": {
+        "GUEST": { "disabled": false, "admin_channels": ["*"] },
+      },
+      "sync": ' // <6> <7>
+         function (doc, oldDoc) { // <5>
+            if (doc._deleted) {
+              // Only editors with write access can delete documents:
+              requireRole("role:editor"); // <2>
+              requireUser(oldDoc.writers); // <3>
+              // Skip other validation because a deletion has no other properties:
+              return;
+            }
+            // Required properties:
+            if (!doc.title || !doc.creator ||
+                  !doc.channels || !doc.writers) { // <1>
+              throw({forbidden: "Missing required properties"});
+            } else if (doc.writers.length == 0) {
+              throw({forbidden: "No writers"});
+            }
+            if (oldDoc == null) {
+              // Only editors can create documents:
+              requireRole("role:editor"); // <2>
+              // The 'creator' property must match the user creating the document:
+              requireUser(doc.creator)
+            } else {
+              // Only users in the existing doc's writers list can change a document:
+              requireUser(oldDoc.writers); // <3>
+              // The "creator" property is immutable:
+              if (doc.creator != oldDoc.creator) {
+                      throw({forbidden: "Can't change creator"}); <4>
+              }
+            }
+            // Finally, assign the document to the channels in the list:
+            channel(doc.channels); // <5>
+
+        }`, // <7>
+        //  ... may be followed by additional configuration data as required by the user ...
+    }
+  }
+}
+----
+
+
+This example used a number of helper functions:
+
+* {sync-function-api-channel-cmd--xref}
+* {sync-function-api-require-user-cmd--xref}
+* {sync-function-api-require-role-cmd--xref}
+
+====
+
+
+You could also supply the same Sync Function using the {rest-api-admin--xref} using the _db/_config endpoint
+
+If you don't supply a sync function, Sync Gateway uses the {configuration-schema-static--pfx}#databases-this_db-sync[default Sync Function].
+
+// end::body[]
+// end:full[]

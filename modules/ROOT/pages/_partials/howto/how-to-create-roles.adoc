@@ -1,0 +1,62 @@
+// BEGIN how-to -- HOW-TO CREATE A ROLE
+// Parameters -- use-topic-header -- to show the topic heading (optional)
+
+Related Concepts:: {roles--xref}
+
+== Purpose
+
+include::{concept}roles.adoc[tag=summary]
+
+As with users, you create and-or manage roles using either the {rest-api-admin--xref} or {configuration-schema-static--xref}.
+
+
+== Process
+
+.Create a Role
+[{tabs}]
+====
+
+Admin Rest API::
++
+--
+Create a new role using the {rest-api-admin-role-post--xref} endpoint.
+
+[source,bash]
+----
+$ curl -vX POST "http://localhost:4985/mydatabase/_roles/" -H
+"accept: application/json" -H "Content-Type: application/json" -d
+'{"name": "Edge1", "admin_channels": ["channel1", "channel3"]]}' // <.>
+----
+
+--
+
+Configuration File::
++
+--
+Create users by hardcoding their credentials in the {configuration-schema-static--xref}.
+This method is convenient for testing and to get started.
+It is recommended to use the *Admin REST API* for production systems.
+
+[source,json]
+----
+{
+  "databases": {
+    "mydatabase": {
+      "roles": { // <.>
+        "Edge1": {"admin_channels": ["channel1", "channel3"]}, // <.>
+        "Edge2": {"admin_channels": ["channel2", "channel3"]},
+        "GUEST": {"disabled": true}
+      }
+    }
+  }
+}
+----
+
+<.> {configuration-schema-static--pfx}#databases-this_db-users[databases.$db.users]
+
+--
+<.> Here we add the Edge1 role used in the example in this topic.
+
+====
+
+// END how-to -- HOW-TO CREATE A ROLE

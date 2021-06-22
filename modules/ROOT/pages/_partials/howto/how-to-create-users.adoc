@@ -1,0 +1,73 @@
+// BEGIN how-to -- HOW-TO CREATE A USER
+// Parameters -- use-topic-header -- to show the topic heading (optional)
+
+Related Concepts::
+{users--xref}
+
+== Purpose
+
+include::{concept}user.adoc[tag=summary]
+
+Each user must be created on Sync Gateway before it can be used for access control.
+
+
+== Process
+You create and-or manage users by defining them in a configuration file or using the Admin REST API -- see: {configuration-schema-static--xref} | {rest-api-admin--xref}.
+
+[{tabs}]
+====
+
+Admin Rest API::
++
+--
+Create a new user by sending a POST request to the Admin Rest Api `_user` endpoint ({rest-api-admin-user-post--xref}).
+Update existing users by sending a PUT instead; in this case include the user name at the end of the url.
+
+The user credentials (**username**/**password**) are passed in the request body.
+
+[source,bash]
+----
+$ curl -vX POST "http://localhost:4985/mydatabase/_user/" -H
+"accept: application/json" -H "Content-Type: application/json" -d
+'{"name": "Edge1User", "password": "pass"}' // <.>
+
+$ curl -vX PUT "http://localhost:4985/mydatabase/_user/Edge1User" -H
+"accept: application/json" -H "Content-Type: application/json" -d
+'{"name": "Edge1User", "admin_channels": ["RandomChannel"]}' // <.>
+----
+
+<.> Add new user "Edge1User", no `access_channel` or `role` is specified here.
+<.> Update existing user "Edge1User" and add `access_channels` data
+
+--
+
+Configuration File::
++
+--
+Create users by hardcoding their credentials in the {configuration-schema-static--xref}.
+This method is convenient for testing and to get started.
+Use the *Admin REST API* for production system changes.
++
+[source,json]
+----
+{
+  "databases": {
+    "mydatabase": {
+      "users": { // <1>
+        "GUEST": {"disabled": true},
+        "Edge1User": {"password": "pass",
+                      "admin_channels": ["RandomChannel"]},
+      }
+    }
+  }
+}
+----
+
+<.> {configuration-schema-static--pfx}#databases-this_db-users[databases.$db.users]
+
+--
+<.> Here we add the Edge1 role used in the example in this topic.
+
+====
+
+// END how-to -- HOW-TO CREATE A USER

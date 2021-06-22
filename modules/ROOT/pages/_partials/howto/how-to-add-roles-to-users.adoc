@@ -1,0 +1,81 @@
+// BEGIN how-to -- HOW-TO ADD A ROLE TO A USER
+// Parameters -- use-topic-header -- to show the topic heading (optional)
+
+Related Concepts::
+{roles--xref} | {users--xref}
+
+== Purpose
+
+include::{concept}user.adoc[tag=summary]
+
+You can add and remove roles from users using either the {rest-api-admin--xref} or {configuration-schema-static--xref}.
+
+Note that removing a role effectively revokes access to the channel that role is associated with and may mean users will lose access to required documents.
+
+== Process
+[{tabs}]
+====
+
+Admin REST API::
++
+--
+Add a role to an existing user by sending a PUT request to the Admin Rest API `_role` endpoint ({rest-api-admin-user-put--xref} ).
+
+Specify the roles to be assigned in the `admin_roles` array.
+
+[source,bash]
+----
+$ curl -vX PUT "http://localhost:4985/mydatabase/_user/{user}" -H
+"accept: application/json" -H "Content-Type: application/json" -d
+'{ "admin_roles": ["Edge1"]}' // <.>
+----
+<.> {user} is the user name to be updated, e.g. "Edge1User"
+
+See also: {rest-api-admin-role-put--xref}
+--
+
+Configuration::
++
+--
+Add a role to a user in the configuration file.
+This method is convenient for testing and to get started.
+Use the *Admin REST API* for production systems.
+
+[source,json]
+----
+{
+  "databases": {
+    "mydatabase": {
+      "users": { // <.>
+        "GUEST": {"disabled": true},
+        "Edge1User": {"password": "pass", "admin_roles": ["Edge1"],
+                      "admin_channels": ["RandomChannel"]},
+        "Edge2User": {"password": "pass", "admin_roles": ["Edge2"]}
+      }
+    }
+  }
+}
+----
+<.> {configuration-schema-static--pfx}#databases-this_db-users-this_user-admin_roles[databases.$db.users.$user.admin_roles]
+--
+
+Sync Function::
++
+--
+You can also use the Sync Function's `role(username, rolename)` function to assign roles to users programmatically.
+
+Note that both role and user must already exist.
+Nonexistent roles don’t cause an error, but have no effect on the user’s access privileges.
+
+[source, javascript]
+----
+role ("Edge1User", "role:Edge1");
+role ("Edge2User", "role:Edge2":);
+----
+--
+
+====
+
+
+// END how-to -- HOW-TO ADD A ROLE TO A USER
+
