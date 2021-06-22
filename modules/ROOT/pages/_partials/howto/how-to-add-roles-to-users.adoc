@@ -6,7 +6,7 @@ Related Concepts::
 
 == Purpose
 
-include::{concept}user.adoc[tag=summary]
+include::{concepts}user.adoc[tag=summary]
 
 You can add and remove roles from users using either the {rest-api-admin--xref} or {configuration-schema-static--xref}.
 
