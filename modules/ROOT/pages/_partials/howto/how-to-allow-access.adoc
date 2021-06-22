@@ -1,8 +1,12 @@
 // BEGIN how-to -- HOW-TO ALLOW ACCESS
 // Parameters -- use-topic-header -- to show the topic heading (optional)
+[,cols="1,4", grid="none", frame="none"]
+|===
+|_Related Concepts_:
+a|{access--xref} \| {access-model--xref} +
+include::{concepts}access-control.adoc[tag=summary]
+|===
 
-Related Concepts::
-{access--xref} | {access-model--xref}
 
 == Purpose
 

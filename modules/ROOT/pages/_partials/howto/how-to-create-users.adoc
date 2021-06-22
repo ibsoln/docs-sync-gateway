@@ -2,11 +2,14 @@
 // Parameters -- use-topic-header -- to show the topic heading (optional)
 
 Related Concepts::
++
+--
 {users--xref}
+include::{concepts}users.adoc[tag=summary]
+--
 
 == Purpose
 
-include::{concept}user.adoc[tag=summary]
 
 Each user must be created on Sync Gateway before it can be used for access control.
 

@@ -6,7 +6,7 @@ Related Concepts::
 
 == Purpose
 
-// include::{concept}access.adoc[tag=summary]
+// include::{concepts}access.adoc[tag=summary]
 
 Use the Sync Function's helper functions to control the users allowed to make document updates and deletions.
 

@@ -285,7 +285,7 @@ endif::xref--pfx-sgw[]
 :configuration-schema-static--xref--eventhandlers-doc-changed-url: {configuration-schema-static--pfx--eventhandlers-doc-changed}-url[this_db.event_handlers.document_changed.url]
 :configuration-schema-static--xref--eventhandlers-max-processes: {configuration-schema-static--pfx--eventhandlers}-max_processes[this_db.event_handlers.max_processes]
 :configuration-schema-static--xref--eventhandlers-wait-for-process: {configuration-schema-static--pfx--eventhandlers}-wait_for_process[this_db.event_handlers.wait_for_process]
-:configuration-schema-static--xref--schema: {configuration-schema-static-pfx}#configuration-reference[Configuration Schema]
+:configuration-schema-static--xref--schema: {configuration-schema-static--pfx}#configuration-reference[Configuration Schema]
 
 :legacy-logging-pre2-1--page:  legacy-logging-pre2-1.adoc
 :legacy-logging-pre2-1--xref: {sgw--xref}{legacy-logging-pre2-1--page}[Legacy Logging Pre2 1]
@@ -657,8 +657,8 @@ endif::xref--pfx-sgw[]
 // :sgw-pg-concept-fundamentals-logging: concept-fundamentals-logging.adoc
 // :sgw-pg-icr-conflict-resolution-build: icr-conflict-resolution-build-custom.adoc
 // :sgw-pg-using-channels: using-channels.adoc
-// :xref-sgw-adv-vw-config-properties: {configuration-schema-static-pfx}[... view Configuration reference]
-// :xref-sgw-lrn-vw-config-properties: {configuration-schema-static-pfx}[... view Configuration reference]
+// :xref-sgw-adv-vw-config-properties: {configuration-schema-static--pfx}[... view Configuration reference]
+// :xref-sgw-lrn-vw-config-properties: {configuration-schema-static--pfx}[... view Configuration reference]
 // :xref-sgw--xref-icr-conflict-resolution-build: {sgw--xref}{sgw-pg-icr-conflict-resolution-build}
 // :xref-sgw-pg-adv-sgw-cfg-sync-function: {sgw--xref}{sgw-pg-adv-sgw-cfg-sync-function}[Use Sync functions?]
 // :xref-sgw-pg-cbmintro: {sgw--xref}{sgw-pg-cbmintro}[About Mobile]

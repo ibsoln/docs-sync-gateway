@@ -1,11 +1,15 @@
 // BEGIN how-to -- HOW-TO CREATE A ROLE
 // Parameters -- use-topic-header -- to show the topic heading (optional)
 
-Related Concepts:: {roles--xref}
+Related Concepts::
++
+--
+{roles--xref}
+include::{concepts}roles.adoc[tag=summary]
+--
 
 == Purpose
 
-include::{concept}roles.adoc[tag=summary]
 
 As with users, you create and-or manage roles using either the {rest-api-admin--xref} or {configuration-schema-static--xref}.
 
