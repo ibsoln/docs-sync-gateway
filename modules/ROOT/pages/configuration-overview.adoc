@@ -17,6 +17,10 @@ include::partial$block-abstract.adoc[]
 In addition to the established, static configuration method, Sync Gateway 3.x provides for a dynamic, modular, and persistent approach to configuring Sync Gateways.
 This approach makes configuration, maintenance and propagation simpler and safer in multi-node, multi-cluster deployments.
 
+The static approach established in previous iterations of Sync Gateway is continued to allow for a controlled transition to a more dynamic process.
+
+Dynamic persistent configuration has been designed to meet the demands of the increasing proliferation of multi-node, multi-cluster Sync Gateway deployments.
+Their need for simpler and more intuitive management of Sync Gateway clusters has driven significant architectural enhancements.
 
 
 == Static Configuration
@@ -26,6 +30,14 @@ Sync Gateway's established method of configuration is to use a centralized JSON 
 Changes can be made using the {rest-api-admin--xref} but these are not persistent beyond a Sync Gateway restart.
 
 Persistent changes require edits to the central configuration file.
+
+
+=== Supported Use Cases
+
+* Provide diagrams
+
+
+
 
 
 == Dynamic Persistent Configuration
@@ -48,7 +60,9 @@ Changes persist across Sync Gateway restarts.
 * An inter-Sync Gateway Replication configuration using the {configuration-schema-isgr--xref}, which defines the settings provisioned using the {rest-api-admin-isgr--xref}.
 Changes persist across Sync Gateway restarts.
 
+=== Supported Use Cases
 
+* provide diagrams and text from value prop.
 
 
 include::partial$block-related-content-api.adoc[]

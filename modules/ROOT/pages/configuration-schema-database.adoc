@@ -19,6 +19,20 @@ include::partial$block-abstract.adoc[]
 
 Sync Gateway's database configuration settings are shown in the <<lbl-schema>>. The settings are provisioned through the REST API/ -- see: {rest-api-admin-database--xref-configure}
 
+== Capabilities
+
+
+
+
+== Constraints
+
+
+
+
+For more on how to use the TEST API to manage databases and associated objects -- see: {rest-api-admin-database--xref}
+
+
+
 
 [#lbl-schema]
 == Database Configuration Reference
