@@ -1,4 +1,6 @@
 // -- concept -- Users
+== Concept
+
 // tag::full[]
 // tag::summary[]
 Users are one of the cornerstone concepts of access control.
@@ -6,19 +8,15 @@ You can restrict document access to specific users and-or to users with specific
 
 // end::summary[]
 // tag::body[]
-As an entity a _user_ comprises a name, password, list of {roles--xref}} and a list of {channels--xref}.
+As an entity a _user_ comprises a name, password, list of {roles--xref} and a list of {channels--xref}.
 
 NOTE: Sync Gateway users and roles have no relationship to Couchbase Server's xref:server:learn:security/authorization-overview.adoc[RBAC (Role-base Access Control) users].
 
-Users granted access to a channel are able to access the documents assigned to that channel.
+Users that are granted access to a channel are able to access the documents assigned to that channel.
 
 Users can also be assigned to zero or more roles.
 A user inherits the channel access of all roles it belongs to.
 This is very much like Unix groups, except that roles do not form a hierarchy.
-
-Each user must be created on Sync Gateway before it can be used for access control.
-
-You create and-or manage users using the {configuration-schema-static--xref} or the {rest-api-admin--xref}.
 
 // For more on how to create and manage users -- see <<tbd>>.
 

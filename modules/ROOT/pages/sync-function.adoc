@@ -1,4 +1,4 @@
-= Sync Function -- Concepts
+= Sync Function Overview
 :page-layout: article
 :page-partial:
 :description: pass:q[Use Sync Functions to implement effective data routing and access control in the cloud-to-edge synchronization of enterprise data.]
@@ -10,14 +10,171 @@ include::partial$_std-hdr-sgw.adoc[]
 
 // BEGIN -- Page Heading
 :param-topic-group: access-control
-:param-abstract: pass:q[The Sync Function is crucial to the security of data sync and replication. It is in charge of data validation, access control and routing. This topic provides a reference resource on Sync and its helper functions.]
+:param-abstract!:
 include::partial$block-abstract.adoc[]
 // END -- Page Heading
 
+
 == Introduction
 
-include::{concepts}sync-function.adoc[leveloffset=+0]
+// include::{concepts}sync-function.adoc[leveloffset=+0]
+The sync function is crucial to the security of your application.
+It is in charge of data validation, access control and routing.
+The function executes every time a new revision/update is made to a document.
 
+image::sync-function-context.png["Sync Function Context",300]
+
+The sync function should be a focus of any security review of your application.
+
+
+== Use
+
+The Sync Function exposes a number of helper functions to control access — see reference information in {sync-function-api--xref}.
+For example, to grant a user access to a channel use the {sync-function-api-access-cmd--xref} helper function in the Sync Function.
+
+The `access()` function can also operate on roles.
+If a user name string begins with role: then the remainder of the string is interpreted as a role name.
+There’s no ambiguity here, because ":" is an illegal character in a user or role name.
+
+Because anonymous requests are authenticated as the user "GUEST", you can make a channel and its documents public by calling access with a username of GUEST.
+
+You will likely need to include a check for deleted documents and to treat these differently when validating.
+A deletion is just a revision with a "_deleted": true property; and usually nothing else.
+
+Any validation checks will probably fail because of the missing properties, so build -in a check for `doc._deleted == true`.
+
+
+== Prototype Function
+
+In this section we will build a prototype Sync Function that validates and authorizes both new and updated documents.
+
+When you come to build your Sync Function you will need to decide the access control and document distribution requirements:
+
+* The document types it will process
+* The users it will serve
+* Which users need to access which document types
+* What constraints are to be be placed on creating, updating and-or deleting documents
+
+
+Our requirements for this purpose are:
+
+<1> That all documents have the following properties: +
+_creator_, _writers_, _title_  _channels_
+
+<2> That we allow only create and-or delete access to users with the role `editor`
+
+<3> That we only allow changes, including deletions, to be made by users identified in the document's _writers_ property
+
+<4> That the _creator_ is immutable
+
+<5> That we will assign the document to the channel(s) identified in its _channels_ property
+
+
+[#ex-prototype]
+.Prototype Sync Function
+====
+
+[source, javascript]
+----
+function (doc, oldDoc) { // <5>
+  if (doc._deleted) {
+    // Only editors with write access can delete documents:
+    requireRole("role:editor"); // <2>
+    requireUser(oldDoc.writers); // <3>
+    // Skip other validation because a deletion has no other properties:
+    return;
+  }
+  // Required properties:
+  if (!doc.title || !doc.creator ||
+        !doc.channels || !doc.writers) { // <1>
+    throw({forbidden: "Missing required properties"});
+  } else if (doc.writers.length == 0) {
+    throw({forbidden: "No writers"});
+  }
+  if (oldDoc == null) {
+    // Only editors can create documents:
+    requireRole("role:editor"); // <2>
+    // The 'creator' property must match the user creating the document:
+    requireUser(doc.creator)
+  } else {
+    // Only users in the existing doc's writers list can change a document:
+    requireUser(oldDoc.writers); // <3>
+    // The "creator" property is immutable:
+    if (doc.creator != oldDoc.creator) {
+            throw({forbidden: "Can't change creator"}); // <4>
+    }
+  }
+  // Finally, assign the document to the channels in the list:
+  channel(doc.channels); // <5>
+}
+----
+====
+
+
+
+
+== Provisioning
+
+[#ex-prov]
+.Provisioning the Sync Function
+=====
+[{tabs}]
+====
+
+3.x Only::
++
+--
+Here we use the Database Configuration API to provision our Sync Function.
+
+The example uses _CURL_ to do this, but you may use a mechanism of your choice.
+
+[source, bash]
+----
+curl --location --request PUT 'http://localhost:4985/getting-started-db/_config' \
+--header 'accept: application/json' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "sync": ` <.>`
+        }'
+----
+
+--
+
+Other Versions::
++
+--
+NOTE: Only for 2.x users or 3.x users running with `disable-persistent-configuration=true`
+
+Here we embed our Sync Function in our Sync Gateway configuration file.
+
+[source, json]
+----
+  //  ... may be preceded by additional configuration data as required by the user ...
+  "databases": {
+    "getting-started-db": {
+      "server": "http://localhost:8091",
+      "bucket": "getting-started-bucket",
+      "username": "sync_gateway",
+      "password": "password",
+      "enable_shared_bucket_access": true,
+      "import_docs": true,
+      "num_index_replicas": 0,
+      "users": {
+        "GUEST": { "disabled": false, "admin_channels": ["*"] },
+      },
+      "sync": ` <.> `
+  }
+}
+----
+
+--
+
+====
+
+<.> Insert the Sync Function code from <<ex-prototype>> here.
+Note the sync function is enclosed in backticks.
+
+=====
 
 include::partial$block-related-content-sync.adoc[]
 

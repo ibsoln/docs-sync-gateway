@@ -18,7 +18,7 @@ ifdef::param-title[:this-title: {param-title}]
 :title-1: Create Role
 :title-2: Create User
 :title-3: Add Role to User
-:title-4: Allow Access
+:title-4: Allow Acce*ss
 :title-5: Inspect Access
 :title-6: Write Access
 // :title-4: XATTRS

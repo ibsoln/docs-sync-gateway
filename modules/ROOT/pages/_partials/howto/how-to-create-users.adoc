@@ -1,21 +1,23 @@
 // BEGIN how-to -- HOW-TO CREATE A USER
 // Parameters -- use-topic-header -- to show the topic heading (optional)
 
+ifdef::include-related[]
 Related Concepts::
 +
 --
 {users--xref}
 include::{concepts}users.adoc[tag=summary]
 --
-
-== Purpose
-
-
-Each user must be created on Sync Gateway before it can be used for access control.
+endif::[]
 
 
-== Process
-You create and-or manage users by defining them in a configuration file or using the Admin REST API -- see: {configuration-schema-static--xref} | {rest-api-admin--xref}.
+== Provisioning
+
+You can create and-or manage users by:
+
+* Using Sync Gateway's Admin REST API -- {rest-api-admin--xref}.
+*  Configuring OIDC to auto-register a user following successful validation of an ID Token -- {authentication-users--xref}.
+* Pre 3.x users, or 3.x users running with `disable_persistent_config=true`, can use the Configuration File to add users -- see  {configuration-schema-static--xref}
 
 [{tabs}]
 ====
@@ -44,13 +46,21 @@ $ curl -vX PUT "http://localhost:4985/mydatabase/_user/Edge1User" -H
 
 --
 
+OIDC::
++
+--
+
+include::{examples-lib}[tags="oidc-rest-api-simple"]
+
+<.> Use `register=true` to automatically create a Sync Gateway user on successful completion of vaidation.
+
+--
+
 Configuration File::
 +
 --
-Create users by hardcoding their credentials in the {configuration-schema-static--xref}.
-This method is convenient for testing and to get started.
-Use the *Admin REST API* for production system changes.
-+
+Pre 3.x users, or 3.x users running with `disable_persistent_config=true` ONLY.
+
 [source,json]
 ----
 {
@@ -68,8 +78,10 @@ Use the *Admin REST API* for production system changes.
 
 <.> {configuration-schema-static--pfx}#databases-this_db-users[databases.$db.users]
 
---
 <.> Here we add the Edge1 role used in the example in this topic.
+
+--
+
 
 ====
 

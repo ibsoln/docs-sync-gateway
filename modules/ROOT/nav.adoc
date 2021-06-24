@@ -32,135 +32,136 @@ include::ROOT:partial$_page-index.adoc[]
 // END::Attributes and Inclusions
 
 // BEGIN::NAV MENU STRUCTURE
-.xref:ROOT:index.adoc[Sync Gateway]
+.{introduction--xref}
+* xref:ROOT:index.adoc[Quick Start]
 * {whatsnew--xref}
 
-* Start Here!
-** {introduction--xref}
-** {get-started-prepare--xref}
-** {get-started-install--xref}
-** {get-started-verify-install--xref}
+.Start Here!
+* {get-started-prepare--xref}
+* {get-started-install--xref}
+* {get-started-verify-install--xref}
 
-* {data-modeling--xref}
+.{data-modeling--xref}
 
-* Configuration
-** {configuration-overview--xref}
-** Static
-*** {configuration-schema-static--xref}
-*** {configuration-javascript-functions--xref}
-*** {configuration-environment-variables--xref}
-** Dynamic Persistent
-*** {configuration-schema-bootstrap--xref}
-*** {configuration-schema-database--xref}
-*** {configuration-rest-api--xref}
-*** {rest-api-admin-database--xref}
-*** {rest-api-admin-access-control--xref}
-*** {rest-api-admin-isgr--xref}
+.Configuration
+* {configuration-overview--xref}
+* Static
+** {configuration-schema-static--xref}
+** {configuration-javascript-functions--xref}
+** {configuration-environment-variables--xref}
+* Dynamic Persistent
+** {configuration-schema-bootstrap--xref}
+** {configuration-schema-database--xref}
+** {configuration-rest-api--xref}
+** {rest-api-admin-database--xref}
+** {rest-api-admin-access-control--xref}
+** {rest-api-admin-isgr--xref}
 
-* REST API
-** {rest-api-access--xref}
-** {rest-api--xref}
-** {rest-api-admin--xref}
-** {rest-api-metrics--xref}
-** {rest-api-client-app--xref}
+.REST API
+* {rest-api-access--xref}
+* {rest-api--xref}
+* {rest-api-admin--xref}
+* {rest-api-metrics--xref}
+* {rest-api-client-app--xref}
 
-* Security
-** {authentication-users--xref}
-** {authentication-certs--xref}
+.Security
+* {authentication-users--xref}
+* {authentication-certs--xref}
 
-* Data Access
-** {sgw--xref}{access-control-concepts--page}[Concepts]
-*** {sgw--xref}{access--page}[Access]
-*** {sgw--xref}{access-model--page}[Access Model]
-*** {sgw--xref}{channels--page}[Channels]
-*** {sgw--xref}{roles--page}[Roles]
-*** {sync-function--xref}
-*** {sgw--xref}{users--page}[Users]
-** {sgw--xref}{access-control-how--page}[How-To]
-*** {access-control-how-create-users--xref}
-*** {access-control-how-create-roles--xref}
-*** {access-control-how-add-roles-to-users--xref}
-*** {access-control-how-allow-access--xref}
-*** {access-control-how-inspect-access--xref}
-*** {access-control-how-write-access--xref}
-** {sgw--xref}{sync-function-api--page}[Sync Function API]
-*** {sync-function-api-access-cmd--xref}
-*** {sync-function-api-channel-cmd--xref}
-*** {sync-function-api-expiry-cmd--xref}
-*** {sync-function-api-require-access-cmd--xref}
-*** {sync-function-api-require-admin-cmd--xref}
-*** {sync-function-api-require-role-cmd--xref}
-*** {sync-function-api-require-user-cmd--xref}
-*** {sync-function-api-role-cmd--xref}
-*** {sync-function-api-throw-cmd--xref}
-* Sync
-** {sync-with-couchbase-server--xref}
-** {sync-using-app--xref}
-** Inter-Sync Gateway Replication
-*** {sgw--xref}{sync-inter-syncgateway-overview--page}[Overview]
-*** {sgw--xref}{sync-inter-syncgateway-run--page}[Initialize]
-*** {sgw--xref}{sync-inter-syncgateway-manage--page}[Manage]
-*** {sgw--xref}{sync-inter-syncgateway-monitor--page}[Monitor]
-*** {sgw-xref}{sync-inter-syncgateway-conflict-resolution--page}[Conflict Resolution]
-** {sgw--xref}sync-function-from-sync-nav.adoc[Sync Function]
-** {revisions--xref}
-** {what-are-tombstones--xref}
-** {managing-tombstones--xref}
-** {delta-sync--xref}
-** {resync--xref}
-** {import-filter--xref}
+.Data Access
+* {sgw--xref}{access-control-concepts--page}[Concepts]
+** {sgw--xref}{access--page}[Access]
+** {sgw--xref}{access-model--page}[Access Model]
+** {sgw--xref}{channels--page}[Channels]
+** {sgw--xref}{roles--page}[Roles]
+** {sync-function--xref}
+** {sgw--xref}{users--page}[Users]
+* {sgw--xref}{access-control-how--page}[How-To]
+** {access-control-how-create-users--xref}
+** {access-control-how-create-roles--xref}
+** {access-control-how-add-roles-to-users--xref}
+** {access-control-how-allow-access--xref}
+** {access-control-how-inspect-access--xref}
+** {access-control-how-write-access--xref}
+* {sgw--xref}{sync-function-api--page}[Sync Function API]
+** {sync-function-api-access-cmd--xref}
+** {sync-function-api-channel-cmd--xref}
+** {sync-function-api-expiry-cmd--xref}
+** {sync-function-api-require-access-cmd--xref}
+** {sync-function-api-require-admin-cmd--xref}
+** {sync-function-api-require-role-cmd--xref}
+** {sync-function-api-require-user-cmd--xref}
+** {sync-function-api-role-cmd--xref}
+** {sync-function-api-throw-cmd--xref}
 
-* Manage
-** {stats-monitoring--xref}
-** Logging and Troubleshooting
-*** {logging--xref}
-*** {sgcollect-info--xref}
-** {database-offline--xref}
+.Sync
+* {sync-with-couchbase-server--xref}
+* {sync-using-app--xref}
+* Inter-Sync Gateway Replication
+** {sgw--xref}{sync-inter-syncgateway-overview--page}[Overview]
+** {sgw--xref}{sync-inter-syncgateway-run--page}[Initialize]
+** {sgw--xref}{sync-inter-syncgateway-manage--page}[Manage]
+** {sgw--xref}{sync-inter-syncgateway-monitor--page}[Monitor]
+** {sgw-xref}{sync-inter-syncgateway-conflict-resolution--page}[Conflict Resolution]
+* {sgw--xref}sync-function-from-sync-nav.adoc[Sync Function]
+* {revisions--xref}
+* {what-are-tombstones--xref}
+* {managing-tombstones--xref}
+* {delta-sync--xref}
+* {resync--xref}
+* {import-filter--xref}
 
-* Deploy
-** {sgw--xref}{deployment--page}[Overview]
-** {command-line-options--xref}
-** {xref-sgw-pg-load-balancer}
-** {xref-pfx-sgw}{sgw-pg-os-level-tuning}[OS-level Tuning]
-** {xref-pfx-sgw}{sgw-pg-events}[Webhooks]
-** {changes-feed--xref}
-** {xref-pfx-sgw}{sgw-pg-integrating-external-stores}[External Stores]
-** {xref-pfx-sgw}{sgw-pg-stats-prometheus}[Prometheus Feed]
-** {xref-sgw-pg-indexing}
-** {setting-up-dr-cluster--xref}
+.Manage
+* {stats-monitoring--xref}
+* Logging and Troubleshooting
+** {logging--xref}
+** {sgcollect-info--xref}
+* {database-offline--xref}
 
-* {sgw--xref}{upgrading--page}[Upgrade]
+.Deploy
+* {sgw--xref}{deployment--page}[Overview]
+* {command-line-options--xref}
+* {xref-sgw-pg-load-balancer}
+* {xref-pfx-sgw}{sgw-pg-os-level-tuning}[OS-level Tuning]
+* {xref-pfx-sgw}{sgw-pg-events}[Webhooks]
+* {changes-feed--xref}
+* {xref-pfx-sgw}{sgw-pg-integrating-external-stores}[External Stores]
+* {xref-pfx-sgw}{sgw-pg-stats-prometheus}[Prometheus Feed]
+* {xref-sgw-pg-indexing}
+* {setting-up-dr-cluster--xref}
 
-* Use Kubernetes
-** {sgw--xref}{sgw-pg-deploy-cluster}[Deploy]
-** {xref-cao-pg-manage-sgw}[Manage]
-** {xref-cao-pg-clients-sgw}[Expose]
+.{sgw--xref}{upgrading--page}[Upgrade]
 
-* Server Compatibility
-** {sgw--xref}{server-compatibility-collections--page}[Collections]
-** {sgw--xref}{server-compatibility-eventing--page}[Eventing]
-** {sgw--xref}{server-compatibility-transactions--page}[Transactions]
-** {sgw--xref}{server-compatibility-xdcr--page}[XDCR]
+.Use Kubernetes
+* {sgw--xref}{sgw-pg-deploy-cluster}[Deploy]
+* {xref-cao-pg-manage-sgw}[Manage]
+* {xref-cao-pg-clients-sgw}[Expose]
 
-* Product Notes
-** {release-notes--xref}
-** {supported-environments--xref}
-** {compatibility--xref}
+. Server Compatibility
+* {sgw--xref}{server-compatibility-collections--page}[Collections]
+* {sgw--xref}{server-compatibility-eventing--page}[Eventing]
+* {sgw--xref}{server-compatibility-transactions--page}[Transactions]
+* {sgw--xref}{server-compatibility-xdcr--page}[XDCR]
 
-* Legacy Features
-** {legacy-sgreplicate-resolving-conflicts--xref}
-** {legacy-sg-replicate--xref}
-** {legacy-logging-pre2-1--xref}
+.Product Notes
+* {release-notes--xref}
+* {supported-environments--xref}
+* {compatibility--xref}
 
-* {glossary--xref}
+.Legacy Features
+* {legacy-sgreplicate-resolving-conflicts--xref}
+* {legacy-sg-replicate--xref}
+* {legacy-logging-pre2-1--xref}
+
+.{glossary--xref}
 
 // BEGIN::NAV Handover to Couchbase Lite Sub-Menu
-.xref:couchbase-lite::introduction.adoc[Couchbase Lite]
-* xref:couchbase-lite:android:quickstart.adoc[Android (Java)]
-* xref:couchbase-lite:csharp:quickstart.adoc[C#]
-* xref:couchbase-lite:java:quickstart.adoc[Java]
-* xref:couchbase-lite:objc:quickstart.adoc[Objective-C]
-* xref:couchbase-lite:swift:quickstart.adoc[Swift]
+// .xref:couchbase-lite::introduction.adoc[Couchbase Lite]
+// * xref:couchbase-lite:android:quickstart.adoc[Android (Java)]
+// * xref:couchbase-lite:csharp:quickstart.adoc[C#]
+// * xref:couchbase-lite:java:quickstart.adoc[Java]
+// * xref:couchbase-lite:swift:quickstart.adoc[Swift]
+// * xref:couchbase-lite:objc:quickstart.adoc[Objective-C]
 // END::NAV Handover to Couchbase Lite Sub-Menu
 
 // END::NAV MENU STRUCTURE
