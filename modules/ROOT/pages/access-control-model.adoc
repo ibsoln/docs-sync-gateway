@@ -1,5 +1,5 @@
-= Access
-:description: pass:q[About Sync Gateway data access and its role in secure cloud-to-edge enterprise data synchronization.]
+= Access Controld Model
+:description: pass:q[An introduction to access control in Sync Gateway]
 
 
 include::partial$_std-hdr-sgw.adoc[]
@@ -19,7 +19,7 @@ include::partial$block-abstract.adoc[]
 //  END -- Page Heading
 
 
-include::{concepts}access-control.adoc[levelofset=+0]
+include::{concepts}access-control-model.adoc[levelofset=+0]
 
 
 

@@ -1,4 +1,4 @@
-// BEGIN -- inclusion -- topic-group-access-control.adoc
+// BEGIN -- inclusion -- topic-group-access-control-model.adoc
 //  Purpose:
 //    Show the topic group, allowing easy cycle-through
 //    Do not show current page as a click-through though
@@ -27,7 +27,7 @@ ifdef::param-title[:this-title: {param-title}]
 :topic-1: {access-control-how-create-roles--page}
 :topic-2: {access-control-how-create-users--page}
 :topic-3: {access-control-how-add-roles-to-users--page}
-:topic-4: {access-control-how-allow-access--page}
+:topic-4: {access-control-how-control-document-access--page}
 :topic-5: {access-control-how-inspect-access--page}
 :topic-6: {access-control-how-write-access--page}
 // :topic-4: {using-xattr-access-grants--page}

@@ -1,5 +1,5 @@
 = Access Control Concepts
-// BEGIN -- PAGE -- access-control.adoc
+// BEGIN -- PAGE -- access-control-model.adoc
 // BEGIN PAGE DEFINITION
 //  LOCATION modules/ROOT/pages/
 //  PURPOSE:
@@ -44,12 +44,12 @@ include::partial$block-abstract.adoc[]
 == Introduction
 
 
-include::{concepts}access-model.adoc[leveloffset=+0]
+include::{concepts}access-control-model.adoc[leveloffset=+0]
 
 
 [#lbl-access]
 == Access
-include::{concepts}access-control.adoc[leveloffset={ouroffset}]
+include::{concepts}access-control-model.adoc[leveloffset={ouroffset}]
 
 
 [#lbl-channels]
@@ -77,4 +77,4 @@ include::{concepts}sync-function.adoc[leveloffset={ouroffset}]
 
 include::partial$block-related-content-sync.adoc[]
 
-// END -- PAGE -- access-control.adoc
+// END -- PAGE -- access-control-model.adoc

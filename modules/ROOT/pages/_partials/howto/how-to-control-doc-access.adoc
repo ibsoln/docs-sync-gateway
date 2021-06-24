@@ -3,12 +3,26 @@
 [,cols="1,4", grid="none", frame="none"]
 |===
 |_Related Concepts_:
-a|{access--xref} \| {access-model--xref} +
-include::{concepts}access-control.adoc[tag=summary]
+a|{access--xref} \| {access-control-model--xref} \| {channels--xref}
+// include::{concepts}access-control-model.adoc[tag=summary]
 |===
 
 
-== Purpose
+== Read Access Control
+
+Channels form the core of the Sync Gateway Access Control model.
+
+Every document in the database is assigned a list of channels it is distributed to.
+Every user (or role) is granted access to a list of channels.
+
+Channels can be user-defined or they can be system channels (like the public, all-docs, wildcard)
+
+This dual-purpose is reflected in the way you use channels:
+
+* By granting a user (or role) access to a channel, you are imposing access control. Users can only access documents that are channels that they have been granted access to.
+
+* By assigning a document to a channel you are imposing document routing and data segregation
+
 
 You allow roles and-or users access to channels using:
 

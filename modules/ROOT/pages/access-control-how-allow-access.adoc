@@ -30,7 +30,7 @@ include::partial$block-abstract.adoc[]
 //  END -- Page Heading
 
 
-include::{howto}allow-access.adoc[leveloffset=+0]
+include::{howto}control-document-access.adoc[leveloffset=+0]
 
 // Sync Gateway uses _Channels_ to make it easy to share a database's documents across a large user base whilst retaining effective access control.
 // They serve as a security conduit between the document and a user:

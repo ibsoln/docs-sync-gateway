@@ -1,5 +1,5 @@
 = Access Control
-// BEGIN -- PAGE -- access-control.adoc
+// BEGIN -- PAGE -- access-control-model.adoc
 // BEGIN PAGE DEFINITION
 //  LOCATION modules/ROOT/pages/
 //  PURPOSE:
@@ -586,4 +586,4 @@ requireAccess(["events", "messages"]) // <.>
 
 include::partial$block-related-content-sync.adoc[]
 
-// END -- PAGE -- access-control.adoc
+// END -- PAGE -- access-control-model.adoc

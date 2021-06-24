@@ -1,5 +1,5 @@
 // = Fred
-// BEGIN -- inclusion -- topic-group-access-control.adoc
+// BEGIN -- inclusion -- topic-group-access-control-model.adoc
 //  Purpose:
 //    Show the topic group, allowing easy cycle-through
 //    Do not show current page as a click-through though

@@ -28,6 +28,7 @@ include::ROOT:partial$_page-index.adoc[]
 :xref-cao-pg-manage-sgw: {xref--pfx-cao}{cao-pg-manage-sgw}[Manage a Sync Gateway Cluster]
 :xref-cao-pg-clients-sgw: {xref--pfx-cao}{cao-pg-clients-sgw}[Expose Sync Gateway to Couchbase Lite clients]
 :xref-cao-pg-connect-sgw: xref:{xref--pfx-cao}{cao-pg-connect-sgw}[Connect Sync Gateway to a Couchbase Cluster]
+:force-display-of-single-topic-at-group-level: {empty}
 // END::Local Attributes
 // END::Attributes and Inclusions
 
@@ -42,6 +43,7 @@ include::ROOT:partial$_page-index.adoc[]
 * {get-started-verify-install--xref}
 
 .{data-modeling--xref}
+* {force-display-of-single-topic-at-group-level}
 
 .Configuration
 * {configuration-overview--xref}
@@ -68,31 +70,33 @@ include::ROOT:partial$_page-index.adoc[]
 * {authentication-users--xref}
 * {authentication-certs--xref}
 
-.Data Access
+.Access Control
 * {sgw--xref}{access-control-concepts--page}[Concepts]
-** {sgw--xref}{access--page}[Access]
-** {sgw--xref}{access-model--page}[Access Model]
-** {sgw--xref}{channels--page}[Channels]
+// ** {sgw--xref}{access--page}[Access]
+** {access-control-model--xref}** {sgw--xref}{channels--page}[Channels]
 ** {sgw--xref}{roles--page}[Roles]
-** {sync-function--xref}
 ** {sgw--xref}{users--page}[Users]
+
+* Sync Function
+** {sgw--xref}{sync-function--page}[Overview]
+** {sgw--xref}{sync-function-api--page}[API Reference]
+*** {sync-function-api-access-cmd--xref}
+*** {sync-function-api-channel-cmd--xref}
+*** {sync-function-api-expiry-cmd--xref}
+*** {sync-function-api-require-access-cmd--xref}
+*** {sync-function-api-require-admin-cmd--xref}
+*** {sync-function-api-require-role-cmd--xref}
+*** {sync-function-api-require-user-cmd--xref}
+*** {sync-function-api-role-cmd--xref}
+*** {sync-function-api-throw-cmd--xref}
+
 * {sgw--xref}{access-control-how--page}[How-To]
 ** {access-control-how-create-users--xref}
 ** {access-control-how-create-roles--xref}
 ** {access-control-how-add-roles-to-users--xref}
-** {access-control-how-allow-access--xref}
+** {access-control-how-control-document-access--xref}
 ** {access-control-how-inspect-access--xref}
-** {access-control-how-write-access--xref}
-* {sgw--xref}{sync-function-api--page}[Sync Function API]
-** {sync-function-api-access-cmd--xref}
-** {sync-function-api-channel-cmd--xref}
-** {sync-function-api-expiry-cmd--xref}
-** {sync-function-api-require-access-cmd--xref}
-** {sync-function-api-require-admin-cmd--xref}
-** {sync-function-api-require-role-cmd--xref}
-** {sync-function-api-require-user-cmd--xref}
-** {sync-function-api-role-cmd--xref}
-** {sync-function-api-throw-cmd--xref}
+** {access-control-how-use-xattrs--xref}
 
 .Sync
 * {sync-with-couchbase-server--xref}
@@ -131,6 +135,7 @@ include::ROOT:partial$_page-index.adoc[]
 * {setting-up-dr-cluster--xref}
 
 .{sgw--xref}{upgrading--page}[Upgrade]
+* {force-display-of-single-topic-at-group-level}
 
 .Use Kubernetes
 * {sgw--xref}{sgw-pg-deploy-cluster}[Deploy]
@@ -154,6 +159,7 @@ include::ROOT:partial$_page-index.adoc[]
 * {legacy-logging-pre2-1--xref}
 
 .{glossary--xref}
+* {force-display-of-single-topic-at-group-level}
 
 // BEGIN::NAV Handover to Couchbase Lite Sub-Menu
 // .xref:couchbase-lite::introduction.adoc[Couchbase Lite]

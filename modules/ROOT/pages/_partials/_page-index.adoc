@@ -84,8 +84,8 @@ endif::xref--pfx-sgw[]
 
 // BEGIN -- SYNC GATEWAY PAGE ATTRIBUTES
 
-:access--page: access.adoc
-:access--xref: {sgw--xref}{access--page}[Access]
+:access--control-model--page: access-control-model.adoc
+:access--control-model--xref: {sgw--xref}{access--control-model--page}[Access]
 :access-control-overview--page: access-control-overview.adoc
 :access-control-overview--xref: {sgw--xref}{access-control-overview--page}[Access Control Overview]
 :access-control-concepts--page: access-control-concepts.adoc
@@ -95,19 +95,21 @@ endif::xref--pfx-sgw[]
 
 
 :access-control-how-add-roles-to-users--page: access-control-how-add-roles-to-users.adoc
-:access-control-how-add-roles-to-users--xref: {sgw--xref}{access-control-how-add-roles-to-users--page}[Add a Role to a User]
-:access-control-how-allow-access--page: access-control-how-allow-access.adoc
-:access-control-how-allow-access--xref: {sgw--xref}{access-control-how-allow-access--page}[Allow Access]
+:access-control-how-add-roles-to-users--xref: {sgw--xref}{access-control-how-add-roles-to-users--page}[Assign Roles to Users]
+:access-control-how-control-document-access--page: access-control-how-control-document-access.adoc
+:access-control-how-control-document-access--xref: {sgw--xref}{access-control-how-control-document-access--page}[Control Document Access]
 :access-control-how-create-roles--page: access-control-how-create-roles.adoc
-:access-control-how-create-roles--xref: {sgw--xref}{access-control-how-create-roles--page}[Create a Role]
+:access-control-how-create-roles--xref: {sgw--xref}{access-control-how-create-roles--page}[Create Roles]
 :access-control-how-create-users--page: access-control-how-create-users.adoc
-:access-control-how-create-users--xref: {sgw--xref}{access-control-how-create-users--page}[Create a User]
+:access-control-how-create-users--xref: {sgw--xref}{access-control-how-create-users--page}[Create Users]
 :access-control-how-inspect-access--page: access-control-how-inspect-access.adoc
-:access-control-how-inspect-access--xref: {sgw--xref}{access-control-how-inspect-access--page}[Inspect Access]
+:access-control-how-inspect-access--xref: {sgw--xref}{access-control-how-inspect-access--page}[Verify Access]
+:access-control-how-use-xattrs--page: access-control-how-use-xattrs.adoc
+:access-control-how-use-xattrs--xref: {sgw--xref}{access-control-how-use-xattrs--page}[Use XATTRS for Access Grants]
 :access-control-how-write-access--page: access-control-how-write-access.adoc
 :access-control-how-write-access--xref: {sgw--xref}{access-control-how-write-access--page}[Write Access]
-:access-model--page: access-model.adoc
-:access-model--xref: {sgw--xref}{access-model--page}[Access Model]
+:access-control-model--page: access-control-model.adoc
+:access-control-model--xref: {sgw--xref}{access-control-model--page}[Access Model]
 
 :access-grants--page: access-grants.adoc
 :access-grants--xref: {sgw--xref}{access-grants--page}[Access Grants]
@@ -398,7 +400,7 @@ endif::xref--pfx-sgw[]
 :supported-environments--xref: {sgw--xref}{supported-environments--page}[Supported Environments]
 
 :sync-function--page:  sync-function.adoc
-:sync-function--xref: {sgw--xref}{sync-function--page}[Sync Function]
+:sync-function--xref: {sgw--xref}{sync-function--page}[Sync Function Overview]
 
 :sync-function-api--page:  sync-function-api.adoc
 :sync-function-api--xref: {sgw--xref}{sync-function-api--page}[Sync Function API]

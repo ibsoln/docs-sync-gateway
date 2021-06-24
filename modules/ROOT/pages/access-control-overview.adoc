@@ -1,5 +1,5 @@
 = Access Control Overview
-// BEGIN -- PAGE -- access-control.adoc
+// BEGIN -- PAGE -- access-control-model.adoc
 // BEGIN PAGE DEFINITION
 //  LOCATION modules/ROOT/pages/
 //  PURPOSE:
@@ -106,4 +106,4 @@ image::channel-access-grant-all.png[,600]
 
 include::partial$block-related-content-sync.adoc[]
 
-// END -- PAGE -- access-control.adoc
+// END -- PAGE -- access-control-model.adoc

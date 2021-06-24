@@ -1,5 +1,5 @@
 = Access Control How-To
-// BEGIN -- PAGE -- access-control.adoc
+// BEGIN -- PAGE -- access-control-model.adoc
 // BEGIN PAGE DEFINITION
 //  LOCATION modules/ROOT/pages/
 //  PURPOSE:
@@ -265,10 +265,10 @@ include::{howto}add-roles-to-users.adoc[leveloffset={our-offset}]
 // ====
 
 
-[#lbl-allow-access]
+[#lbl-control-document-access]
 == Allow Channel Access
 
-include::{howto}allow-access.adoc[leveloffset={our-offset}]
+include::{howto}control-document-access.adoc[leveloffset={our-offset}]
 
 // You can allow roles and-or users access to channels using:
 
@@ -544,4 +544,4 @@ See: {sync-function--xref} topic for more information.
 
 include::partial$block-related-content-sync.adoc[]
 
-// END -- PAGE -- access-control.adoc
+// END -- PAGE -- access-control-model.adoc
