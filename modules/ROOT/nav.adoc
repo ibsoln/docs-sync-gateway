@@ -72,8 +72,8 @@ include::ROOT:partial$_page-index.adoc[]
 
 .Access Control
 * {sgw--xref}{access-control-concepts--page}[Concepts]
-// ** {sgw--xref}{access--page}[Access]
-** {access-control-model--xref}** {sgw--xref}{channels--page}[Channels]
+** {access-control-model--xref}
+** {sgw--xref}{channels--page}[Channels]
 ** {sgw--xref}{roles--page}[Roles]
 ** {sgw--xref}{users--page}[Users]
 
