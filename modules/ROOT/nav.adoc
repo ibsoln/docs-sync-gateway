@@ -1,15 +1,17 @@
-// SYNC GATEWAY MAIN NAVIGATION MENU
+// BEGIN -- SYNC GATEWAY MAIN NAVIGATION MENU
+// BEGIN -- SYNC GATEWAY MAIN NAVIGATION MENU
 //
-// Use of attributes:
-//  Attributes in this document are in the following forms ...
-//  - <pg>-page contain the full stated <pg> page name (including any relevant path details and suffix)
-//  - <pg>-page--<bmk> contain the full stated <pg> page name and the stated bookmark <bmk>
-//  - <pg>-xref are xref:links to the stated page name
-//  - <pg>--xref--<bmk> are xref:links to the stated bookmark <bmk> within the stated page name
+// BEGIN -- Use of attribute names:
+//  Attributes name in this document are in the following forms ...
+//  - <pg>--page contain the full stated <pg> page name (including any relevant path details and suffix)
+//  - <pg>--page-<bmk> contain the full stated <pg> page name and the stated bookmark <bmk>
+//  - <pg>--xref are xref:links to the stated page name
+//  - <pg>--xref-<bmk> are xref:links to the stated bookmark <bmk> within the stated page name
 // Attributes for pages outside of sync-gateway are prefixed with the application code: CBL, CAO, SVR etc
-
+// END -- Use of attribute names:
 //
 // BEGIN::ATTRIBUTES AND INCLUSIONS
+//
 // These are attributes shared across Couchbase Lite, Couchbase for Mobile and Edge and Sync Gateway e.g version major.minor numbers
 include::shared-mobile::partial$_attributes-shared.adoc[]
 // Attributes specific to Sync Gateway -- eg patch number
@@ -17,8 +19,7 @@ include::ROOT:partial$_attributes-local.adoc[]
 // :sgw--xref: xref:sync-gateway:: -- gets it from local
 // Attributes defining all sgw pages and associated prebuilt xrefs (as used below)
 include::ROOT:partial$_page-index.adoc[]
-
-
+//
 // BEGIN::Local Attributes (to this page)
 :xref--pfx-cbl: {xref--pfx-cbl}:
 :xref--pfx-cao: xref:operator::
@@ -78,7 +79,7 @@ include::ROOT:partial$_page-index.adoc[]
 ** {sgw--xref}{users--page}[Users]
 
 * Sync Function
-** {sgw--xref}{sync-function--page}[Overview]
+** {sgw--xref}{sync-function-overview--page}[Overview]
 ** {sgw--xref}{sync-function-api--page}[API Reference]
 *** {sync-function-api-access-cmd--xref}
 *** {sync-function-api-channel-cmd--xref}
@@ -95,8 +96,8 @@ include::ROOT:partial$_page-index.adoc[]
 ** {access-control-how-create-roles--xref}
 ** {access-control-how-add-roles-to-users--xref}
 ** {access-control-how-control-document-access--xref}
-** {access-control-how-inspect-access--xref}
-** {access-control-how-use-xattrs--xref}
+** {access-control-how-verify-access--xref}
+** {access-control-how-use-xattrs-for-access-grants--xref}
 
 .Sync
 * {sync-with-couchbase-server--xref}
@@ -107,7 +108,6 @@ include::ROOT:partial$_page-index.adoc[]
 ** {sgw--xref}{sync-inter-syncgateway-manage--page}[Manage]
 ** {sgw--xref}{sync-inter-syncgateway-monitor--page}[Monitor]
 ** {sgw-xref}{sync-inter-syncgateway-conflict-resolution--page}[Conflict Resolution]
-* {sgw--xref}sync-function-from-sync-nav.adoc[Sync Function]
 * {revisions--xref}
 * {what-are-tombstones--xref}
 * {managing-tombstones--xref}
@@ -125,20 +125,20 @@ include::ROOT:partial$_page-index.adoc[]
 .Deploy
 * {sgw--xref}{deployment--page}[Overview]
 * {command-line-options--xref}
-* {xref-sgw-pg-load-balancer}
-* {xref-pfx-sgw}{sgw-pg-os-level-tuning}[OS-level Tuning]
-* {xref-pfx-sgw}{sgw-pg-events}[Webhooks]
+* {load-balancer--xref}
+* {sgw--xref}{os-level-tuning--page}[OS-level Tuning]
+* {webhooks--xref}
 * {changes-feed--xref}
-* {xref-pfx-sgw}{sgw-pg-integrating-external-stores}[External Stores]
-* {xref-pfx-sgw}{sgw-pg-stats-prometheus}[Prometheus Feed]
-* {xref-sgw-pg-indexing}
+* {sgw--xref}{integrating-external-stores--page}[External Stores]
+* {sgw--xref}{stats-prometheus--page}[Prometheus Feed]
+* {sgw--xref}{indexing--page}[Indexing]
 * {setting-up-dr-cluster--xref}
 
 .{sgw--xref}{upgrading--page}[Upgrade]
 * {force-display-of-single-topic-at-group-level}
 
 .Use Kubernetes
-* {sgw--xref}{sgw-pg-deploy-cluster}[Deploy]
+* {sgw--xref}{deploy-cluster-to-kubernetes--page}[Deploy]
 * {xref-cao-pg-manage-sgw}[Manage]
 * {xref-cao-pg-clients-sgw}[Expose]
 
@@ -161,13 +161,5 @@ include::ROOT:partial$_page-index.adoc[]
 .{glossary--xref}
 * {force-display-of-single-topic-at-group-level}
 
-// BEGIN::NAV Handover to Couchbase Lite Sub-Menu
-// .xref:couchbase-lite::introduction.adoc[Couchbase Lite]
-// * xref:couchbase-lite:android:quickstart.adoc[Android (Java)]
-// * xref:couchbase-lite:csharp:quickstart.adoc[C#]
-// * xref:couchbase-lite:java:quickstart.adoc[Java]
-// * xref:couchbase-lite:swift:quickstart.adoc[Swift]
-// * xref:couchbase-lite:objc:quickstart.adoc[Objective-C]
-// END::NAV Handover to Couchbase Lite Sub-Menu
-
 // END::NAV MENU STRUCTURE
+// END -- SYNC GATEWAY MAIN NAVIGATION MENU

@@ -41,14 +41,8 @@ include::partial$_std-hdr-sgw.adoc[]
 include::partial$block-abstract.adoc[]
 
 
-== Introduction
-
-
-include::{concepts}access-control-model.adoc[leveloffset=+0]
-
-
 [#lbl-access]
-== Access
+== Access Control Model
 include::{concepts}access-control-model.adoc[leveloffset={ouroffset}]
 
 
@@ -69,10 +63,10 @@ include::{concepts}users.adoc[leveloffset={ouroffset}]
 include::{concepts}roles.adoc[leveloffset={ouroffset}]
 
 
-[#lbl-sync-function]
-== Sync Function
+// [#lbl-sync-function]
+// == Sync Function
 
-include::{concepts}sync-function.adoc[leveloffset={ouroffset}]
+// include::{concepts}sync-function.adoc[leveloffset={ouroffset}]
 
 
 include::partial$block-related-content-sync.adoc[]

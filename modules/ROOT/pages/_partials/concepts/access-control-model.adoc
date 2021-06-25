@@ -6,7 +6,7 @@ You control document access by routing it to a channel and by making that channe
 // end::summary[]
 // tag::body[]
 == Model
-In the Couchbase Mobile ecosystem access to documents is governed by three key entities ({sgw--xref}{user--page}[users], {sgw--xref}{role--page}[roles] and {sgw--xref}{channels--page}[[channels]).
+In the Couchbase Mobile ecosystem access to documents is governed by three key entities: {sgw--xref}{user--page}[users], {sgw--xref}{role--page}[roles] and {sgw--xref}{channels--page}[channels].
 
 [#img-access-control-model]
 
@@ -14,7 +14,7 @@ In the Couchbase Mobile ecosystem access to documents is governed by three key e
 .Access Control Model
 image:access-control-triangle.png[Access,400]
 
-Conceptually, the “channel” can be considered as a “tag” associated with a document.
+Conceptually, the _channel_ can be considered as a _tag_ associated with a document.
 Every document processed by the Sync Gateway is assigned to a channel (user-defined or system-defined).
 A channel is the fundamental way to segregate documents and for enforcing access control.
 
@@ -57,14 +57,11 @@ include::partial$blocklinks-cbl.adoc[]
 
 == Provisioning
 
-* Channels +
-The {channels--xref} topic how channels are created and how documents can be assigned to channels.
+* {channel--xref} -- the channels topic discusses how channels are created and how documents can be assigned to channels.
 
-* Users +
-The {user--xrf} topic discusses provisioning of users and providing users access to channels.
+* {user--xref} -- the user topic discusses provisioning of users and providing users access to channels.
 
-* Roles
-The {role--xref} topic discusses roles, assignment of users to roles created and providing roles access to channels.
+* {role--xref} -- the role topic discusses roles, assignment of users to roles created and providing roles access to channels.
 
 
 // == Use
@@ -77,7 +74,7 @@ The {role--xref} topic discusses roles, assignment of users to roles created and
 
 // * Programmatically -- The {sync-function--xref} provides a flexible and secure method for controlling document access and routing.
 // +
-// It can be programmed to derive appropriate access and routing information from document properties or, more securely, from a designated extended attribute (XATTR) -- see: {using-xattr-access-grants--xref} for how to define the XATTR.
+// It can be programmed to derive appropriate access and routing information from document properties or, more securely, from a designated extended attribute (XATTR) -- see: {access-control-how-use-xattrs-for-access-grants--xref} for how to define the XATTR.
 
 
 // [#img-channel-access]
@@ -101,7 +98,7 @@ The {role--xref} topic discusses roles, assignment of users to roles created and
 // . Creating two roles (Edge1 and Edge2) for the two groups of users.
 // +
 // --
-// Do this either by using the Admin Rest API endpoint  {rest-api-admin-role-post--xref} or statically by adding the role to the database in the {configuration-schema-static--xref}.
+// Do this either by using the Admin REST API endpoint  {rest-api-admin-role-post--xref} or statically by adding the role to the database in the {configuration-schema-static--xref}.
 // In either case specify that role Edge1 can access `Channel1`, Edge2 can access `Channel2`, and both roles can access & `Channel3` -- see: {access-control-how-create-roles--xref}
 // --
 

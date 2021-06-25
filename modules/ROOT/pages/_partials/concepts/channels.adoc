@@ -48,21 +48,19 @@ In addition, all the stores may need to have access to a common set of documents
 [{tabs}]
 ====
 
-3.x::
+Version 3.0+::
 +
 --
 
 image::channel-access-grant-3.0.png["Access Control Points 3.x",400]
 
-
-<1> Programmatically using Access Grant Document:
- The {sync-function--xref} provides a flexible and secure method for controlling document access and routing.
-You can program it to derive appropriate access and channel routing information from document properties.
-Optionally, the access grant can be specified via a designated extended attribute (XATTR) — see: {using-xattr-access-grants--xref} for how to define the XATTR.
-
-<2> Statically via Admin REST API :
+<1> Statically via Admin REST API :
 You can provide the `admin_channels` property using the *Admin REST API* endpoint ({rest-api-admin-user-put--xref}).
 
+<2> Programmatically using Access Grant Document:
+The {sync-function--xref} provides a flexible and secure method for controlling document access and routing.
+You can program it to derive appropriate access and channel routing information from document properties. +
+Optionally, the access grant can be specified via a designated extended attribute (XATTR) — see: {access-control-how-use-xattrs-for-access-grants--xref} for how to define the XATTR.
 
 --
 
@@ -72,15 +70,16 @@ Pre-3.0::
 
 image::channel-access-grant-pre3.0.png["Access Control Points pre 3.x",400]
 
-<1> Programmatically using Access Grant Document:
- The {sync-function--xref} provides a flexible and secure method for controlling document access and routing.
-You can program it to derive appropriate access and channel routing information from document properties.
-
-<2> Statically via Admin REST API :
+<1> Statically via Admin REST API :
 You can provide the `admin_channels` property using the *Admin REST API* endpoint ({rest-api-admin-user-put--xref}).
 
-<3> Configuration  (ONLY IN PRE 3.0) :
-This is only available in 3.0 and is typically used for dev/test environments. You can do it in the Sync Gateway JSON Configuration File ({configuration-schema-static--xref} ) by adding the appropriate channel to the user’s admin_channels property -- see: {configuration-schema-static--xref--databases-user-admin-channels}
+<2> Programmatically using Access Grant Document:
+ The {sync-function--xref} provides a flexible and secure method for controlling document access and routing. +
+You can program it to derive appropriate access and channel routing information from data embedded within document properties.
+
+<3> Static Configuration:
+This is only available in 3.0 and is typically used for dev/test environments.
+You can do it in the Sync Gateway JSON Configuration File ({configuration-schema-static--xref} ) by adding the appropriate channel to the user’s admin_channels property -- see: {configuration-schema-static--xref--databases-user-admin-channels}.
 
 --
 ====

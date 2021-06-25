@@ -1,6 +1,5 @@
 // BEGIN how-to -- HOW-TO CREATE A USER
 // Parameters -- use-topic-header -- to show the topic heading (optional)
-
 ifdef::include-related[]
 Related Concepts::
 +
@@ -11,20 +10,31 @@ include::{concepts}users.adoc[tag=summary]
 endif::[]
 
 
-== Provisioning
+== Process
+A user must be created on Sync Gateway before it can be granted access to documents.
 
-You can create and-or manage users by:
+You create and-or manage users using the following options -- as shown in <<ex-create-users>>:
 
-* Using Sync Gateway's Admin REST API -- {rest-api-admin--xref}.
-*  Configuring OIDC to auto-register a user following successful validation of an ID Token -- {authentication-users--xref}.
-* Pre 3.x users, or 3.x users running with `disable_persistent_config=true`, can use the Configuration File to add users -- see  {configuration-schema-static--xref}
+* Admin REST API +
+Users are created via the Sync Gateway {rest-api-admin--xref}.
+* OIDC +
+Configure _OIDC_ authentication to auto-register a user following successful validation of an ID Token -- {authentication-users--xref}.
+* Static Configuration (Pre 3.0): +
+Users can be statically configured within the Sync Gateway Configuration File -- see: {configuration-schema-static--xref}. +
+*Note*, to use this option in version 3.0+x users must run Sync Gateway with the `disable_persistent_config` flag set to `true`.
 
-[{tabs}]
+[#ex-create-users]
+.How to Create Users
 ====
 
-Admin Rest API::
+[{tabs}]
+=====
+
+Admin REST API::
 +
 --
+NOTE: This is the default recommended option starting 3.0.
+
 Create a new user by sending a POST request to the Admin Rest Api `_user` endpoint ({rest-api-admin-user-post--xref}).
 Update existing users by sending a PUT instead; in this case include the user name at the end of the url.
 
@@ -59,7 +69,13 @@ include::{examples-lib}[tags="oidc-rest-api-simple"]
 Configuration File::
 +
 --
-Pre 3.x users, or 3.x users running with `disable_persistent_config=true` ONLY.
+
+NOTE: This option is disabled by default starting 3.0.
+
+Create users by hardcoding their credentials in the Static Configuration Schema. This method is convenient for testing and to get started. +
+Use the Admin REST API for production system changes.
+
+TIP: To use this method in 3.0+, run Sync Gateway with the`disable_persistent_config` flag set to `true`.
 
 [source,json]
 ----
@@ -81,7 +97,7 @@ Pre 3.x users, or 3.x users running with `disable_persistent_config=true` ONLY.
 <.> Here we add the Edge1 role used in the example in this topic.
 
 --
-
+=====
 
 ====
 

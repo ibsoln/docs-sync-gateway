@@ -16,20 +16,30 @@ endif::[]
 
 == Provisioning
 
-Create and-or manage roles using the Sync Gateway Admin REST API -- {rest-api-admin--xref}.
+The creation of roles is optional.
+It depends on the use case whether there is a need to logically group users.
 
-If you are running Sync gateway in static mode then you can also configure roles within the Sync Gateway Static Configuration File -- {configuration-schema-static--xref}
+You can create and-or manage roles using the following options
 
-Note that removing a role effectively revokes access to the channel that role is associated with and may mean users will lose access to required documents.
+* Admin REST API: +
+Roles are created via the Sync Gateway Admin REST API -- see: {rest-api-admin--xref}.
+* Static Configuration ( PRE 3.0) +
+Roles can be statically configured within using the Sync Gateway Static Configuration File -- see: {configuration-schema-static—​xref}. +
+*Note* To use this option in v3.0, you must set the `disable_persistent_config` flag to `true.`
+
+*Note* that removing a role effectively revokes access to the channel that role is associated with and may mean users will lose access to required documents.
 
 
 .Create a Role
 [{tabs}]
 ====
 
-Admin Rest API::
+Admin REST API::
 +
 --
+
+NOTE: This is the default recommended option starting 3.0..
+
 Create a new role using the {rest-api-admin-role-post--xref} endpoint.
 
 [source,bash]
@@ -44,7 +54,10 @@ $ curl -vX POST "http://localhost:4985/mydatabase/_roles/" -H
 Configuration File::
 +
 --
-Create users by hardcoding their credentials in the {configuration-schema-static--xref}.
+
+NOTE: This option is disabled by default starting 3.0
+
+Create roles by hardcoding them in the {configuration-schema-static--xref}.
 This method is convenient for testing and to get started.
 It is recommended to use the *Admin REST API* for production systems.
 

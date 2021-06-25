@@ -1,5 +1,6 @@
-= How to Control Write Access
-:description: pass:q[How to allow a Sync Gateway user write access to data in cloud-to-edge enterprise data synchronization.]
+= How to
+ccess
+:description: pass:q[How to verify Sync Gateway access to data in cloud-to-edge enterprise data synchronization.]
 :idprefix:
 :idseparator: -
 :url-httpie: https://github.com/jakubroztocil/httpie
@@ -10,13 +11,6 @@ include::partial$_std-hdr-sgw.adoc[]
 
 
 //  BEGIN -- Local Attributes
-:SGW: pass:q[_Sync Gateway_]
-:channel1: pass:q,a[_Channel #1_]
-:channel2: pass:q,a[_Channel #2_]
-:channel3: pass:q,a[_Channel #3_]
-
-:Edge1: pass:q,a[_Edge #1_]
-:Edge2: pass:q,a[_Edge #2_]
 
 // END -- Local Attributes
 
@@ -29,7 +23,7 @@ include::partial$block-abstract.adoc[]
 //  END -- Page Heading
 
 
-include::{howto}write-access.adoc[leveloffset=+0]
+include::{howto}verify-access.adoc[leveloffset=+0]
 
 
 // BEGIN -- Page Footer

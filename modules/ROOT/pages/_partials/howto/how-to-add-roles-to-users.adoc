@@ -4,22 +4,34 @@
 Related Concepts::
 {roles--xref} | {users--xref}
 
-== Purpose
+== Process
 
 include::{concepts}user.adoc[tag=summary]
 
-You can add and remove roles from users using either the {rest-api-admin--xref} or {configuration-schema-static--xref}.
+You can assign (or remove) users to (or from) roles using either of the following mechansims:
+
+* Admin REST API +
+Assign a user to a role via the {rest-api-admin--xref}
+* configuration File (Pre v3.0+) +
+Roles can be statically configured within using the Sync Gateway Static Configuration File -- see: {configuration-schema-static--xref}. +
+To use this option in 3.0, you must set the `disable_persistent_config` flag to `true`
+* Sync Function +
+Programmatically assign users to roles.
 
 Note that removing a role effectively revokes access to the channel that role is associated with and may mean users will lose access to required documents.
 
-== Process
-[{tabs}]
+.Assign user to role
 ====
+[{tabs}]
+=====
 
 Admin REST API::
 +
 --
-Add a role to an existing user by sending a PUT request to the Admin Rest API `_role` endpoint ({rest-api-admin-user-put--xref} ).
+
+NOTE: This is the recommended method from 3.0
+
+Assign a user to a role by sending a PUT request to the Admin REST API `_user` endpoint ({rest-api-admin-user-put--xref} ).
 
 Specify the roles to be assigned in the `admin_roles` array.
 
@@ -30,6 +42,7 @@ $ curl -vX PUT "http://localhost:4985/mydatabase/_user/{user}" -H
 '{ "admin_roles": ["Edge1"]}' // <.>
 ----
 <.> {user} is the user name to be updated, e.g. "Edge1User"
+<.> Include the role that the user is to be assigned to in `admin_roles`
 
 See also: {rest-api-admin-role-put--xref}
 --
@@ -37,7 +50,10 @@ See also: {rest-api-admin-role-put--xref}
 Configuration::
 +
 --
-Add a role to a user in the configuration file.
+
+NOTE: This option is disabled by default starting 3.0.
+
+Add the role the user is to be assigned to in the configuration file.
 This method is convenient for testing and to get started.
 Use the *Admin REST API* for production systems.
 
@@ -48,7 +64,7 @@ Use the *Admin REST API* for production systems.
     "mydatabase": {
       "users": { // <.>
         "GUEST": {"disabled": true},
-        "Edge1User": {"password": "pass", "admin_roles": ["Edge1"],
+        "Edge1User": {"password": "pass", "admin_roles": ["Edge1"], // <.>
                       "admin_channels": ["RandomChannel"]},
         "Edge2User": {"password": "pass", "admin_roles": ["Edge2"]}
       }
@@ -57,12 +73,19 @@ Use the *Admin REST API* for production systems.
 }
 ----
 <.> {configuration-schema-static--pfx}#databases-this_db-users-this_user-admin_roles[databases.$db.users.$user.admin_roles]
+
+<.> Add the role the user is to be assigned to in `admin_roles`
 --
 
 Sync Function::
 +
 --
-You can also use the Sync Function's `role(username, rolename)` function to assign roles to users programmatically.
+You can also use the Sync Function's {sync-function-api-role-cmd--xref} function to assign users to roles programmatically.
+
+In this use case, where role assignment is done dynamically via the sync function, the role(s) to which user is assigned can be identified in two ways:
+
+* By document content -- the role can be derived or specified as a property within the document body.
+* By user defined XATTR (3.0+) -- the role can be specified within a special user-defined XATTR associated with the document -- see: {access-control-how-use-xattrs-for-access-grants--xref}
 
 Note that both role and user must already exist.
 Nonexistent roles don’t cause an error, but have no effect on the user’s access privileges.
@@ -72,9 +95,11 @@ Nonexistent roles don’t cause an error, but have no effect on the user’s acc
 role ("Edge1User", "role:Edge1");
 role ("Edge2User", "role:Edge2":);
 ----
+
 --
 
 ====
+
 
 
 // END how-to -- HOW-TO ADD A ROLE TO A USER

@@ -18,8 +18,8 @@ ifdef::param-title[:this-title: {param-title}]
 :title-1: Create Role
 :title-2: Create User
 :title-3: Add Role to User
-:title-4: Allow Acce*ss
-:title-5: Inspect Access
+:title-4: Allow Access
+:title-5: Verify Access
 :title-6: Write Access
 // :title-4: XATTRS
 
@@ -28,7 +28,7 @@ ifdef::param-title[:this-title: {param-title}]
 :topic-2: {access-control-how-create-users--page}
 :topic-3: {access-control-how-add-roles-to-users--page}
 :topic-4: {access-control-how-control-document-access--page}
-:topic-5: {access-control-how-inspect-access--page}
+:topic-5: {access-control-how-verify-access--page}
 :topic-6: {access-control-how-write-access--page}
 // :topic-4: {using-xattr-access-grants--page}
 

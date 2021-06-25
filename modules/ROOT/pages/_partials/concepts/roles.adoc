@@ -4,7 +4,7 @@
 // tag::summary[]
 
 Roles are named collections of {channels--xref}.
-They enable the grouping together of {Users--xref} with similar characteristics, which makes the management of large user populations easier.
+They enable the grouping together of {users--xref} with similar characteristics, which makes the management of large user populations easier.
 
 // end::summary[]
 // tag::body[]

@@ -40,49 +40,50 @@ include::partial$_std-hdr-sgw.adoc[]
 // BEGIN -- Page Heading
 :param-topic-group: access-control
 :param-abstract: pass:q[The Sync Function is crucial to the security of data sync and replication. It is in charge of data validation, access control and routing. This topic provides a reference resource on Sync and its helper functions.]
+:param-related: {sync-function-overview--xref}
 include::partial$block-abstract.adoc[]
 // END -- Page Heading
 
 
-== Introduction
+// == Introduction
 
-include::{concepts}sync-function.adoc[leveloffset={ouroffset}]
+// include::{concepts}sync-function.adoc[leveloffset={ouroffset}]
 
 
-== Arguments
-The sync function arguments are:
+// == Arguments
+// The sync function arguments are:
 
-`doc`::
-This object references the content of the document that is being saved.
-It matches the JSON saved by the Couchbase Lite and replicated to Sync Gateway.
-* The `_id` property contains the document ID
-* The `_rev` property is the new revision ID.
-* If the document is being deleted, there will be a `_deleted` property with the value true.
+// `doc`::
+// This object references the content of the document that is being saved.
+// It matches the JSON saved by the Couchbase Lite and replicated to Sync Gateway.
+// * The `_id` property contains the document ID
+// * The `_rev` property is the new revision ID.
+// * If the document is being deleted, there will be a `_deleted` property with the value true.
 
-`oldDoc`::
-If the document has been saved before, the revision that is being replaced is available in this argument.
-Otherwise it's `null`.
-(In the case of a document with conflicts, the current provisional winning revision is passed in `oldDoc`.) +
-Your implementation of the sync function can omit the `oldDoc` parameter if you do not need it (JavaScript ignores extra parameters passed to a function).
+// `oldDoc`::
+// If the document has been saved before, the revision that is being replaced is available in this argument.
+// Otherwise it's `null`.
+// (In the case of a document with conflicts, the current provisional winning revision is passed in `oldDoc`.) +
+// Your implementation of the sync function can omit the `oldDoc` parameter if you do not need it (JavaScript ignores extra parameters passed to a function).
 
-If you don't supply a sync function, Sync Gateway uses the {configuration-schema-static--pfx}#databases-this_db-sync[default Sync Function].
+// If you don't supply a sync function, Sync Gateway uses the {configuration-schema-static--pfx}#databases-this_db-sync[default Sync Function].
 
-If you want to access control data embedded in Sync Gateway document metadata you should set:
+// If you want to access control data embedded in Sync Gateway document metadata you should set:
 
-* {configuration-schema-database--xref-enable-shared-bucket-access} = `true`
-* {configuration-schema-database--xref-user-xattr-key} = a valid, and existing, extended attribute name
+// * {configuration-schema-database--xref-enable-shared-bucket-access} = `true`
+// * {configuration-schema-database--xref-user-xattr-key} = a valid, and existing, extended attribute name
 
-Doing so will then expose an additional, optional argument, `meta`.
+// Doing so will then expose an additional, optional argument, `meta`.
 
-The `meta` object references an XATTR key designated as identifying access control and-or routing information -- see {using-xattr-access-grants--xref}
-You can see a simple example of its use in <<ex-xattr-access-grant>>.
+// The `meta` object references an XATTR key designated as identifying access control and-or routing information -- see {access-control-how-use-xattrs-for-access-grants--xref}
+// You can see a simple example of its use in <<ex-xattr-access-grant>>.
 
-[#ex-xattr-access-grant]
-.Access Grants using Xattr
-====
-include::{examples-lib}[tags="syncfunc-args"]
+// [#ex-xattr-access-grant]
+// .Access Grants using Xattr
+// ====
+// include::{examples-lib}[tags="syncfunc-args"]
 
-====
+// ====
 
 
 // == Operation

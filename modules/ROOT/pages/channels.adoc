@@ -11,12 +11,12 @@ include::partial$_std-hdr-sgw.adoc[]
 
 
 //  BEGIN -- Local Attributes
-:alldocs--xref: {rest-api-admin--pfx}#/database/GetAllDocs[_all_docs]
-:: xref:sync-function.adoc#function-definition[Function Definition]
-:requireaccessfunc--xref: {sync-function-api-require-access-cmd--xref}
-:addaccessfunc--xref: xref:{sgw-pg-read-access}#add-access[Add Access]
-:accessfunc--xref: {sync-function-api-access-cmd--xref}
-:channelfunc--xref: {sync-function-api-channel-cmd--xref}
+// :alldocs--xref: {rest-api-admin--pfx}#/database/GetAllDocs[_all_docs]
+// :: xref:sync-function.adoc#function-definition[Function Definition]
+// :requireaccessfunc--xref: {sync-function-api-require-access-cmd--xref}
+// :addaccessfunc--xref: xref:{sgw-pg-read-access}#add-access[Add Access]
+// :accessfunc--xref: {sync-function-api-access-cmd--xref}
+// :channelfunc--xref: {sync-function-api-channel-cmd--xref}
 // END -- Local Attributes
 
 
